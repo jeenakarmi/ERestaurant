@@ -1,0 +1,3 @@
+Buff Momo,80,1
+Chicken Momo,90,1
+Burger,110,2
