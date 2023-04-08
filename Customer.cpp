@@ -116,7 +116,6 @@ bool Customer::validateLogin()
 			tPhone = line.substr(commaIndex2 + 1, commaIndex3 - commaIndex2 - 1);
 			tEmail = line.substr(commaIndex3 + 1);
 
-			std::cout << tUsername << '\t' << tPassword << '\n';
 			if (username == tUsername && password == tPassword)
 			{
 				isValid = true;
