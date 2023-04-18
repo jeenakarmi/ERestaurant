@@ -82,11 +82,14 @@ bool Admin::mainMenuHandler()
 		const char DISPLAY_MENU = '1';
 		const char EXIT_MENU = '2';
 		char option = 0;
+		box(" ");
 		while (option != DISPLAY_ORDER && option != DISPLAY_MENU && option != EXIT_MENU) {
+			gotoxy(30, 6);
 			std::cout << "0 - DISPLAY_ORDER \n";
+			gotoxy(30, 7);
 			std::cout << "1 - DISPLAY_MENU\n";
+			gotoxy(30, 8);
 			std::cout << "2 - EXIT_MENU\n";
-
 			option = _getch();
 		}
 
