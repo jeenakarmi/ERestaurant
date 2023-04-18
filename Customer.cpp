@@ -3,9 +3,18 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <iomanip>
+#include <conio.h>
 
 #include "MenuItem.h"
 #include "Order.h"
+#include "welcome.h"
+
+const char DISPLAY_MENU = '0';
+const char PLACE_ORDERS = '1';
+const char MY_ORDER = '2';
+const char MY_PROFILES = '3';
+const char EXITS = '4';
 
 std::string Customer::getUsername()
 {
@@ -17,7 +26,23 @@ void Customer::getUserInput()
 	std::cout << "Enter username: ";
 	std::cin >> username;
 	std::cout << "Enter password: ";
-	std::cin >> password;
+
+
+	//Enter password for new customer
+	char ch;
+	while ((ch = _getch()) != '\r') {
+		if (ch == '\b') { // Backspace character
+			if (!password.empty()) {
+				password.pop_back();
+				std::cout << "\b \b"; // Move cursor back and erase the character
+			}
+		}
+		else {
+			password.push_back(ch);
+			std::cout << '*';
+		}
+	}
+	
 	std::cout << "Enter phone: ";
 	std::cin >> phone;
 	std::cout << "Enter email: ";
@@ -69,7 +94,14 @@ bool Customer::isNewUser()
 
 void Customer::createAccount()
 {
-	std::cout << "\nCreate Account\n";
+
+	std::string text = "CREATE ACCOUNT";  // admin login validation page
+	const int boxWidth = 100;  // Define the width of the box
+	int padding = (boxWidth - text.length()) / 2;   // Calculate the padding required to center the text
+	std::cout << std::setfill('=') << std::setw(boxWidth) << "" << std::endl;	// Display the box
+	std::cout << std::setfill(' ') << std::setw(padding) << "" << text << std::setw(padding) << "" << std::endl;	// Display the text with padding
+	std::cout << std::setfill('=') << std::setw(boxWidth) << "" << std::endl;	// Display the bottom of the box
+	//std::cout << "\nCreate Account\n";
 	std::ofstream outf;
 	outf.open(CUSTOMER_FILE, std::ios::app); 
 
@@ -95,7 +127,20 @@ bool Customer::validateLogin()
 	std::cout << "Enter username: ";
 	std::cin >> username;
 	std::cout << "Enter password: ";
-	std::cin >> password;
+	//Enter password for validation
+	char ch;
+	while ((ch = _getch()) != '\r') {
+		if (ch == '\b') { // Backspace character
+			if (!password.empty()) {
+				password.pop_back();
+				std::cout << "\b \b"; // Move cursor back and erase the character
+			}
+		}
+		else {
+			password.push_back(ch);
+			std::cout << '*';
+		}
+	}
 
 	std::ifstream inf;
 	inf.open(CUSTOMER_FILE);
@@ -130,7 +175,7 @@ bool Customer::validateLogin()
 void Customer::displayProfile()
 {
 	system("cls");
-	std::cout << "YOUR PROFILE\n";
+	welcome("YOUR PROFILE");
 	std::cout << "Username: " << username << '\n';
 	std::cout << "Password: " << password << '\n';
 	std::cout << "Phone: " << phone << '\n';
@@ -143,8 +188,68 @@ bool Customer::mainMenuHandler()
 	while (!exit)
 	{
 		system("cls");
-		std::cout << "MAIN MENU\n";
-		std::cout << DISPLAY_CUS_MENU << " - DISPLAY MENU\n";
+		
+		welcome("Mainmenu");
+		
+
+		
+
+		char option = 0;
+		while (option != DISPLAY_MENU && option != PLACE_ORDERS && option != MY_ORDER && option != MY_PROFILES && option != EXITS) {
+			std::cout << "helloworld\n";  //debugging
+			std::cout << "0 - DISPLAY MENU\n";
+			std::cout << "1 - PLACE ORDER\n";
+			std::cout << "2 - MY ORDER\n";
+			std::cout << "3 - MY PROFILE\n";
+			std::cout << "4 - EXIT\n";
+			option = _getch();
+
+		}
+		
+		if (option == DISPLAY_MENU) {
+			MenuItem menu;
+			system("CLS");
+			welcome("TODAY STUFFS");
+			menu.showMenu();
+			std::cout << std::endl;
+			system("pause");
+		}
+		
+		else if (option ==PLACE_ORDER) {
+			Order order;
+			bool orderPlaced = order.placeOrder(*this);
+			if (!orderPlaced)
+			{
+				std::cout << "Failed to place Order!\n";
+			}
+			else
+			{
+				std::cout << "Order placed! Check out on \"MY ORDERS\"\n";
+				system("pause");
+			}
+		}		
+
+		/*else if (option == MY_ORDER) {
+		
+			std::cout <<MY_ORDERS ;
+		}
+		*/
+		else if (option ==MY_PROFILES) {
+			displayProfile();
+			std::cout << std::endl;
+			system("pause");
+		}
+
+		else if (option == EXITS) {
+			exit = true;
+		}
+
+		else
+		{
+			std::cout << "Please enter the provided options!\n";
+		}
+		
+		/*std::cout << DISPLAY_CUS_MENU << " - DISPLAY MENU\n";
 		std::cout << PLACE_ORDER << " - PLACE ORDER\n";
 		std::cout << MY_ORDERS << " - MY ORDERS\n";
 		std::cout << MY_PROFILE << " - MY PROFILE\n";
@@ -188,7 +293,7 @@ bool Customer::mainMenuHandler()
 		else
 		{
 			std::cout << "Please enter the provided options!\n";
-		}
+		}*/
 	}
 	return exit;
 }

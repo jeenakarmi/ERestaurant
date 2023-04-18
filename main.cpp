@@ -8,6 +8,7 @@
 
 #include "Admin.h"
 #include "Customer.h"
+#include "box.h"
 
 const char ADMIN_OPTION = '0';
 const char CUSTOMER_OPTION = '1';
@@ -25,14 +26,12 @@ enum UserType
 int getUserType(); // function that gets who is the user (admin or customer)
 void unauthorizedUserMessage();
 
-int getUserType()
+void welcome(std::string text)
 {
-	//system("cls");
-	int user = -1 ; //invalid value given so that in loop it checks with enterd value in loop
+	// customer login or sign up page
+				//std::string text = "WELCOME";
 
-	std::string text = "ADMIN OR CUSTOMER";
-
-	// Define the width of the box
+				// Define the width of the box
 	const int boxWidth = 100;
 
 	// Calculate the padding required to center the text
@@ -43,16 +42,47 @@ int getUserType()
 
 	// Display the text with padding
 	std::cout << std::setfill(' ') << std::setw(padding) << "" << text << std::setw(padding) << "" << std::endl;
+	
+	// Display the bottom of the box
+	std::cout << std::setfill('=') << std::setw(boxWidth) << "" << std::endl;
+}
+
+void welcome_for_username(std::string text, std::string username1)
+{
+	// customer login or sign up page
+				//std::string text = "WELCOME";
+
+				// Define the width of the box
+	const int boxWidth = 100;
+
+	// Calculate the padding required to center the text
+	int padding = (boxWidth - text.length()) / 2;
+
+	// Display the box
+	std::cout << std::setfill('=') << std::setw(boxWidth) << "" << std::endl;
+
+	// Display the text with padding
+	std::cout << std::setfill(' ') << std::setw(padding) << "" << "Welcome, " << username1 << "!" << std::setw(padding) << "" << std::endl;
 
 	// Display the bottom of the box
 	std::cout << std::setfill('=') << std::setw(boxWidth) << "" << std::endl;
+}
 
+int getUserType()
+{
+	//system("cls");
+	
+	welcome("ADMIN OR COSTUMER");
+
+	int user = -1; //invalid value given so to enter in loop
 	char option = 0;
 	while (option != ADMIN_OPTION && option != CUSTOMER_OPTION) {
 		std::cout << "\n\n\n";
 
-
+		box(" ");
+		gotoxy(40, 13);
 		std::cout << USER_ADMIN << ": ADMIN_LOGIN" << std::endl;
+		gotoxy(40, 14);
 		std::cout << USER_CUSTOMER << ": CUSTOMER_LOGIN" << std::endl;
 		std::cout << "\n\n";
 		option = _getch();
@@ -65,17 +95,16 @@ int getUserType()
 	
 	while (true)
 	{
-		
-		if (option == ADMIN_OPTION || option == CUSTOMER_OPTION)
-		{
-			// valid choice
+
+		if (option == ADMIN_OPTION) {
+			user = USER_ADMIN;
 			break;
 		}
-		else
-		{
-			// invalid input
-			std::cout << "Invalid Input! Please choose from given options!\n";
+		else if (option == CUSTOMER_OPTION) {
+			user = USER_CUSTOMER;
+			break;
 		}
+		
 	}
 	return user;
 }
@@ -85,27 +114,24 @@ void unauthorizedUserMessage()
 	std::cout << "Sorry, you are not authorized!\n";
 	std::cout << "Back to user type selection...\n";
 	std::this_thread::sleep_for(std::chrono::seconds(2)); // this adds delay
+	system("CLS");
 }
 
 int main()
 {
-	std::string text = "ERestaurant";
+	
+	welcome("C++ PROJECT ON ERestaurant");
+	welcome("WELCOME TO FUTURISTIC ERestaurant");
+	std::cout << "\n\n";
+	
+	box("PRESS ANY KEY TO CONTINE...");
+	//std::cout << "\n\n\nPRESS ANY KEY TO CONTINE...\n";
+	gotoxy(46, 13);
+	_getch();
 
-	// Define the width of the box
-	const int boxWidth = 100;
-
-	// Calculate the padding required to center the text
-	int padding = (boxWidth - text.length()) / 2;
-
-	// Display the box
-	std::cout << std::setfill('=') << std::setw(boxWidth) << "" << std::endl;
-
-	// Display the text with padding
-	std::cout << std::setfill(' ') << std::setw(padding) << "" << text << std::setw(padding) << "" << std::endl;
-
-	// Display the bottom of the box
-	std::cout << std::setfill('=') << std::setw(boxWidth) << "" << std::endl;
-
+	system("cls");
+	welcome("ERestaurant");
+	
 	bool quit{ false };
 
 	while (!quit)
@@ -115,7 +141,10 @@ int main()
 		{
 			 
 			// admin login validation page
-			std::cout << "ADMIN LOGIN\n";
+			
+			// prompts out the message adim login
+			welcome("ADMIN LOGIN");
+
 			Admin admin;
 			admin.getAdminData();
 			bool isAdminAuthorized{ admin.validateLogin() };
@@ -127,7 +156,11 @@ int main()
 			else
 			{
 				system("cls");
-				std::cout << "Welcome " << admin.getUserName() << "!\n\n";
+				
+				// it prints the message welcome, SauravDhoju
+				welcome_for_username("Welcome", admin.getUserName());
+				
+				//std::cout << "Welcome " << admin.getUserName() << "!\n\n";
 				bool exit = admin.mainMenuHandler();
 			}
 		}
@@ -135,27 +168,10 @@ int main()
 		{
 			while (true)
 			{
-				// customer login or sign up page
-				std::string text = "LOGIN OR CREATE ACCOUNT";
-
-				// Define the width of the box
-				const int boxWidth = 100;
-
-				// Calculate the padding required to center the text
-				int padding = (boxWidth - text.length()) / 2;
-
-				// Display the box
-				std::cout << std::setfill('=') << std::setw(boxWidth) << "" << std::endl;
-
-				// Display the text with padding
-				std::cout << std::setfill(' ') << std::setw(padding) << "" << text << std::setw(padding) << "" << std::endl;
-
-				// Display the bottom of the box
-				std::cout << std::setfill('=') << std::setw(boxWidth) << "" << std::endl;
-
+				// prompts out message login or create account
+				welcome("LOGIN OR CREATE ACCOUNT");
 				
-				
-				
+								
 				char option = 0;
 				while (option != LOG_IN && option != CREATE_ACCOUNT && option != USER_SELECTION) {
 					std::cout <<"0 - LOG IN\n";
@@ -169,12 +185,9 @@ int main()
 				{
 					system("CLS");;
 					
-					std::string text = "LOGIN";  // admin login validation page
-					const int boxWidth = 100;  // Define the width of the box
-					int padding = (boxWidth - text.length()) / 2;   // Calculate the padding required to center the text
-					std::cout << std::setfill('=') << std::setw(boxWidth) << "" << std::endl;	// Display the box
-					std::cout << std::setfill(' ') << std::setw(padding) << "" << text << std::setw(padding) << "" << std::endl;	// Display the text with padding
-					std::cout << std::setfill('=') << std::setw(boxWidth) << "" << std::endl;	// Display the bottom of the box
+					//prompts the message login
+					welcome("LOGIN");
+
 
 					Customer customer;
 					bool isCustomerUser{ customer.validateLogin() };
@@ -195,7 +208,9 @@ int main()
 				{
 					// create account
 					Customer newCustomer;
+					system("CLS");
 					newCustomer.createAccount();
+					
 					break;
 				}
 				else if (option == USER_SELECTION)

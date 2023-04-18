@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <string_view>
+#include <conio.h>
 
 #include "MenuItem.h"
 
@@ -11,7 +12,21 @@ void Admin::getAdminData()
 	std::cout << "Enter username: ";
 	std::cin >> username;
 	std::cout << "Enter password: ";
-	std::cin >> password;
+	//admimn password
+	char ch;
+	while ((ch = _getch()) != '\r') {
+		if (ch == '\b') { // Backspace character
+			if (!password.empty()) {
+				password.pop_back();
+				std::cout << "\b \b"; // Move cursor back and erase the character
+			}
+		}
+		else {
+			password.push_back(ch);
+			std::cout << '*';
+		}
+	}
+	std::cout << "\n";
 }
 
 bool Admin::validateLogin()
@@ -58,19 +73,32 @@ bool Admin::mainMenuHandler()
 	bool exit{ false };
 	while (!exit)
 	{
-		std::cout << DISPLAY_ORDERS << " - DISPLAY_ORDERS\n";
+		const char DISPLAY_ORDER = '0';
+		const char DISPLAY_MENU = '1';
+		const char EXIT_MENU = '2';
+		char option = 0;
+		while (option != DISPLAY_ORDER && option != DISPLAY_MENU && option != EXIT_MENU) {
+			std::cout << "0 - DISPLAY_ORDER \n";
+			std::cout << "1 - DISPLAY_MENU\n";
+			std::cout << "2 - EXIT_MENU\n";
+
+			option = _getch();
+		}
+
+
+		/*std::cout << DISPLAY_ORDERS << " - DISPLAY_ORDERS\n";
 		std::cout << DISPLAY_MENU << " - DISPLAY_MENU\n";
 		std::cout << "2 - Exit Menu\n";
 
 		int input{};
 		std::cout << "Input: ";
 		std::cin >> input;
-
-		if (input == DISPLAY_ORDERS)
+		*/
+		if (option == DISPLAY_ORDER)
 		{
 			// display orders
 		}
-		else if (input == DISPLAY_MENU)
+		else if (option == DISPLAY_MENU)
 		{
 			// DISPLAY MENU
 			MenuItem menu;
@@ -90,8 +118,10 @@ bool Admin::mainMenuHandler()
 				continue;
 			}
 		}
-		else if (input == 2)
+		else if (option == EXIT_MENU)
 		{
+			system("cls");
+			
 			break;
 		}
 		else

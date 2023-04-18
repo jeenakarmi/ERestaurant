@@ -18,7 +18,7 @@ enum AdminMainMenuOptions {
 class Admin
 {
 	std::string username;
-	std::string password;
+	std::string password = "";
 public:
 	void getAdminData();
 	bool validateLogin(); // string_view makes string read only to save memory

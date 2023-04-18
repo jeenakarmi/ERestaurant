@@ -140,6 +140,8 @@
   <ItemGroup>
     <ClInclude Include="Admin.h" />
     <ClInclude Include="Customer.h" />
+    <ClInclude Include="box.h" />
+    <ClInclude Include="welcome.h" />
     <ClInclude Include="MenuItem.h" />
     <ClInclude Include="Order.h" />
   </ItemGroup>
