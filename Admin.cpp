@@ -6,11 +6,16 @@
 #include <conio.h>
 
 #include "MenuItem.h"
+#include "box.h"
 
 void Admin::getAdminData()
 {
+	box(" ");
+	gotoxy(30, 6);
 	std::cout << "Enter username: ";
+	//gotoxy(45, 4);
 	std::cin >> username;
+	gotoxy(30, 7);
 	std::cout << "Enter password: ";
 	//admimn password
 	char ch;
