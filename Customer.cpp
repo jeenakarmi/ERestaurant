@@ -44,7 +44,7 @@ void Customer::getUserInput()
 			std::cout << '*';
 		}
 	}
-	
+	std::cout << '\n';
 	std::cout << "Enter phone: ";
 	std::cin >> phone;
 	std::cout << "Enter email: ";

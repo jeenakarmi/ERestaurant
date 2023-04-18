@@ -69,14 +69,14 @@ int getUserType()
 {
 	//system("cls");
 	
-	welcome("ADMIN OR COSTUMER");
 
 	int user; // kun chai user ho ta vanera rakheko ni...
 	char option = 0;
 	int opt = option - '0'; // converts char single digit number into int
 	while (opt != USER_ADMIN && opt != USER_CUSTOMER) {
+		system("cls");
+		welcome("ADMIN OR COSTUMER");
 		std::cout << "\n\n\n";
-
 		box(" ");
 		gotoxy(40, 13);
 		std::cout << USER_ADMIN << ": ADMIN_LOGIN" << std::endl;
@@ -85,6 +85,10 @@ int getUserType()
 		std::cout << "\n\n";
 		option = _getch();
 		opt = option - '0';
+		if (option != '\0' || opt != USER_ADMIN || opt != USER_CUSTOMER)
+		{
+			continue;
+		}
 	}
 
 	std::cout << "\n\n\n";

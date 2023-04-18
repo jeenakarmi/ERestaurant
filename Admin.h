@@ -13,6 +13,7 @@ static const std::string ADMIN_FILE = "UserData/ADMIN.txt";
 enum AdminMainMenuOptions {
 	DISPLAY_ORDERS,
 	DISPLAY_MENU,
+	EXIT_MENU
 };
 
 class Admin
