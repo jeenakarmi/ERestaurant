@@ -10,9 +10,6 @@
 #include "Customer.h"
 #include "box.h"
 
-const char ADMIN_OPTION = '0';
-const char CUSTOMER_OPTION = '1';
-
 const char LOG_IN = '0';
 const char CREATE_ACCOUNT = '1';
 const char USER_SELECTION = '2';
@@ -74,9 +71,10 @@ int getUserType()
 	
 	welcome("ADMIN OR COSTUMER");
 
-	int user = -1; //invalid value given so to enter in loop
+	int user; // kun chai user ho ta vanera rakheko ni...
 	char option = 0;
-	while (option != ADMIN_OPTION && option != CUSTOMER_OPTION) {
+	int opt = option - '0'; // converts char single digit number into int
+	while (opt != USER_ADMIN && opt != USER_CUSTOMER) {
 		std::cout << "\n\n\n";
 
 		box(" ");
@@ -86,6 +84,7 @@ int getUserType()
 		std::cout << USER_CUSTOMER << ": CUSTOMER_LOGIN" << std::endl;
 		std::cout << "\n\n";
 		option = _getch();
+		opt = option - '0';
 	}
 
 	std::cout << "\n\n\n";
@@ -96,11 +95,11 @@ int getUserType()
 	while (true)
 	{
 
-		if (option == ADMIN_OPTION) {
+		if (opt == USER_ADMIN) {
 			user = USER_ADMIN;
 			break;
 		}
-		else if (option == CUSTOMER_OPTION) {
+		else if (opt == USER_CUSTOMER) {
 			user = USER_CUSTOMER;
 			break;
 		}
@@ -173,6 +172,7 @@ int main()
 				
 								
 				char option = 0;
+
 				while (option != LOG_IN && option != CREATE_ACCOUNT && option != USER_SELECTION) {
 					std::cout <<"0 - LOG IN\n";
 					std::cout <<"1 - CREATE ACCOUNT\n";
