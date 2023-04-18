@@ -78,19 +78,22 @@ bool Admin::mainMenuHandler()
 	bool exit{ false };
 	while (!exit)
 	{
-		const char DISPLAY_ORDER = '0';
-		const char DISPLAY_MENU = '1';
-		const char EXIT_MENU = '2';
 		char option = 0;
+<<<<<<< HEAD
 		box(" ");
 		while (option != DISPLAY_ORDER && option != DISPLAY_MENU && option != EXIT_MENU) {
 			gotoxy(30, 6);
+=======
+		int opt = option - '0';
+		while (opt != DISPLAY_ORDERS && opt != DISPLAY_MENU && opt != EXIT_MENU) {
+>>>>>>> 324f3458aa3ca1127c6569b5b96b1dba406cc31d
 			std::cout << "0 - DISPLAY_ORDER \n";
 			gotoxy(30, 7);
 			std::cout << "1 - DISPLAY_MENU\n";
 			gotoxy(30, 8);
 			std::cout << "2 - EXIT_MENU\n";
 			option = _getch();
+			opt = option - '0';
 		}
 
 
@@ -102,11 +105,11 @@ bool Admin::mainMenuHandler()
 		std::cout << "Input: ";
 		std::cin >> input;
 		*/
-		if (option == DISPLAY_ORDER)
+		if (opt == DISPLAY_ORDERS)
 		{
 			// display orders
 		}
-		else if (option == DISPLAY_MENU)
+		else if (opt == DISPLAY_MENU)
 		{
 			// DISPLAY MENU
 			MenuItem menu;
@@ -126,7 +129,7 @@ bool Admin::mainMenuHandler()
 				continue;
 			}
 		}
-		else if (option == EXIT_MENU)
+		else if (opt == EXIT_MENU)
 		{
 			system("cls");
 			
