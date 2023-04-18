@@ -79,14 +79,9 @@ bool Admin::mainMenuHandler()
 	while (!exit)
 	{
 		char option = 0;
-<<<<<<< HEAD
 		box(" ");
-		while (option != DISPLAY_ORDER && option != DISPLAY_MENU && option != EXIT_MENU) {
-			gotoxy(30, 6);
-=======
 		int opt = option - '0';
 		while (opt != DISPLAY_ORDERS && opt != DISPLAY_MENU && opt != EXIT_MENU) {
->>>>>>> 324f3458aa3ca1127c6569b5b96b1dba406cc31d
 			std::cout << "0 - DISPLAY_ORDER \n";
 			gotoxy(30, 7);
 			std::cout << "1 - DISPLAY_MENU\n";
