@@ -7,6 +7,7 @@
 
 #include "MenuItem.h"
 #include "box.h"
+#include "welcome.h"
 
 void Admin::getAdminData()
 {
@@ -44,6 +45,7 @@ bool Admin::validateLogin()
 	Admin currAdmin;
 	if (!inf)
 	{
+		
 		std::cout << "File Could Not Be Opened! filename: " << ADMIN_FILE << '\n';
 		return false;
 	}
@@ -82,10 +84,11 @@ bool Admin::mainMenuHandler()
 		box(" ");
 		int opt = option - '0';
 		while (opt != DISPLAY_ORDERS && opt != DISPLAY_MENU && opt != EXIT_MENU) {
+			gotoxy(40, 6);
 			std::cout << "0 - DISPLAY_ORDER \n";
-			gotoxy(30, 7);
+			gotoxy(40, 7);
 			std::cout << "1 - DISPLAY_MENU\n";
-			gotoxy(30, 8);
+			gotoxy(40, 8);
 			std::cout << "2 - EXIT_MENU\n";
 			option = _getch();
 			opt = option - '0';

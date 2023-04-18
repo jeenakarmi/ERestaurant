@@ -78,9 +78,9 @@ int getUserType()
 		welcome("ADMIN OR COSTUMER");
 		std::cout << "\n\n\n";
 		box(" ");
-		gotoxy(40, 13);
+		gotoxy(40, 10);
 		std::cout << USER_ADMIN << ": ADMIN_LOGIN" << std::endl;
-		gotoxy(40, 14);
+		gotoxy(40, 11);
 		std::cout << USER_CUSTOMER << ": CUSTOMER_LOGIN" << std::endl;
 		std::cout << "\n\n";
 		option = _getch();
@@ -110,10 +110,21 @@ int getUserType()
 
 void unauthorizedUserMessage()
 {
+	system("cls");
+	std::cout << "\n\n";
+	system("cls");
+	welcome("You are not authorized!!! ");
+	std::cout << "\n\n\n";
+	welcome("Back to user type selection...");
+	Sleep(900);
+	/*box(" ");
+	gotoxy(35, 8);
 	std::cout << "Sorry, you are not authorized!\n";
+	gotoxy(35, 9);
 	std::cout << "Back to user type selection...\n";
 	std::this_thread::sleep_for(std::chrono::seconds(2)); // this adds delay
 	system("CLS");
+	*/
 }
 
 int main()
@@ -173,9 +184,14 @@ int main()
 								
 				char option = 0;
 
+				std::cout << "\n\n";
+				box(" ");
 				while (option != LOG_IN && option != CREATE_ACCOUNT && option != USER_SELECTION) {
+					gotoxy(40, 8);
 					std::cout <<"0 - LOG IN\n";
+					gotoxy(40, 9);
 					std::cout <<"1 - CREATE ACCOUNT\n";
+					gotoxy(40, 10); 
 					std::cout <<"2 - USER SLECTION\n";
 
 					option = _getch();
