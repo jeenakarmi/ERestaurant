@@ -85,10 +85,6 @@ int getUserType()
 		std::cout << "\n\n";
 		option = _getch();
 		opt = option - '0';
-		if (option != '\0' || opt != USER_ADMIN || opt != USER_CUSTOMER)
-		{
-			continue;
-		}
 	}
 
 	std::cout << "\n\n\n";
