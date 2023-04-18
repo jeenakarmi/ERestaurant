@@ -10,11 +10,13 @@
 #include "Order.h"
 #include "welcome.h"
 
+/*
 const char DISPLAY_MENU = '0';
 const char PLACE_ORDERS = '1';
 const char MY_ORDER = '2';
 const char MY_PROFILES = '3';
 const char EXITS = '4';
+*/
 
 std::string Customer::getUsername()
 {
@@ -190,12 +192,10 @@ bool Customer::mainMenuHandler()
 		system("cls");
 		
 		welcome("Mainmenu");
-		
 
-		
-
-		char option = 0;
-		while (option != DISPLAY_MENU && option != PLACE_ORDERS && option != MY_ORDER && option != MY_PROFILES && option != EXITS) {
+		char option = '\0';
+		int opt = option - '0';
+		while (opt != DISPLAY_CUS_MENU && opt != PLACE_ORDER && opt != MY_ORDERS && opt != MY_PROFILE && opt != EXIT) {
 			std::cout << "helloworld\n";  //debugging
 			std::cout << "0 - DISPLAY MENU\n";
 			std::cout << "1 - PLACE ORDER\n";
@@ -203,10 +203,11 @@ bool Customer::mainMenuHandler()
 			std::cout << "3 - MY PROFILE\n";
 			std::cout << "4 - EXIT\n";
 			option = _getch();
+			opt = option - '0';
 
 		}
-		
-		if (option == DISPLAY_MENU) {
+
+		if (opt == DISPLAY_CUS_MENU) {
 			MenuItem menu;
 			system("CLS");
 			welcome("TODAY STUFFS");
@@ -214,8 +215,7 @@ bool Customer::mainMenuHandler()
 			std::cout << std::endl;
 			system("pause");
 		}
-		
-		else if (option ==PLACE_ORDER) {
+		else if (opt == PLACE_ORDER) {
 			Order order;
 			bool orderPlaced = order.placeOrder(*this);
 			if (!orderPlaced)
@@ -228,19 +228,20 @@ bool Customer::mainMenuHandler()
 				system("pause");
 			}
 		}		
-
-		/*else if (option == MY_ORDER) {
+		/*
+		else if (opt == MY_ORDERS) {
 		
-			std::cout <<MY_ORDERS ;
+			// lekhna baki xa
+			std::cout << MY_ORDERS ;
 		}
 		*/
-		else if (option ==MY_PROFILES) {
+		else if (opt == MY_PROFILE) {
 			displayProfile();
 			std::cout << std::endl;
 			system("pause");
 		}
 
-		else if (option == EXITS) {
+		else if (opt == EXIT) {
 			exit = true;
 		}
 
