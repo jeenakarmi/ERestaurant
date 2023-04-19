@@ -183,9 +183,14 @@ void Customer::displayProfile()
 {
 	system("cls");
 	welcome("YOUR PROFILE");
+	box(" ");
+	gotoxy(40, 7);
 	std::cout << "Username: " << username << '\n';
+	gotoxy(40, 8); 
 	std::cout << "Password: " << password << '\n';
+	gotoxy(40, 9); 
 	std::cout << "Phone: " << phone << '\n';
+	gotoxy(40, 10); 
 	std::cout << "Email: " << email << '\n';
 }
 
