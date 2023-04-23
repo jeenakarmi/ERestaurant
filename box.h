@@ -22,7 +22,7 @@ inline void box(const std::string& text) {
 
     // Define the width and height of the box
     int boxWidth = 100;
-    int boxHeight = 10;
+    int boxHeight = 12;
 
     // Draw the top of the box
     std::cout << boxTopLeft;

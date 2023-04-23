@@ -7,15 +7,17 @@
 
 #include "MenuItem.h"
 #include "box.h"
+#include "welcome.h"
 
 void Admin::getAdminData()
 {
+	std::cout << "\n\n";
 	box(" ");
-	gotoxy(30, 6);
+	gotoxy(30, 8);
 	std::cout << "Enter username: ";
 	//gotoxy(45, 4);
 	std::cin >> username;
-	gotoxy(30, 7);
+	gotoxy(30, 9);
 	std::cout << "Enter password: ";
 	//admimn password
 	char ch;
@@ -44,6 +46,7 @@ bool Admin::validateLogin()
 	Admin currAdmin;
 	if (!inf)
 	{
+		
 		std::cout << "File Could Not Be Opened! filename: " << ADMIN_FILE << '\n';
 		return false;
 	}
@@ -79,13 +82,15 @@ bool Admin::mainMenuHandler()
 	while (!exit)
 	{
 		char option = 0;
+		std::cout << "\n\n";
 		box(" ");
 		int opt = option - '0';
 		while (opt != DISPLAY_ORDERS && opt != DISPLAY_MENU && opt != EXIT_MENU) {
+			gotoxy(40, 9);
 			std::cout << "0 - DISPLAY_ORDER \n";
-			gotoxy(30, 7);
+			gotoxy(40, 10);
 			std::cout << "1 - DISPLAY_MENU\n";
-			gotoxy(30, 8);
+			gotoxy(40, 11);
 			std::cout << "2 - EXIT_MENU\n";
 			option = _getch();
 			opt = option - '0';
@@ -102,31 +107,57 @@ bool Admin::mainMenuHandler()
 		*/
 		if (opt == DISPLAY_ORDERS)
 		{
+			system("cls");
+			welcome("Orders Placed");                                  //order display garirya xaina hai 
 			// display orders
 		}
 		else if (opt == DISPLAY_MENU)
 		{
+			system("cls");
+
+			welcome("Available Menus");
+			box(" ");
 			// DISPLAY MENU
 			MenuItem menu;
+			gotoxy(40, 3);                                                //yo milauna baaki xa hai 
 			menu.showMenu();
 			std::cout << "\nDo you want to update menu?(y/N): ";
 			char updateInput;
 			std::cin >> updateInput;
 			if (std::toupper(updateInput) == 'Y')
 			{
+				system("cls");
+				welcome("Updating Menu");
+				box(" ");
 				// update menu
+				gotoxy(40, 5);                                              //yo line ma ni gotoxy x coordinates aagadi gayena hera hai kasle herni ho 
 				MenuItem newItem;
 				newItem.inputData();
 				menu.updateMenu(newItem);
 			}
 			else
 			{
+				system("cls");
+				gotoxy(0, 5);
+				welcome("Heading towards MainMenu...");
+				Sleep(900);
+				system("cls");
+				welcome("MainMenu");
+				
 				continue;
 			}
 		}
 		else if (opt == EXIT_MENU)
 		{
 			system("cls");
+			gotoxy(0, 5);
+			welcome("Exiting...");
+			Sleep(500);
+			system("cls");
+			gotoxy(0, 5);
+			welcome("Heading towards LOGIN...");
+			Sleep(600);
+
 			
 			break;
 		}

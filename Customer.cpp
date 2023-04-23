@@ -10,6 +10,7 @@
 #include "MenuItem.h"
 #include "Order.h"
 #include "welcome.h"
+#include "box.h"
 
 bool Emailcheck(std::string email);
 /*
@@ -150,8 +151,12 @@ bool Customer::validateLogin()
 {
 	bool isValid{ false };
 
+	std::cout << "\n\n";
+	box(" ");
+	gotoxy(40, 9);
 	std::cout << "Enter username: ";
 	std::cin >> username;
+	gotoxy(40, 10);
 	std::cout << "Enter password: ";
 	//Enter password for validation
 	char ch;
@@ -202,9 +207,14 @@ void Customer::displayProfile()
 {
 	system("cls");
 	welcome("YOUR PROFILE");
+	box(" ");
+	gotoxy(40, 7);
 	std::cout << "Username: " << username << '\n';
+	gotoxy(40, 8); 
 	std::cout << "Password: " << password << '\n';
+	gotoxy(40, 9); 
 	std::cout << "Phone: " << phone << '\n';
+	gotoxy(40, 10); 
 	std::cout << "Email: " << email << '\n';
 }
 
@@ -219,12 +229,19 @@ bool Customer::mainMenuHandler()
 
 		char option = '\0';
 		int opt = option - '0';
+
+		std::cout << "\n\n";
+		box(" ");
 		while (opt != DISPLAY_CUS_MENU && opt != PLACE_ORDER && opt != MY_ORDERS && opt != MY_PROFILE && opt != EXIT) {
-			std::cout << "helloworld\n";  //debugging
+			gotoxy(40, 8);
 			std::cout << "0 - DISPLAY MENU\n";
+			gotoxy(40, 9);
 			std::cout << "1 - PLACE ORDER\n";
+			gotoxy(40, 10);
 			std::cout << "2 - MY ORDER\n";
+			gotoxy(40, 11);
 			std::cout << "3 - MY PROFILE\n";
+			gotoxy(40, 12);
 			std::cout << "4 - EXIT\n";
 			option = _getch();
 			opt = option - '0';
@@ -235,11 +252,17 @@ bool Customer::mainMenuHandler()
 			MenuItem menu;
 			system("CLS");
 			welcome("TODAY STUFFS");
+			std::cout << "\n\n";
+			box(" ");
+
+			gotoxy(5, 5);
 			menu.showMenu();
 			std::cout << std::endl;
 			system("pause");
 		}
 		else if (opt == PLACE_ORDER) {
+			system("cls");
+			
 			Order order;
 			bool orderPlaced = order.placeOrder(*this);
 			if (!orderPlaced)
