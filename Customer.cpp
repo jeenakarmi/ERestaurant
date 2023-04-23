@@ -25,6 +25,11 @@ std::string Customer::getUsername()
 	return username;
 }
 
+std::string Customer::getUserPhone()
+{
+	return phone;
+}
+
 void Customer::getUserInput()
 {
 	std::cout << "Enter username: ";
@@ -246,14 +251,12 @@ bool Customer::mainMenuHandler()
 				std::cout << "Order placed! Check out on \"MY ORDERS\"\n";
 				system("pause");
 			}
-		}		
-		/*
-		else if (opt == MY_ORDERS) {
-		
-			// lekhna baki xa
-			std::cout << MY_ORDERS ;
 		}
-		*/
+		else if (opt == MY_ORDERS)
+		{
+			Order myOrder;
+			myOrder.displayCustomerOrder(*this); // display order for this customer
+		}
 		else if (opt == MY_PROFILE) {
 			displayProfile();
 			std::cout << std::endl;
