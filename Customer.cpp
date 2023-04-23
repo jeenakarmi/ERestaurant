@@ -13,6 +13,7 @@
 #include "box.h"
 
 bool Emailcheck(std::string email);
+bool isValidPhoneNumber(std::string phone);
 /*
 const char DISPLAY_MENU = '0';
 const char PLACE_ORDERS = '1';
@@ -53,8 +54,20 @@ void Customer::getUserInput()
 		}
 	}
 	std::cout << '\n';
-	std::cout << "Enter phone: ";
-	std::cin >> phone;
+
+	while (true)
+	{
+
+		std::cout << "Enter phonenumber: +977-98";
+		std::cin >> phone;
+		if (!isValidPhoneNumber(phone))
+		{
+			std::cout << "\nEnter valid phonenumber \n";
+			continue;
+		}
+		break;
+	}
+	
 	while (true)
 	{
 
@@ -68,6 +81,12 @@ void Customer::getUserInput()
 		break;
 	}
 }
+
+bool isValidPhoneNumber(std::string phone) {
+	const std::regex pattern4("\\d{8}"); // regular expression pattern for 10-digit integer phone number
+	return regex_match(phone, pattern4); // returns true if the phone number matches the pattern
+}
+
 
 bool Emailcheck(std::string email)
 {
@@ -122,12 +141,8 @@ bool Customer::isNewUser()
 void Customer::createAccount()
 {
 
-	std::string text = "CREATE ACCOUNT";  // admin login validation page
-	const int boxWidth = 100;  // Define the width of the box
-	int padding = (boxWidth - text.length()) / 2;   // Calculate the padding required to center the text
-	std::cout << std::setfill('=') << std::setw(boxWidth) << "" << std::endl;	// Display the box
-	std::cout << std::setfill(' ') << std::setw(padding) << "" << text << std::setw(padding) << "" << std::endl;	// Display the text with padding
-	std::cout << std::setfill('=') << std::setw(boxWidth) << "" << std::endl;	// Display the bottom of the box
+	
+	welcome("CREATE ACCOUNT");
 	//std::cout << "\nCreate Account\n";
 	std::ofstream outf;
 	outf.open(CUSTOMER_FILE, std::ios::app); 
@@ -142,7 +157,7 @@ void Customer::createAccount()
 		}
 	}
 	
-	outf << username << ',' << password << ',' << phone << ',' << email << '\n';
+	outf << username << ',' << password << ',' << "+977-98" << phone << ',' << email << '\n';
 
 	outf.close();
 }
