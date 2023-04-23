@@ -3,5 +3,10 @@ aadim,321,2173612936,aadim@gmail.com
 sujal,12345,9841389812,sujalkoju@gmail.com
 saurav,321,980000000,saurav@gmail.com
 cindy,567,918231024,cindykoju@gmail.com
+<<<<<<< HEAD
 RushiDhoju,123,9860726118,rushidhoju@gmail.com
 Rabisha,4321,9800000000,jigumacha@gmail.com
+=======
+cindrella,5432,9840340340,cindrellakoju@gmail.com
+cindrella@gmail.com,,983003,cindrella@gmail.com
+>>>>>>> origin/main

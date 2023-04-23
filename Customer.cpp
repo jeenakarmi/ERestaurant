@@ -5,12 +5,14 @@
 #include <fstream>
 #include <iomanip>
 #include <conio.h>
+#include<regex>
 
 #include "MenuItem.h"
 #include "Order.h"
 #include "welcome.h"
 #include "box.h"
 
+bool Emailcheck(std::string email);
 /*
 const char DISPLAY_MENU = '0';
 const char PLACE_ORDERS = '1';
@@ -48,10 +50,27 @@ void Customer::getUserInput()
 	std::cout << '\n';
 	std::cout << "Enter phone: ";
 	std::cin >> phone;
-	std::cout << "Enter email: ";
-	std::cin >> email;
+	while (true)
+	{
+
+		std::cout << "Enter email: ";
+		std::cin >> email;
+		if (!Emailcheck(email))
+		{
+			std::cout << "\nEnter valid email \n";
+			continue;
+		}
+		break;
+	}
 }
 
+bool Emailcheck(std::string email)
+{
+	const std::regex pattern1("(\\w+)(\\.|)?(\\w*)@gmail(\\.com)+");
+	const std::regex pattern2("(\\w+)(\\.|)?(\\w*)@yahoo(\\.com)+");
+	const std::regex pattern3("(\\w+)(\\.|)?(\\w*)@khec(\\.np)+");
+	return regex_match(email, pattern1) || regex_match(email, pattern2) || regex_match(email, pattern3);
+}
 bool Customer::isNewUser()
 {
 	std::ifstream inf;
