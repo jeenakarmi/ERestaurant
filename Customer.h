@@ -30,6 +30,7 @@ public:
 		email = "";
 	}
 	std::string getUsername();
+	std::string getUserPhone();
 	void getUserInput();
 	bool isNewUser();
 	void createAccount();

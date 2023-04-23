@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <vector>
 
 Order::Order()
 {
@@ -27,12 +28,21 @@ bool Order::idDoneOrdering()
 	return isDone;
 }
 
+void Order::updateOrders(Order currOrderItem)
+{
+	orders.push_back(currOrderItem);
+}
+
 bool Order::placeOrder(Customer customer)
 {
 	bool success{ true };
 	std::cout << "Hello, " << customer.getUsername() << "! Place an order here.\n";
 	MenuItem menu;
 	menu.showMenu();
+
+	Order currOrder;
+	currOrder.ordererName = customer.getUsername();
+	currOrder.ordererPhone = customer.getUserPhone();
 
 	std::cout << "\nPlace your order now!\n";
 	bool done{ false };
@@ -51,22 +61,33 @@ bool Order::placeOrder(Customer customer)
 		float currItemQuantity;
 		std::cin >> currItemQuantity;
 		currOrderItem.quantity += currItemQuantity;
+		currOrderItem.itemPrice *= currOrderItem.quantity;
 
+		currOrder.updateOrders(currOrderItem);
+
+		/*
 		// make a data file with record of order items for this customer
 		std::string orderfile = "RestaurantData/Orders/" + customer.getUsername() + ".txt";
 		createOrderFile(currOrderItem, orderfile);
+		*/
+		updateOrderFile(currOrder);
 
 		done = idDoneOrdering();
 	}
 	return success;
 }
 
-void Order::createOrderFile(Order orderItem, std::string path)
+void Order::updateOrderFile(Order orderItem)
 {
 	std::ofstream outf;
-	outf.open(path.c_str(), std::ios::app);
+	outf.open(ORDERS_FILE, std::ios::binary | std::ios::app);
 
-	outf << orderItem.itemName << ',' << orderItem.itemPrice << ',' << orderItem.quantity << '\n';
+	outf.write((char*)&orderItem, sizeof(orderItem));
 
 	outf.close();
+}
+
+void Order::displayCustomerOrder(Customer customer)
+{
+
 }
