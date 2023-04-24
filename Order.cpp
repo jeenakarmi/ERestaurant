@@ -86,16 +86,6 @@ void Order::createOrderFile(Order currOrderItem, std::string path)
 	outf.close();
 }
 
-void Order::updateOrderFile(Order orderItem)
-{
-	std::ofstream outf;
-	outf.open(ORDERS_FILE, std::ios::binary | std::ios::app);
-
-	outf.write((char*)&orderItem, sizeof(orderItem));
-
-	outf.close();
-}
-
 void Order::displayCustomerOrder(Customer customer)
 {
 	std::string filePath = "RestaurantData/Orders/" + customer.getUsername() + ".txt";
