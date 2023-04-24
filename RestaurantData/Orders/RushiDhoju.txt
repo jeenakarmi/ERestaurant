@@ -1,3 +1,0 @@
-Paneer Momo,80,1
-Chicken Burger,120,1
-Buff Momo,80,2
