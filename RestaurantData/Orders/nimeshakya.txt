@@ -1,0 +1,2 @@
+Buff Momo,2,160
+Chicken Burger,2,240
