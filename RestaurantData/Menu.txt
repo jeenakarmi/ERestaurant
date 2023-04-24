@@ -1,7 +1,3 @@
-1,Buff Momo,80
-2,Chicken Momo,90
-3,Paneer Momo,80
-4,Buff Chowmein,100
-5,Veg Chowmein,90
-6,Chicken Burger,120
-7,Dry Noodles,150
+1,Buff Momo,120
+2,Chicken Momo,130
+3,Buff Chowmein,120

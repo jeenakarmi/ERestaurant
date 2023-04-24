@@ -14,13 +14,11 @@ class Order
 	float itemPrice;
 	float quantity;
 
-	// DMA for order items per customer
-	std::vector<Order> orders;
+	std::string orders;
 public:
 	Order();
 	bool idDoneOrdering();
 	bool placeOrder(Customer customer);
-	void updateOrderFile(Order orderItem);
-	void updateOrders(Order currOrderItem);
+	void createOrderFile(Order currOrderItem, std::string path);
 	void displayCustomerOrder(Customer customer);
 };
