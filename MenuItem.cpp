@@ -60,41 +60,6 @@ void MenuItem::showMenu()
 		}
 	}
 }
-*/
-
-
-void MenuItem::showMenu()
-{
-	std::ifstream inf(MENU_FILE);
-
-	if (!inf)
-	{
-		std::cout << "File could not be opened! FILE_NAME: " << MENU_FILE << '\n';
-	}
-	else
-	{
-		std::cout << std::setfill(' ') << std::setw(33) << "\n" << std::setfill(' ');
-		std::cout << std::setw(3) << "SN" << std::setw(20) << "Item" << std::setw(10) << "Price\n";
-		std::cout << std::setfill('-') << std::setw(33) << "\n" << std::setfill(' ');
-
-		std::string line;
-		while (std::getline(inf, line))
-		{
-			int id;
-			std::string menuItemName;
-			float menuItemPrice;
-
-			int commaIndex1 = line.find(",");
-			int commaIndex2 = line.find(",", commaIndex1 + 1);
-
-			id = std::stoi(line.substr(0, commaIndex1));
-			menuItemName = line.substr(commaIndex1 + 1, commaIndex2 - commaIndex1 - 1);
-			menuItemPrice = std::stof(line.substr(commaIndex2 + 1));
-
-			std::cout << std::setw(3) << id << std::setw(20) << menuItemName << std::setw(10) << menuItemPrice << '\n';
-		}
-	}
-}
 
 void MenuItem::inputData()
 {

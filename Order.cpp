@@ -3,12 +3,8 @@
 #include <string>
 #include <fstream>
 #include <vector>
-<<<<<<< HEAD
 #include "welcome.h"
-#include "welcome msg for oobject.h"
-=======
 #include <iomanip>
->>>>>>> 67b49f93aa6016de6aba3db8203176a3bea1bc9c
 
 Order::Order()
 {
@@ -35,16 +31,6 @@ bool Order::idDoneOrdering()
 	return isDone;
 }
 
-<<<<<<< HEAD
-//yeta milauna abaaki xa hai  ................................................................................................................................................................................................
-
-void Order::updateOrders(Order currOrderItem)
-=======
-void Order::updateOrders(std::string currOrderItem)
->>>>>>> 67b49f93aa6016de6aba3db8203176a3bea1bc9c
-{
-	orders.append(currOrderItem);
-}
 
 bool Order::placeOrder(Customer customer)
 {
