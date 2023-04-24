@@ -5,4 +5,3 @@
 5,Veg Chowmein,90
 6,Chicken Burger,120
 7,Dry Noodles,150
-0,,0
