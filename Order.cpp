@@ -3,14 +3,19 @@
 #include <string>
 #include <fstream>
 #include <vector>
+<<<<<<< HEAD
 #include "welcome.h"
 #include "welcome msg for oobject.h"
+=======
+#include <iomanip>
+>>>>>>> 67b49f93aa6016de6aba3db8203176a3bea1bc9c
 
 Order::Order()
 {
 	itemName = "";
 	itemPrice = 0.0f;
 	quantity = 0.0f;
+	orders = "";
 }
 
 bool Order::idDoneOrdering()
@@ -30,11 +35,15 @@ bool Order::idDoneOrdering()
 	return isDone;
 }
 
+<<<<<<< HEAD
 //yeta milauna abaaki xa hai  ................................................................................................................................................................................................
 
 void Order::updateOrders(Order currOrderItem)
+=======
+void Order::updateOrders(std::string currOrderItem)
+>>>>>>> 67b49f93aa6016de6aba3db8203176a3bea1bc9c
 {
-	orders.push_back(currOrderItem);
+	orders.append(currOrderItem);
 }
 
 bool Order::placeOrder(Customer customer)
@@ -46,41 +55,49 @@ bool Order::placeOrder(Customer customer)
 	MenuItem menu;
 	menu.showMenu();
 
-	Order currOrder;
-	currOrder.ordererName = customer.getUsername();
-	currOrder.ordererPhone = customer.getUserPhone();
-
 	std::cout << "\nPlace your order now!\n";
 	bool done{ false };
 	while (!done)
 	{
 		MenuItem currItem;
-		Order currOrderItem;
 		std::cout << "Item ID: ";
 		int id;
 		std::cin >> id;
+
 		currItem = currItem.getItem(id);
+
+		Order currOrderItem;
+
 		currOrderItem.itemName = currItem.getName();
 		currOrderItem.itemPrice = currItem.getPrice();
+		currOrderItem.quantity = 0.0f;
+
 		std::cout << "Item: " << currOrderItem.itemName << "\tPrice: " << currOrderItem.itemPrice << '\n';
 		std::cout << "Quantity: ";
 		float currItemQuantity;
 		std::cin >> currItemQuantity;
+
 		currOrderItem.quantity += currItemQuantity;
 		currOrderItem.itemPrice *= currOrderItem.quantity;
 
-		currOrder.updateOrders(currOrderItem);
+		std::cout << currOrderItem.itemName << '\t' << currOrderItem.quantity << '\t' << currOrderItem.itemPrice << '\n';
 
-		/*
 		// make a data file with record of order items for this customer
 		std::string orderfile = "RestaurantData/Orders/" + customer.getUsername() + ".txt";
 		createOrderFile(currOrderItem, orderfile);
-		*/
-		updateOrderFile(currOrder);
 
 		done = idDoneOrdering();
 	}
 	return success;
+}
+
+void Order::createOrderFile(Order currOrderItem, std::string path)
+{
+	std::ofstream outf(path, std::ios::app);
+
+	outf << currOrderItem.itemName << ',' <<  currOrderItem.quantity << ',' << currOrderItem.itemPrice << '\n';
+
+	outf.close();
 }
 
 void Order::updateOrderFile(Order orderItem)
@@ -95,5 +112,34 @@ void Order::updateOrderFile(Order orderItem)
 
 void Order::displayCustomerOrder(Customer customer)
 {
+	std::string filePath = "RestaurantData/Orders/" + customer.getUsername() + ".txt";
 
+	std::ifstream inf(filePath);
+
+	if (!inf)
+	{
+		std::cout << "No order file for this customer: " << customer.getUsername() << "!\n";
+	}
+	else
+	{
+		std::cout << "Item\tQuantity\tPrice\n";
+		std::string line;
+		while (std::getline(inf, line))
+		{
+			std::string name;
+			float quantity;
+			float price;
+
+			int commaIndex1 = line.find(',');
+			int commaIndex2 = line.find(',', commaIndex1 + 1);
+
+			name = line.substr(0, commaIndex1);
+			quantity = std::stof(line.substr(commaIndex1 + 1, commaIndex2));
+			price = std::stof(line.substr(commaIndex2 + 1));
+
+			std::cout << name << '\t'<< quantity << '\t' << price << '\n';
+		}
+	}
+
+	inf.close();
 }

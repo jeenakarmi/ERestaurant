@@ -295,6 +295,7 @@ bool Customer::mainMenuHandler()
 		{
 			Order myOrder;
 			myOrder.displayCustomerOrder(*this); // display order for this customer
+			system("pause");
 		}
 		else if (opt == MY_PROFILE) {
 			displayProfile();
