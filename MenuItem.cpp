@@ -3,6 +3,8 @@
 #include <fstream>
 #include <string>
 #include <string_view>
+#include "welcome.h"
+#include "box.h"
 
 MenuItem::MenuItem()
 {
@@ -26,8 +28,10 @@ float MenuItem::getPrice()
 	return (menuItemPrice);
 }
 
+
 void MenuItem::showMenu()
 {
+	gotoxy(40, 5);
 	std::ifstream inf;
 	inf.open(MENU_FILE, std::ios::in);
 

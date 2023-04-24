@@ -5,11 +5,15 @@
 #include <fstream>
 #include <iomanip>
 #include <conio.h>
+#include<regex>
 
 #include "MenuItem.h"
 #include "Order.h"
 #include "welcome.h"
+#include "box.h"
 
+bool Emailcheck(std::string email);
+bool isValidPhoneNumber(std::string phone);
 /*
 const char DISPLAY_MENU = '0';
 const char PLACE_ORDERS = '1';
@@ -50,12 +54,47 @@ void Customer::getUserInput()
 		}
 	}
 	std::cout << '\n';
-	std::cout << "Enter phone: ";
-	std::cin >> phone;
-	std::cout << "Enter email: ";
-	std::cin >> email;
+
+	while (true)
+	{
+
+		std::cout << "Enter phonenumber: +977-98";
+		std::cin >> phone;
+		if (!isValidPhoneNumber(phone))
+		{
+			std::cout << "\nEnter valid phonenumber \n";
+			continue;
+		}
+		break;
+	}
+	
+	while (true)
+	{
+
+		std::cout << "Enter email: ";
+		std::cin >> email;
+		if (!Emailcheck(email))
+		{
+			std::cout << "\nEnter valid email \n";
+			continue;
+		}
+		break;
+	}
 }
 
+bool isValidPhoneNumber(std::string phone) {
+	const std::regex pattern4("\\d{8}"); // regular expression pattern for 10-digit integer phone number
+	return regex_match(phone, pattern4); // returns true if the phone number matches the pattern
+}
+
+
+bool Emailcheck(std::string email)
+{
+	const std::regex pattern1("(\\w+)(\\.|)?(\\w*)@gmail(\\.com)+");
+	const std::regex pattern2("(\\w+)(\\.|)?(\\w*)@yahoo(\\.com)+");
+	const std::regex pattern3("(\\w+)(\\.|)?(\\w*)@khec(\\.np)+");
+	return regex_match(email, pattern1) || regex_match(email, pattern2) || regex_match(email, pattern3);
+}
 bool Customer::isNewUser()
 {
 	std::ifstream inf;
@@ -102,12 +141,8 @@ bool Customer::isNewUser()
 void Customer::createAccount()
 {
 
-	std::string text = "CREATE ACCOUNT";  // admin login validation page
-	const int boxWidth = 100;  // Define the width of the box
-	int padding = (boxWidth - text.length()) / 2;   // Calculate the padding required to center the text
-	std::cout << std::setfill('=') << std::setw(boxWidth) << "" << std::endl;	// Display the box
-	std::cout << std::setfill(' ') << std::setw(padding) << "" << text << std::setw(padding) << "" << std::endl;	// Display the text with padding
-	std::cout << std::setfill('=') << std::setw(boxWidth) << "" << std::endl;	// Display the bottom of the box
+	
+	welcome("CREATE ACCOUNT");
 	//std::cout << "\nCreate Account\n";
 	std::ofstream outf;
 	outf.open(CUSTOMER_FILE, std::ios::app); 
@@ -122,7 +157,7 @@ void Customer::createAccount()
 		}
 	}
 	
-	outf << username << ',' << password << ',' << phone << ',' << email << '\n';
+	outf << username << ',' << password << ',' << "+977-98" << phone << ',' << email << '\n';
 
 	outf.close();
 }
@@ -131,8 +166,12 @@ bool Customer::validateLogin()
 {
 	bool isValid{ false };
 
+	std::cout << "\n\n";
+	box(" ");
+	gotoxy(40, 9);
 	std::cout << "Enter username: ";
 	std::cin >> username;
+	gotoxy(40, 10);
 	std::cout << "Enter password: ";
 	//Enter password for validation
 	char ch;
@@ -183,9 +222,14 @@ void Customer::displayProfile()
 {
 	system("cls");
 	welcome("YOUR PROFILE");
+	box(" ");
+	gotoxy(40, 7);
 	std::cout << "Username: " << username << '\n';
+	gotoxy(40, 8); 
 	std::cout << "Password: " << password << '\n';
+	gotoxy(40, 9); 
 	std::cout << "Phone: " << phone << '\n';
+	gotoxy(40, 10); 
 	std::cout << "Email: " << email << '\n';
 }
 
@@ -200,12 +244,19 @@ bool Customer::mainMenuHandler()
 
 		char option = '\0';
 		int opt = option - '0';
+
+		std::cout << "\n\n";
+		box(" ");
 		while (opt != DISPLAY_CUS_MENU && opt != PLACE_ORDER && opt != MY_ORDERS && opt != MY_PROFILE && opt != EXIT) {
-			std::cout << "helloworld\n";  //debugging
+			gotoxy(40, 8);
 			std::cout << "0 - DISPLAY MENU\n";
+			gotoxy(40, 9);
 			std::cout << "1 - PLACE ORDER\n";
+			gotoxy(40, 10);
 			std::cout << "2 - MY ORDER\n";
+			gotoxy(40, 11);
 			std::cout << "3 - MY PROFILE\n";
+			gotoxy(40, 12);
 			std::cout << "4 - EXIT\n";
 			option = _getch();
 			opt = option - '0';
@@ -216,11 +267,17 @@ bool Customer::mainMenuHandler()
 			MenuItem menu;
 			system("CLS");
 			welcome("TODAY STUFFS");
+			std::cout << "\n\n";
+			box(" ");
+
+			gotoxy(5, 5);
 			menu.showMenu();
 			std::cout << std::endl;
 			system("pause");
 		}
 		else if (opt == PLACE_ORDER) {
+			system("cls");
+			
 			Order order;
 			bool orderPlaced = order.placeOrder(*this);
 			if (!orderPlaced)
