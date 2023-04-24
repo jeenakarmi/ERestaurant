@@ -3,6 +3,8 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include "welcome.h"
+#include "welcome msg for oobject.h"
 
 Order::Order()
 {
@@ -28,6 +30,8 @@ bool Order::idDoneOrdering()
 	return isDone;
 }
 
+//yeta milauna abaaki xa hai  ................................................................................................................................................................................................
+
 void Order::updateOrders(Order currOrderItem)
 {
 	orders.push_back(currOrderItem);
@@ -36,7 +40,9 @@ void Order::updateOrders(Order currOrderItem)
 bool Order::placeOrder(Customer customer)
 {
 	bool success{ true };
-	std::cout << "Hello, " << customer.getUsername() << "! Place an order here.\n";
+	welcome("Hello");
+	std::cout << "\n\nPLACE AN ORDER HERE...\n";
+	//std::cout << "Hello, " << customer.getUsername() << "! Place an order here.\n";
 	MenuItem menu;
 	menu.showMenu();
 

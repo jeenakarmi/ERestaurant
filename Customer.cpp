@@ -268,7 +268,7 @@ bool Customer::mainMenuHandler()
 			system("CLS");
 			welcome("TODAY STUFFS");
 			std::cout << "\n\n";
-			box(" ");
+			
 
 			gotoxy(5, 5);
 			menu.showMenu();
@@ -286,6 +286,7 @@ bool Customer::mainMenuHandler()
 			}
 			else
 			{
+				system("cls");
 				std::cout << "Order placed! Check out on \"MY ORDERS\"\n";
 				system("pause");
 			}
