@@ -8,6 +8,7 @@
 #include "MenuItem.h"
 #include "box.h"
 #include "welcome.h"
+#include "welcome msg for oobject.h"
 
 void Admin::getAdminData()
 {
@@ -76,16 +77,21 @@ std::string Admin::getUserName()
 	return username;
 }
 
+
 bool Admin::mainMenuHandler()
 {
+		
 	bool exit{ false };
 	while (!exit)
 	{
+		
 		char option = 0;
 		std::cout << "\n\n";
 		box(" ");
 		int opt = option - '0';
 		while (opt != DISPLAY_ORDERS && opt != DISPLAY_MENU && opt != EXIT_MENU) {
+			
+			
 			gotoxy(40, 9);
 			std::cout << "0 - DISPLAY_ORDER \n";
 			gotoxy(40, 10);
@@ -135,7 +141,10 @@ bool Admin::mainMenuHandler()
 				MenuItem newItem;
 				newItem.inputData();
 				menu.updateMenu(newItem);
-				std::cout << "hello world\n";
+				std::cout << "\n\nItem has been added succesfully...\n";
+				Sleep(900);
+				system("cls");
+				welcome("Menu");
 			}
 			else
 			{
