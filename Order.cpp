@@ -3,6 +3,7 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include "welcome.h"
 #include <iomanip>
 
 Order::Order()
@@ -30,15 +31,13 @@ bool Order::idDoneOrdering()
 	return isDone;
 }
 
-void Order::updateOrders(std::string currOrderItem)
-{
-	orders.append(currOrderItem);
-}
 
 bool Order::placeOrder(Customer customer)
 {
 	bool success{ true };
-	std::cout << "Hello, " << customer.getUsername() << "! Place an order here.\n";
+	welcome("Hello");
+	std::cout << "\n\nPLACE AN ORDER HERE...\n";
+	//std::cout << "Hello, " << customer.getUsername() << "! Place an order here.\n";
 	MenuItem menu;
 	menu.showMenu();
 
@@ -83,16 +82,6 @@ void Order::createOrderFile(Order currOrderItem, std::string path)
 	std::ofstream outf(path, std::ios::app);
 
 	outf << currOrderItem.itemName << ',' <<  currOrderItem.quantity << ',' << currOrderItem.itemPrice << '\n';
-
-	outf.close();
-}
-
-void Order::updateOrderFile(Order orderItem)
-{
-	std::ofstream outf;
-	outf.open(ORDERS_FILE, std::ios::binary | std::ios::app);
-
-	outf.write((char*)&orderItem, sizeof(orderItem));
 
 	outf.close();
 }

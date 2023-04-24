@@ -20,7 +20,5 @@ public:
 	bool idDoneOrdering();
 	bool placeOrder(Customer customer);
 	void createOrderFile(Order currOrderItem, std::string path);
-	void updateOrderFile(Order orderItem);
-	void updateOrders(std::string currOrderItem);
 	void displayCustomerOrder(Customer customer);
 };
