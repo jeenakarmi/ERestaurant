@@ -106,7 +106,11 @@ bool Order::displayCustomerOrder(Customer customer)
 	}
 	else
 	{
-		std::cout << "SN\tItem\tQuantity\tPrice\tStatus\n";
+		std::cout << std::setw(5) << std::left << std::setfill(' ') << "" << std::setw(20) << std::left << "" << std::setw(10) << std::left << "" << std::setw(11) << "" << std::setw(12) << "" << std::setfill(' ') << std::endl;
+		std::cout << std::setw(3) << "SN" << std::setw(20) << "Item" << std::setw(10) << "Quantity" << std::setw(11) << "Price" << std::setw(12) << "Status\n";
+		std::cout << std::setw(5) << std::left << std::setfill('-') << "" << std::setw(20) << std::left << "" << std::setw(10) << std::left << "" << std::setw(11) << "" << std::setw(12) << "" << std::setfill(' ') << std::endl;
+
+		//std::cout << "SN\tItem\tQuantity\tPrice\tStatus\n";
 		std::string line;
 		int sn = 0;
 		bool complete = false;
@@ -125,17 +129,23 @@ bool Order::displayCustomerOrder(Customer customer)
 			price = std::stof(line.substr(commaIndex2 + 1, commaIndex3));
 			complete = line.substr(commaIndex3 + 1).compare("true") == 0 ? true : false;
 
-			std::cout << ++sn << '\t' << name << '\t' << quantity << '\t' << price << '\t' << (complete ? "Complete" : "Pending") << '\n';
+
+			std::cout << std::setw(5) << ++sn << std::setw(20) << name << std::setw(10) << quantity << std::setw(10) << price << std::setw(10) << (complete ? "Complete" : "Pending") << '\n';
+
+			//std::cout << ++sn << '\t' << name << '\t' << quantity << '\t' << price << '\t' << (complete ? "Complete" : "Pending") << '\n';
 			itemTotal += quantity;
 			priceTotal += price;
 		}
 	}
 	if (itemTotal != 0)
 	{
-		std::cout << "Total\n";
+		std::cout << "\n\n";
+		std::cout << "\n" << std::setw(3) << "" << std::setw(20) << "Total" << std::setw(10) << itemTotal << std::setw(10) << priceTotal << std::setw(10) << "\n";
+
+		/*std::cout << "Total\n";
 		std::cout << "Item: " << itemTotal << '\n';
 		std::cout << "Price: " << priceTotal << '\n';
-
+		*/
 		std::cout << "\nOrder Completed Status: " << (isAllOrderComplete(customer) ? "Complete" : "Not Complete") << '\n';
 
 	}
