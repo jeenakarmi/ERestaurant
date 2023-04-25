@@ -141,10 +141,10 @@ int main()
 {
     
     welcome("C++ PROJECT ON ERestaurant");
-    welcome("WELCOME TO FUTURISTIC ERestaurant");
+    welcome("WELCOME TO ERestaurant");
     std::cout << "\n\n";
     
-    box("PRESS ANY KEY TO CONTINE...");
+    box("PRESS ANY KEY TO CONTINUE...");
     //std::cout << "\n\n\nPRESS ANY KEY TO CONTINE...\n";
     gotoxy(46, 13);
     _getch();

@@ -105,6 +105,7 @@ void Admin::displayCustomersWhoOrdered()
 
 bool Admin::displayOrdersOfCustomer(int id)
 {
+	welcome("ORDERS");
 	std::ifstream customerFile(CUSTOMER_FILE);
 
 	std::string line;
