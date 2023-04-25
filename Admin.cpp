@@ -131,31 +131,26 @@ bool Admin::displayOrdersOfCustomer(int id)
 	}
 	customerFile.close();
 
+	std::cout << "Mark order complete/pending? (y/N): ";
+	char ch;
+	std::cin >> ch;
 	bool exit = false;
-	while (!exit)
+	if (std::toupper(ch) == 'Y')
 	{
-		std::cout << "Mark order complete/pending? (y/N): ";
-		char ch;
-		std::cin >> ch;
-		if (std::toupper(ch) == 'Y')
-		{
-			std::cout << "ID: ";
-			int orderItemId;
-			std::cin >> orderItemId;
-			cusOrder.markItemOrderComplete(orderFilePath, orderItemId);
-			exit = true;
-		}
-		else if (std::toupper(ch) == 'N')
-		{
-			exit = true;
-		}
-		else
-		{
-			std::cout << "Invalid input. Please enter 'y' or 'n'." << std::endl;
-		}
+		std::cout << "ID: ";
+		int orderItemId;
+		std::cin >> orderItemId;
+		cusOrder.markItemOrderComplete(orderFilePath, orderItemId);
+	}
+	else if (std::toupper(ch) == 'N')
+	{
+		exit = true;
+	}
+	else
+	{
+		std::cout << "Invalid input. Please enter 'y' or 'n'." << std::endl;
 	}
 	return exit;
-
 }
 
 

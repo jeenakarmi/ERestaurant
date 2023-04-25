@@ -195,8 +195,6 @@ void Order::markItemOrderComplete(std::string path, int id)
 	}
 	else
 	{
-		std::cout << "SN\tItem\tQuantity\tPrice\tStatus\n";
-		std::cout << "hey\n";
 		std::string line;
 		int sn = 0;
 		bool complete = false;
