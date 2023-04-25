@@ -32,6 +32,16 @@ std::string Customer::getUserPhone()
 	return phone;
 }
 
+void Customer::setAllOrderComplete(bool complete)
+{
+	allOrderComplete = complete;
+}
+
+bool Customer::getAllOrderComplete()
+{
+	return allOrderComplete;
+}
+
 void Customer::getUserInput()
 {
 	std::cout << "Enter username: ";

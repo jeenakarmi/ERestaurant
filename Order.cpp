@@ -57,6 +57,7 @@ bool Order::placeOrder(Customer customer)
 		currOrderItem.itemName = currItem.getName();
 		currOrderItem.itemPrice = currItem.getPrice();
 		currOrderItem.quantity = 0.0f;
+		currOrderItem.orderComplete = false;
 
 		std::cout << "Item: " << currOrderItem.itemName << "\tPrice: " << currOrderItem.itemPrice << '\n';
 		std::cout << "Quantity: ";
@@ -74,6 +75,7 @@ bool Order::placeOrder(Customer customer)
 
 		done = idDoneOrdering();
 	}
+	customer.setAllOrderComplete(false);
 	return success;
 }
 
@@ -81,7 +83,7 @@ void Order::createOrderFile(Order currOrderItem, std::string path)
 {
 	std::ofstream outf(path, std::ios::app);
 
-	outf << currOrderItem.itemName << ',' <<  currOrderItem.quantity << ',' << currOrderItem.itemPrice << '\n';
+	outf << currOrderItem.itemName << ',' <<  currOrderItem.quantity << ',' << currOrderItem.itemPrice << ',' << (currOrderItem.orderComplete ? "true" : "false") << '\n';
 
 	outf.close();
 }
@@ -92,14 +94,19 @@ void Order::displayCustomerOrder(Customer customer)
 
 	std::ifstream inf(filePath);
 
+	int itemTotal = 0;
+	float priceTotal = 0.0f;
+
 	if (!inf)
 	{
 		std::cout << "No order file for this customer: " << customer.getUsername() << "!\n";
 	}
 	else
 	{
-		std::cout << "Item\tQuantity\tPrice\n";
+		std::cout << "SN\tItem\tQuantity\tPrice\tStatus\n";
 		std::string line;
+		int sn = 0;
+		bool complete = false;
 		while (std::getline(inf, line))
 		{
 			std::string name;
@@ -108,14 +115,25 @@ void Order::displayCustomerOrder(Customer customer)
 
 			int commaIndex1 = line.find(',');
 			int commaIndex2 = line.find(',', commaIndex1 + 1);
+			int commaIndex3 = line.find(',', commaIndex2 + 1);
 
 			name = line.substr(0, commaIndex1);
 			quantity = std::stof(line.substr(commaIndex1 + 1, commaIndex2));
-			price = std::stof(line.substr(commaIndex2 + 1));
+			price = std::stof(line.substr(commaIndex2 + 1, commaIndex3));
+			complete = line.substr(commaIndex3 + 1).compare("true") == 0 ? true : false;
 
-			std::cout << name << '\t'<< quantity << '\t' << price << '\n';
+			std::cout << ++sn << '\t' << name << '\t' << quantity << '\t' << price << '\t' << (complete ? "Complete" : "Pending") << '\n';
+			itemTotal += quantity;
+			priceTotal += price;
+
+			customer.setAllOrderComplete(complete);
 		}
 	}
+	std::cout << "Total\n";
+	std::cout << "Item: " << itemTotal << '\n';
+	std::cout << "Price: " << priceTotal << '\n';
+
+	std::cout << "\nOrder Completed Status: " << (customer.getAllOrderComplete() ? "Complete" : "Not Complete") << '\n';
 
 	inf.close();
 }

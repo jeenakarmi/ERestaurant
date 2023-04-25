@@ -21,6 +21,7 @@ class Customer
 	std::string phone;
 	std::string email;
 	int id;
+	bool allOrderComplete;
 public:
 	Customer()
 	{
@@ -31,6 +32,8 @@ public:
 	}
 	std::string getUsername();
 	std::string getUserPhone();
+	void setAllOrderComplete(bool complete);
+	bool getAllOrderComplete();
 	void getUserInput();
 	bool isNewUser();
 	void createAccount();

@@ -13,6 +13,7 @@ class Order
 	std::string itemName;
 	float itemPrice;
 	float quantity;
+	bool orderComplete;
 
 	std::string orders;
 public:
