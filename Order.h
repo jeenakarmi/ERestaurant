@@ -23,6 +23,8 @@ public:
 	bool placeOrder(Customer customer);
 	void createOrderFile(Order currOrderItem, std::string path);
 	bool displayCustomerOrder(Customer customer); // returns true if file exists
+	void displayOrderFromFile(std::string path);
+	void markItemOrderComplete(std::string path, int id);
 
 	bool isAllOrderComplete(Customer customer);
 

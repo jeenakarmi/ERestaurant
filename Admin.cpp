@@ -6,6 +6,7 @@
 #include <conio.h>
 
 #include "MenuItem.h"
+#include "Order.h"
 #include "box.h"
 #include "welcome.h"
 #include "welcome msg for oobject.h"
@@ -77,6 +78,77 @@ std::string Admin::getUserName()
 	return username;
 }
 
+void Admin::displayCustomersWhoOrdered()
+{
+	std::ifstream customerFile(CUSTOMER_FILE);
+	
+	std::string line;
+	int count = 0;
+	while (std::getline(customerFile, line))
+	{
+		int commaIndex1 = line.find(',');
+		std::string cusUserName = line.substr(0, commaIndex1);
+		std::string orderFilePath{ "RestaurantData/Orders/" + cusUserName + ".txt" };
+
+		std::ifstream orderFile(orderFilePath);
+
+		if (orderFile)
+		{
+			std::cout << ++count << '\t' << cusUserName << '\n';
+		}
+
+		orderFile.close();
+	}
+
+	customerFile.close();
+}
+
+bool Admin::displayOrdersOfCustomer(int id)
+{
+	std::ifstream customerFile(CUSTOMER_FILE);
+
+	std::string line;
+	int count = 0;
+	std::string orderFilePath;
+
+	Order cusOrder;
+	while (std::getline(customerFile, line))
+	{
+		int commaIndex1 = line.find(',');
+		std::string cusUserName = line.substr(0, commaIndex1);
+		orderFilePath = "RestaurantData/Orders/" + cusUserName + ".txt";
+
+		std::ifstream orderFile(orderFilePath);
+
+		if (orderFile)
+		{
+			if (id == ++count)
+			{
+				cusOrder.displayOrderFromFile(orderFilePath);
+				break;
+			}
+		}
+	}
+	customerFile.close();
+
+	std::cout << "Mark order complete/pending? (y/N): ";
+	char ch;
+	std::cin >> ch;
+	bool exit = false;
+	if (std::toupper(ch) == 'Y')
+	{
+		std::cout << "ID: ";
+		int orderItemId;
+		std::cin >> orderItemId;
+		cusOrder.markItemOrderComplete(orderFilePath, orderItemId);
+	}
+	else
+	{
+		exit = true;
+	}
+	return exit;
+}
+
 
 bool Admin::mainMenuHandler()
 {
@@ -86,12 +158,13 @@ bool Admin::mainMenuHandler()
 	{
 		
 		char option = 0;
-		std::cout << "\n\n";
-		box(" ");
 		int opt = option - '0';
 		while (opt != DISPLAY_ORDERS && opt != DISPLAY_MENU && opt != EXIT_MENU) {
 			
-			
+			system("cls");
+
+			std::cout << "\n\n";
+			box(" ");
 			gotoxy(40, 9);
 			std::cout << "0 - DISPLAY_ORDER \n";
 			gotoxy(40, 10);
@@ -114,7 +187,20 @@ bool Admin::mainMenuHandler()
 		if (opt == DISPLAY_ORDERS)
 		{
 			system("cls");
-			welcome("Orders Placed");                                  //order display garirya xaina hai 
+			welcome("Orders Placed");
+			displayCustomersWhoOrdered();
+
+			std::cout << "ID: ";
+			int id;
+			std::cin >> id;
+			bool exit = false;
+			while (!exit)
+			{
+				system("cls");
+				exit = displayOrdersOfCustomer(id);
+			}
+
+			system("pause");
 			// display orders
 		}
 		else if (opt == DISPLAY_MENU)

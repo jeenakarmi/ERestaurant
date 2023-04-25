@@ -141,6 +141,85 @@ bool Order::displayCustomerOrder(Customer customer)
 	return fileExists;
 }
 
+void Order::displayOrderFromFile(std::string path)
+{
+	std::ifstream inf(path);
+	if (!inf)
+	{
+		std::cout << "No order file for this path: " << path << "!\n";
+	}
+	else
+	{
+		std::cout << "SN\tItem\tQuantity\tStatus\n";
+		std::string line;
+		int sn = 0;
+		bool complete = false;
+		while (std::getline(inf, line))
+		{
+			std::string name;
+			float quantity;
+			float price;
+
+			int commaIndex1 = line.find(',');
+			int commaIndex2 = line.find(',', commaIndex1 + 1);
+			int commaIndex3 = line.find(',', commaIndex2 + 1);
+
+			name = line.substr(0, commaIndex1);
+			quantity = std::stof(line.substr(commaIndex1 + 1, commaIndex2));
+			price = std::stof(line.substr(commaIndex2 + 1, commaIndex3));
+			complete = line.substr(commaIndex3 + 1).compare("true") == 0 ? true : false;
+
+			std::cout << ++sn << '\t' << name << '\t' << quantity << '\t' << (complete ? "Complete" : "Pending") << '\n';
+		}
+	}
+}
+
+void Order::markItemOrderComplete(std::string path, int id)
+{
+	std::ifstream inf(path);
+	std::ofstream outf("temp.txt", std::ios::app);
+	int count = 0;
+	if (!inf)
+	{
+		std::cout << "No order file for this path: " << path << "!\n";
+	}
+	else
+	{
+		std::cout << "SN\tItem\tQuantity\tPrice\tStatus\n";
+		std::string line;
+		int sn = 0;
+		bool complete = false;
+		while (std::getline(inf, line))
+		{
+			std::string name;
+			float quantity;
+			float price;
+
+			int commaIndex1 = line.find(',');
+			int commaIndex2 = line.find(',', commaIndex1 + 1);
+			int commaIndex3 = line.find(',', commaIndex2 + 1);
+
+			name = line.substr(0, commaIndex1);
+			quantity = std::stof(line.substr(commaIndex1 + 1, commaIndex2));
+			price = std::stof(line.substr(commaIndex2 + 1, commaIndex3));
+			complete = line.substr(commaIndex3 + 1).compare("true") == 0 ? true : false;
+
+			if (++count == id)
+			{
+				complete = !complete; // toggle complete
+			}
+
+			outf << name << ',' << quantity << ',' << price << ',' << (complete ? "true" : "false") << '\n';
+		}
+	}
+	outf.close();
+	inf.close();
+
+	std::remove(path.c_str());
+	std::rename("temp.txt", path.c_str());
+}
+
+
 bool Order::isAllOrderComplete(Customer customer)
 {
 	bool completed{ true };
