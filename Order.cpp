@@ -57,7 +57,7 @@ bool Order::placeOrder(Customer customer)
 		currOrderItem.itemName = currItem.getName();
 		currOrderItem.itemPrice = currItem.getPrice();
 		currOrderItem.quantity = 0.0f;
-		currOrderItem.orderComplete = true;
+		currOrderItem.orderComplete = false;
 
 		std::cout << "Item: " << currOrderItem.itemName << "\tPrice: " << currOrderItem.itemPrice << '\n';
 		std::cout << "Quantity: ";
