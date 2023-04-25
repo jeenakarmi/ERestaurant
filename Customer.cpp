@@ -295,17 +295,31 @@ bool Customer::mainMenuHandler()
 		{
 			Order myOrder;
 			bool fileExists = myOrder.displayCustomerOrder(*this); // display order for this customer
-			if (!myOrder.isAllOrderComplete(*this) && fileExists)
+
+			// if not all order complete and the file exists then be able to cancel pending orders
+			if (fileExists)
 			{
-				std::cout << "Cancel Order? (y/N): ";
-				char cancel;
-				std::cin >> cancel;
-				if (std::toupper(cancel) == 'Y')
+				if (!myOrder.isAllOrderComplete(*this))
 				{
-					myOrder.cancelOrder(*this);
+					std::cout << "Cancel Order? (y/N): ";
+					char cancel;
+					std::cin >> cancel;
+					if (std::toupper(cancel) == 'Y')
+					{
+						myOrder.cancelOrder(*this);
+					}
+				}
+				else
+				{
+					std::cout << "Checkout? (y/N): ";
+					char checkout;
+					std::cin >> checkout;
+					if (std::toupper(checkout) == 'Y')
+					{
+						myOrder.payOrderBill(*this);
+					}
 				}
 			}
-
 			system("pause");
 		}
 		else if (opt == MY_PROFILE)

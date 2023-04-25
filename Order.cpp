@@ -57,7 +57,7 @@ bool Order::placeOrder(Customer customer)
 		currOrderItem.itemName = currItem.getName();
 		currOrderItem.itemPrice = currItem.getPrice();
 		currOrderItem.quantity = 0.0f;
-		currOrderItem.orderComplete = false;
+		currOrderItem.orderComplete = true;
 
 		std::cout << "Item: " << currOrderItem.itemName << "\tPrice: " << currOrderItem.itemPrice << '\n';
 		std::cout << "Quantity: ";
@@ -222,4 +222,46 @@ void Order::cancelOrder(Customer customer)
 	{
 		std::remove(orderFilePath.c_str());
 	}
+}
+
+void Order::payOrderBill(Customer customer)
+{
+	std::string orderFilePath{ "RestaurantData/Orders/" + customer.getUsername() + ".txt" };
+	// payment process goes here
+
+	std::cout << "Your password: ";
+	std::string password;
+	std::cin >> password;
+	
+	std::ifstream inf(CUSTOMER_LIST_FILE);
+	while (!inf.eof())
+	{
+		std::string line;
+		if (std::getline(inf, line))
+		{
+			int commaIndex1 = line.find(',');
+			int commaIndex2 = line.find(',', commaIndex1 + 1);
+
+			std::string username;
+			std::string passFile;
+
+			username = line.substr(0, commaIndex1);
+			passFile = line.substr(commaIndex1 + 1, commaIndex2 - commaIndex1 - 1);
+
+			if (customer.getUsername().compare(username) == 0)
+			{
+ 				if (passFile.compare(password) == 0) 
+				{
+					std::cout << "Payment Successful!\n";
+					std::remove(orderFilePath.c_str());
+				}
+				else
+				{
+					std::cout << "Only authorized individual and carry out payment!\n";
+				}
+				break;
+			}
+		}
+	}
+
 }
