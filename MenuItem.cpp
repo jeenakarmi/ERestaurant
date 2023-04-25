@@ -30,10 +30,9 @@ float MenuItem::getPrice()
 }
 void MenuItem::showMenu()
 {
-	gotoxy(40, 5);
+	//gotoxy(40, 5);
 	std::ifstream inf;
 	inf.open(MENU_FILE, std::ios::in);
-
 
 	if (!inf)
 	{
@@ -41,8 +40,18 @@ void MenuItem::showMenu()
 	}
 	else
 	{
+		std::cout << std::setfill(' ') << std::setw(5) << ' '
+			<< std::setw(20) << ' '
+			<< std::setw(10) << ' ' << std::setfill(' ') << std::endl;
 
-		std::cout << "\nSN\tItem\t\tPrice\n";
+		std::cout << std::setw(5) << std::left << "SN"
+			<< std::setw(20) << std::left << "Item"
+			<< std::setw(10) << std::left << "Price" << std::endl;
+
+		std::cout << std::setfill('-') << std::setw(5) << '-'
+			<< std::setw(20) << '-'
+			<< std::setw(10) << '-' << std::setfill(' ') << std::endl;
+
 		std::string line;
 		while (std::getline(inf, line))
 		{
@@ -56,18 +65,28 @@ void MenuItem::showMenu()
 			menuItemName = line.substr(commaIndex1 + 1, commaIndex2 - commaIndex1 - 1);
 			menuItemPrice = std::stof(line.substr(commaIndex2 + 1));
 
-			std::cout << id << '\t' << menuItemName << '\t' << menuItemPrice << '\n';
+			std::cout << std::setw(5) << std::left << id
+				<< std::setw(20) << std::left << menuItemName
+				<< std::setw(10) << std::left << menuItemPrice << std::endl;
 		}
 	}
 }
 
+
+
+
 void MenuItem::inputData()
 {
+	gotoxy(40, 11);
 	std::cout << "\nUpdate Or Add Item\n";
+	std::cout << "\n";
+	gotoxy(40, 12);
 	std::cout << "Enter item id: ";
 	std::cin >> id;
+	gotoxy(40, 13);
 	std::cout << "Enter item name: ";
 	std::getline(std::cin >> std::ws, menuItemName);
+	gotoxy(40, 14);
 	std::cout << "Enter item price: ";
 	std::cin >> menuItemPrice;
 }

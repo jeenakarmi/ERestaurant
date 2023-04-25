@@ -9,7 +9,7 @@
 #include "Order.h"
 #include "box.h"
 #include "welcome.h"
-#include "welcome msg for oobject.h"
+//#include "welcome msg for oobject.h"
 
 void Admin::getAdminData()
 {
@@ -131,22 +131,31 @@ bool Admin::displayOrdersOfCustomer(int id)
 	}
 	customerFile.close();
 
-	std::cout << "Mark order complete/pending? (y/N): ";
-	char ch;
-	std::cin >> ch;
 	bool exit = false;
-	if (std::toupper(ch) == 'Y')
+	while (!exit)
 	{
-		std::cout << "ID: ";
-		int orderItemId;
-		std::cin >> orderItemId;
-		cusOrder.markItemOrderComplete(orderFilePath, orderItemId);
-	}
-	else
-	{
-		exit = true;
+		std::cout << "Mark order complete/pending? (y/N): ";
+		char ch;
+		std::cin >> ch;
+		if (std::toupper(ch) == 'Y')
+		{
+			std::cout << "ID: ";
+			int orderItemId;
+			std::cin >> orderItemId;
+			cusOrder.markItemOrderComplete(orderFilePath, orderItemId);
+			exit = true;
+		}
+		else if (std::toupper(ch) == 'N')
+		{
+			exit = true;
+		}
+		else
+		{
+			std::cout << "Invalid input. Please enter 'y' or 'n'." << std::endl;
+		}
 	}
 	return exit;
+
 }
 
 
@@ -162,7 +171,7 @@ bool Admin::mainMenuHandler()
 		while (opt != DISPLAY_ORDERS && opt != DISPLAY_MENU && opt != EXIT_MENU) {
 			
 			system("cls");
-
+			welcome("MainMenu");
 			std::cout << "\n\n";
 			box(" ");
 			gotoxy(40, 9);
@@ -208,7 +217,7 @@ bool Admin::mainMenuHandler()
 			system("cls");
 
 			welcome("Available Menus");
-			box(" ");
+			//box(" ");
 			// DISPLAY MENU
 			MenuItem menu;
 			gotoxy(40, 3);                                                //yo milauna baaki xa hai 
@@ -218,11 +227,11 @@ bool Admin::mainMenuHandler()
 			std::cin >> updateInput;
 			if (std::toupper(updateInput) == 'Y')
 			{
-				system("cls");
-				welcome("Updating Menu");
-				box(" ");
+				//system("cls");
+				//welcome("Updating Menu");
+				//box(" ");
 				// update menu
-				gotoxy(40, 5);                                              //yo line ma ni gotoxy x coordinates aagadi gayena hera hai kasle herni ho 
+				//gotoxy(40, 5);                                              //yo line ma ni gotoxy x coordinates aagadi gayena hera hai kasle herni ho 
 				MenuItem newItem;
 				newItem.inputData();
 				menu.updateMenu(newItem);

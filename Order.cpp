@@ -141,6 +141,8 @@ bool Order::displayCustomerOrder(Customer customer)
 	return fileExists;
 }
 
+
+
 void Order::displayOrderFromFile(std::string path)
 {
 	std::ifstream inf(path);
@@ -150,7 +152,13 @@ void Order::displayOrderFromFile(std::string path)
 	}
 	else
 	{
-		std::cout << "SN\tItem\tQuantity\tStatus\n";
+		
+		std::cout << std::setfill(' ') << std::setw(5) << ' '
+			<< std::setw(20) << ' '
+			<< std::setw(10) << ' ' << std::setfill(' ') << std::endl;
+
+		std::cout << std::setw(3) << "SN" << std::setw(20) << "Item" << std::setw(15) << "Quantity" << std::setw(15) << "Status" << '\n';
+		std::cout << "--------------------------------------------------------------\n";
 		std::string line;
 		int sn = 0;
 		bool complete = false;
@@ -169,10 +177,12 @@ void Order::displayOrderFromFile(std::string path)
 			price = std::stof(line.substr(commaIndex2 + 1, commaIndex3));
 			complete = line.substr(commaIndex3 + 1).compare("true") == 0 ? true : false;
 
-			std::cout << ++sn << '\t' << name << '\t' << quantity << '\t' << (complete ? "Complete" : "Pending") << '\n';
+			std::cout << std::setw(3) << ++sn << std::setw(20) << name << std::setw(15) << quantity << std::setw(15) << (complete ? "Complete" : "Pending") << '\n';
 		}
+		std::cout << "--------------------------------------------------------------\n";
 	}
 }
+
 
 void Order::markItemOrderComplete(std::string path, int id)
 {
@@ -186,6 +196,7 @@ void Order::markItemOrderComplete(std::string path, int id)
 	else
 	{
 		std::cout << "SN\tItem\tQuantity\tPrice\tStatus\n";
+		std::cout << "hey\n";
 		std::string line;
 		int sn = 0;
 		bool complete = false;
