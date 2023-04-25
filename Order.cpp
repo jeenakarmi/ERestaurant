@@ -75,7 +75,6 @@ bool Order::placeOrder(Customer customer)
 
 		done = idDoneOrdering();
 	}
-	customer.setAllOrderComplete(false);
 	return success;
 }
 
@@ -88,8 +87,9 @@ void Order::createOrderFile(Order currOrderItem, std::string path)
 	outf.close();
 }
 
-void Order::displayCustomerOrder(Customer customer)
+bool Order::displayCustomerOrder(Customer customer)
 {
+	bool fileExists{ true };
 	std::string filePath = "RestaurantData/Orders/" + customer.getUsername() + ".txt";
 
 	std::ifstream inf(filePath);
@@ -100,6 +100,7 @@ void Order::displayCustomerOrder(Customer customer)
 	if (!inf)
 	{
 		std::cout << "No order file for this customer: " << customer.getUsername() << "!\n";
+		fileExists = false;
 	}
 	else
 	{
@@ -125,15 +126,100 @@ void Order::displayCustomerOrder(Customer customer)
 			std::cout << ++sn << '\t' << name << '\t' << quantity << '\t' << price << '\t' << (complete ? "Complete" : "Pending") << '\n';
 			itemTotal += quantity;
 			priceTotal += price;
-
-			customer.setAllOrderComplete(complete);
 		}
 	}
-	std::cout << "Total\n";
-	std::cout << "Item: " << itemTotal << '\n';
-	std::cout << "Price: " << priceTotal << '\n';
+	if (itemTotal != 0)
+	{
+		std::cout << "Total\n";
+		std::cout << "Item: " << itemTotal << '\n';
+		std::cout << "Price: " << priceTotal << '\n';
 
-	std::cout << "\nOrder Completed Status: " << (customer.getAllOrderComplete() ? "Complete" : "Not Complete") << '\n';
+		std::cout << "\nOrder Completed Status: " << (isAllOrderComplete(customer) ? "Complete" : "Not Complete") << '\n';
+
+	}
+	inf.close();
+	return fileExists;
+}
+
+bool Order::isAllOrderComplete(Customer customer)
+{
+	bool completed{ true };
+	std::string orderFilePath{ "RestaurantData/Orders/" + customer.getUsername() + ".txt" };
+
+	std::ifstream inf(orderFilePath);
+	int orderCount = 0;
+	
+	while (!inf.eof())
+	{
+		std::string line;
+		if (std::getline(inf, line))
+		{
+			int commaIndex1 = line.find(',');
+			int commaIndex2 = line.find(',', commaIndex1 + 1);
+			int commaIndex3 = line.find(',', commaIndex2 + 1);
+
+			bool orderComplete = (line.substr(commaIndex3 + 1)).compare("true") == 0 ? true : false;
+
+			if (!orderComplete)
+			{
+				completed = false;
+			}
+		}
+	}
 
 	inf.close();
+
+	return completed;
+}
+
+void Order::cancelOrder(Customer customer)
+{
+	std::cout << "\nId: ";
+	int id = 0;
+	std::cin >> id;
+	int count = 0;
+	std::string orderFilePath{ "RestaurantData/Orders/" + customer.getUsername() + ".txt" };
+	std::ifstream inf(orderFilePath);
+	std::ofstream outf("temp.txt", std::ios::app);
+	int orderCount = 0;
+	while (!inf.eof())
+	{
+		std::string line;
+		if (std::getline(inf, line))
+		{
+			int commaIndex1 = line.find(',');
+			int commaIndex2 = line.find(',', commaIndex1 + 1);
+			int commaIndex3 = line.find(',', commaIndex2 + 1);
+
+			bool orderComplete = (line.substr(commaIndex3 + 1)).compare("true") == 0 ? true : false;
+			count++;
+			if (orderComplete && id == count)
+			{
+				std::cout << "Your order is complete! Cannot cancel completed order!\n";
+				outf << line << '\n';
+				orderCount++;
+			}
+			else if (!orderComplete && id == count)
+			{
+				std::cout << "Order Canceled!\n";
+				continue;
+			}
+			else
+			{
+				outf << line << '\n';
+				orderCount++;
+			}
+		}
+	}
+
+	inf.close();
+	outf.close();
+
+	std::remove(orderFilePath.c_str());
+	std::rename("temp.txt", orderFilePath.c_str());
+
+	if (count < 1)
+	{
+		std::remove(orderFilePath.c_str());
+	}
 }

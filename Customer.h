@@ -29,11 +29,10 @@ public:
 		password = "";
 		phone = "";
 		email = "";
+		allOrderComplete = false;
 	}
 	std::string getUsername();
 	std::string getUserPhone();
-	void setAllOrderComplete(bool complete);
-	bool getAllOrderComplete();
 	void getUserInput();
 	bool isNewUser();
 	void createAccount();

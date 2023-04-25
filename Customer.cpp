@@ -32,16 +32,6 @@ std::string Customer::getUserPhone()
 	return phone;
 }
 
-void Customer::setAllOrderComplete(bool complete)
-{
-	allOrderComplete = complete;
-}
-
-bool Customer::getAllOrderComplete()
-{
-	return allOrderComplete;
-}
-
 void Customer::getUserInput()
 {
 	std::cout << "Enter username: ";
@@ -304,10 +294,22 @@ bool Customer::mainMenuHandler()
 		else if (opt == MY_ORDERS)
 		{
 			Order myOrder;
-			myOrder.displayCustomerOrder(*this); // display order for this customer
+			bool fileExists = myOrder.displayCustomerOrder(*this); // display order for this customer
+			if (!myOrder.isAllOrderComplete(*this) && fileExists)
+			{
+				std::cout << "Cancel Order? (y/N): ";
+				char cancel;
+				std::cin >> cancel;
+				if (std::toupper(cancel) == 'Y')
+				{
+					myOrder.cancelOrder(*this);
+				}
+			}
+
 			system("pause");
 		}
-		else if (opt == MY_PROFILE) {
+		else if (opt == MY_PROFILE)
+		{
 			displayProfile();
 			std::cout << std::endl;
 			system("pause");

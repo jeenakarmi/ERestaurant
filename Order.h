@@ -21,5 +21,9 @@ public:
 	bool idDoneOrdering();
 	bool placeOrder(Customer customer);
 	void createOrderFile(Order currOrderItem, std::string path);
-	void displayCustomerOrder(Customer customer);
+	bool displayCustomerOrder(Customer customer); // returns true if file exists
+
+	bool isAllOrderComplete(Customer customer);
+
+	void cancelOrder(Customer customer);
 };
