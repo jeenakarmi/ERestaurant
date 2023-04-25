@@ -89,6 +89,8 @@ void Order::createOrderFile(Order currOrderItem, std::string path)
 
 bool Order::displayCustomerOrder(Customer customer)
 {
+	system("cls");
+	welcome("My Order");
 	bool fileExists{ true };
 	std::string filePath = "RestaurantData/Orders/" + customer.getUsername() + ".txt";
 

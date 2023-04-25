@@ -287,7 +287,9 @@ bool Customer::mainMenuHandler()
 			else
 			{
 				system("cls");
-				std::cout << "Order placed! Check out on \"MY ORDERS\"\n";
+				welcome("Your order has been placed.");
+				welcome("Checkout on \"MY ORDERS\" ");
+				//std::cout << "Order placed! Check out on \"MY ORDERS\"\n";
 				system("pause");
 			}
 		}
