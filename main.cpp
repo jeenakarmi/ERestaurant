@@ -5,19 +5,26 @@
 #include <iomanip>
 #include <Windows.h>
 #include <conio.h>
+#include <process.h>
 
 #include "Admin.h"
 #include "Customer.h"
 #include "box.h"
 
-const char LOG_IN = '0';
-const char CREATE_ACCOUNT = '1';
-const char USER_SELECTION = '2';
+enum CUSTOMER_LOG_CHOICE
+{
+    LOG_ZERO,
+    LOG_IN,
+    CREATE_ACCOUNT,
+    USER_SELECTION
+};
 
 enum UserType
 {
+    USER_ZERO,
     USER_ADMIN,
-    USER_CUSTOMER
+    USER_CUSTOMER,
+    EXIT_PROGRAM
 };
 
 int getUserType(); // function that gets who is the user (admin or customer)
@@ -82,6 +89,9 @@ int getUserType()
         std::cout << USER_ADMIN << ": ADMIN_LOGIN" << std::endl;
         gotoxy(40, 11);
         std::cout << USER_CUSTOMER << ": CUSTOMER_LOGIN" << std::endl;
+        gotoxy(33, 12);
+        std::cout << "ALT + F4: EXIT_PROGRAM" << std::endl;
+
         std::cout << "\n\n";
         option = _getch();
         opt = option - '0';
@@ -112,6 +122,10 @@ int getUserType()
             system("cls");
             user = USER_CUSTOMER;
             break;
+        }
+        else if (opt == EXIT_PROGRAM)
+        {
+            abort();
         }
         
     }
@@ -194,26 +208,25 @@ int main()
         {
             while (true)
             {
-                // prompts out message login or create account
-                welcome("LOGIN OR CREATE ACCOUNT");
-                
-                                
                 char option = 0;
-
+                int opt = option - '0';
                 std::cout << "\n\n";
-                box(" ");
-                while (option != LOG_IN && option != CREATE_ACCOUNT && option != USER_SELECTION) {
+                while (opt != LOG_IN && opt != CREATE_ACCOUNT && opt != USER_SELECTION) {
+                    // prompts out message login or create account
+                    welcome("LOGIN OR CREATE ACCOUNT");
+                    box(" ");
                     gotoxy(40, 8);
-                    std::cout <<"0 - LOG IN\n";
+                    std::cout << LOG_IN << " - LOG IN\n";
                     gotoxy(40, 9);
-                    std::cout <<"1 - CREATE ACCOUNT\n";
+                    std::cout << CREATE_ACCOUNT << " - CREATE ACCOUNT\n";
                     gotoxy(40, 10); 
-                    std::cout <<"2 - USER SLECTION\n";
+                    std::cout << USER_SELECTION << " - USER SLECTION\n";
 
                     option = _getch();
+                    opt = option - '0';
                 }
                 
-                if (option == LOG_IN)
+                if (opt == LOG_IN)
                 {
                     system("CLS");;
                     
@@ -236,7 +249,7 @@ int main()
                     }
                     break;
                 }
-                else if (option == CREATE_ACCOUNT)
+                else if (opt == CREATE_ACCOUNT)
                 {
                     // create account
                     Customer newCustomer;
@@ -245,7 +258,7 @@ int main()
                     
                     break;
                 }
-                else if (option == USER_SELECTION)
+                else if (opt == USER_SELECTION)
                 {
                     break;
                 }

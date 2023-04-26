@@ -12,6 +12,7 @@ static const std::string ADMIN_FILE = "UserData/ADMIN.txt";
 const std::string CUSTOMER_DATA_FILE = "UserData/CUSTOMER.txt";
 
 enum AdminMainMenuOptions {
+	THE_ZERO,
 	DISPLAY_ORDERS,
 	DISPLAY_MENU,
 	EXIT_MENU

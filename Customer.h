@@ -7,6 +7,7 @@ static const std::string CUSTOMER_TEMP_FILE{ "UserData/CustomerTemp.txt" };
 
 enum CustomerMainMenuOptions
 {
+	OPT_ZERO,
 	DISPLAY_CUS_MENU,
 	PLACE_ORDER,
 	MY_ORDERS,

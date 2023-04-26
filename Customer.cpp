@@ -249,15 +249,15 @@ bool Customer::mainMenuHandler()
 		box(" ");
 		while (opt != DISPLAY_CUS_MENU && opt != PLACE_ORDER && opt != MY_ORDERS && opt != MY_PROFILE && opt != EXIT) {
 			gotoxy(40, 8);
-			std::cout << "0 - DISPLAY MENU\n";
+			std::cout << DISPLAY_CUS_MENU << " - DISPLAY MENU\n";
 			gotoxy(40, 9);
-			std::cout << "1 - PLACE ORDER\n";
+			std::cout << PLACE_ORDER << " - PLACE ORDER\n";
 			gotoxy(40, 10);
-			std::cout << "2 - MY ORDER\n";
+			std::cout << MY_ORDERS << " - MY ORDER\n";
 			gotoxy(40, 11);
-			std::cout << "3 - MY PROFILE\n";
+			std::cout << MY_PROFILE << " - MY PROFILE\n";
 			gotoxy(40, 12);
-			std::cout << "4 - EXIT\n";
+			std::cout << EXIT << " - EXIT\n";
 			option = _getch();
 			opt = option - '0';
 
