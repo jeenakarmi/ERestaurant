@@ -171,11 +171,11 @@ bool Admin::mainMenuHandler()
 			std::cout << "\n\n";
 			box(" ");
 			gotoxy(40, 9);
-			std::cout << "0 - DISPLAY_ORDER \n";
+			std::cout << DISPLAY_ORDERS << " - DISPLAY_ORDER \n";
 			gotoxy(40, 10);
-			std::cout << "1 - DISPLAY_MENU\n";
+			std::cout << DISPLAY_MENU <<  " - DISPLAY_MENU\n";
 			gotoxy(40, 11);
-			std::cout << "2 - EXIT_MENU\n";
+			std::cout << EXIT_MENU << " - EXIT_MENU\n";
 			option = _getch();
 			opt = option - '0';
 		}
