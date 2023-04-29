@@ -4,8 +4,8 @@
 
 #include <vector>
 
-const std::string ORDERS_FILE{ "RestaurantData/Orders.txt" };
-const std::string CUSTOMER_LIST_FILE{ "UserData/CUSTOMER.txt" };
+const std::string ORDERS_FILE{ "./RestaurantData/Orders.txt" };
+const std::string CUSTOMER_LIST_FILE{ "./UserData/CUSTOMER.txt" };
 
 class Order
 {

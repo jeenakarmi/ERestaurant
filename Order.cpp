@@ -70,7 +70,7 @@ bool Order::placeOrder(Customer customer)
 		std::cout << currOrderItem.itemName << '\t' << currOrderItem.quantity << '\t' << currOrderItem.itemPrice << '\n';
 
 		// make a data file with record of order items for this customer
-		std::string orderfile = "RestaurantData/Orders/" + customer.getUsername() + ".txt";
+		std::string orderfile = "./RestaurantData/Orders/" + customer.getUsername() + ".txt";
 		createOrderFile(currOrderItem, orderfile);
 
 		done = idDoneOrdering();
@@ -92,7 +92,7 @@ bool Order::displayCustomerOrder(Customer customer)
 	system("cls");
 	welcome("My Order");
 	bool fileExists{ true };
-	std::string filePath = "RestaurantData/Orders/" + customer.getUsername() + ".txt";
+	std::string filePath = "./RestaurantData/Orders/" + customer.getUsername() + ".txt";
 
 	std::ifstream inf(filePath);
 
@@ -243,7 +243,7 @@ void Order::markItemOrderComplete(std::string path, int id)
 bool Order::isAllOrderComplete(Customer customer)
 {
 	bool completed{ true };
-	std::string orderFilePath{ "RestaurantData/Orders/" + customer.getUsername() + ".txt" };
+	std::string orderFilePath{ "./RestaurantData/Orders/" + customer.getUsername() + ".txt" };
 
 	std::ifstream inf(orderFilePath);
 	int orderCount = 0;
@@ -277,7 +277,7 @@ void Order::cancelOrder(Customer customer)
 	int id = 0;
 	std::cin >> id;
 	int count = 0;
-	std::string orderFilePath{ "RestaurantData/Orders/" + customer.getUsername() + ".txt" };
+	std::string orderFilePath{ "./RestaurantData/Orders/" + customer.getUsername() + ".txt" };
 	std::ifstream inf(orderFilePath);
 	std::ofstream outf("temp.txt", std::ios::app);
 	int orderCount = 0;

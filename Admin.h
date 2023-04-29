@@ -8,8 +8,8 @@
 #include <chrono>
 #include <thread>
 
-static const std::string ADMIN_FILE = "UserData/ADMIN.txt";
-const std::string CUSTOMER_DATA_FILE = "UserData/CUSTOMER.txt";
+static const std::string ADMIN_FILE = "./UserData/ADMIN.txt";
+const std::string CUSTOMER_DATA_FILE = "./UserData/CUSTOMER.txt";
 
 enum AdminMainMenuOptions {
 	THE_ZERO,
