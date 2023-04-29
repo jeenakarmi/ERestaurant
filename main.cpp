@@ -213,6 +213,7 @@ int main()
                 std::cout << "\n\n";
                 while (opt != LOG_IN && opt != CREATE_ACCOUNT && opt != USER_SELECTION) {
                     // prompts out message login or create account
+                    system("cls");
                     welcome("LOGIN OR CREATE ACCOUNT");
                     box(" ");
                     gotoxy(40, 8);
