@@ -124,10 +124,6 @@ int getUserType()
             user = USER_CUSTOMER;
             break;
         }
-        else if (opt == EXIT_PROGRAM)
-        {
-            abort();
-        }
         
     }
     return user;
