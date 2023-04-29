@@ -6,6 +6,7 @@
 #include <Windows.h>
 #include <conio.h>
 #include <process.h>
+#include <Windows.h>
 
 #include "Admin.h"
 #include "Customer.h"
@@ -234,12 +235,15 @@ int main()
                     //prompts the message login
                     welcome("LOGIN");
 
-
                     Customer customer;
                     bool isCustomerUser{ customer.validateLogin() };
                     if (!isCustomerUser)
                     {
-                        std::cout << "Sorry, incorrect username or password!\n\n";
+                        system("cls");
+                        std::cout << "\n\n";
+                        welcome("INCORRECT USERNAME OR PASSWORD");
+                        
+                        Sleep(900);
                         continue;
                     }
                     else
