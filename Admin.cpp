@@ -96,6 +96,8 @@ void Admin::displayCustomersWhoOrdered()
 
 		if (orderFile)
 		{
+			
+			gotoxy(40, 4);
 			std::cout << ++count << '\t' << cusUserName << '\n';
 		}
 
@@ -274,6 +276,7 @@ bool Admin::mainMenuHandler()
 			welcome("Orders Placed");
 			displayCustomersWhoOrdered();
 
+			gotoxy(40, 5);
 			std::cout << "ID: ";
 			int id;
 			std::cin >> id;
