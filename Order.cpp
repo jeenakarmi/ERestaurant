@@ -362,5 +362,5 @@ void Order::payOrderBill(Customer customer)
 			}
 		}
 	}
-
+	inf.close();
 }

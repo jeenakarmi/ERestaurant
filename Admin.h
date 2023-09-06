@@ -15,6 +15,8 @@ enum AdminMainMenuOptions {
 	THE_ZERO,
 	DISPLAY_ORDERS,
 	DISPLAY_MENU,
+	DISPLAY_DISCOUNT_REQUESTS,
+	DISPLAY_REGULAR_CUSTOMERS,
 	EXIT_MENU
 };
 
@@ -30,6 +32,13 @@ public:
 
 	void displayCustomersWhoOrdered(); // displays all the customer who ordered
 	bool displayOrdersOfCustomer(int id);
+
+	void displayDiscountReqests();
+	// display regular customers
+	void displayRegularCustomers();
+
+	void approveRequest(int id);
+	void denyRequest(int id);
 };
 
 #endif // !ADMIN

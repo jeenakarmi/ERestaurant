@@ -3,3 +3,4 @@
 3,Buff Chowmein,120
 4,Burger,100
 5,Pizza,150
+6,Shafale,60

@@ -157,7 +157,8 @@ void Customer::createAccount()
 		}
 	}
 	
-	outf << username << ',' << password << ',' << "+977-98" << phone << ',' << email << '\n';
+	// username, password, phone, email, isDiscoutEligible, isDiscountRequested
+	outf << username << ',' << password << ',' << "+977-98" << phone << ',' << email << ',' << "true" << ',' << "false" << '\n';
 
 	outf.close();
 }
@@ -215,6 +216,7 @@ bool Customer::validateLogin()
 			}
 		}
 	}
+	inf.close();
 	return isValid;
 }
 
@@ -233,30 +235,44 @@ void Customer::displayProfile()
 	std::cout << "Email: " << email << '\n';
 }
 
+void Customer::placeDiscountRequest()
+{
+	// where the customer request is added
+	std::string requestFilePath{ "./RestaurantData/DiscountRequests/" + username + ".txt" };
+
+	std::ofstream outf(requestFilePath, std::ios::app);
+
+	outf << "Customer Has Requested For DISCOUNT: 10%\n";
+
+	outf.close();
+}
+
 bool Customer::mainMenuHandler()
 {
 	bool exit{ false };
 	while (!exit)
 	{
 		system("cls");
-		
+
 		welcome("Mainmenu");
-		
+
 		char option = '\0';
 		int opt = option - '0';
 
 		std::cout << "\n\n";
 		box(" ");
-		while (opt != DISPLAY_CUS_MENU && opt != PLACE_ORDER && opt != MY_ORDERS && opt != MY_PROFILE && opt != EXIT) {
+		while (opt != DISPLAY_CUS_MENU && opt != PLACE_ORDER && opt != REQUEST_DISCOUNT && opt != MY_ORDERS && opt != MY_PROFILE && opt != EXIT) {
 			gotoxy(40, 8);
 			std::cout << DISPLAY_CUS_MENU << " - DISPLAY MENU\n";
 			gotoxy(40, 9);
 			std::cout << PLACE_ORDER << " - PLACE ORDER\n";
 			gotoxy(40, 10);
-			std::cout << MY_ORDERS << " - MY ORDER\n";
+			std::cout << REQUEST_DISCOUNT << " - REQUEST DISCOUNT\n";
 			gotoxy(40, 11);
-			std::cout << MY_PROFILE << " - MY PROFILE\n";
+			std::cout << MY_ORDERS << " - MY ORDER\n";
 			gotoxy(40, 12);
+			std::cout << MY_PROFILE << " - MY PROFILE\n";
+			gotoxy(40, 13);
 			std::cout << EXIT << " - EXIT\n";
 			option = _getch();
 			opt = option - '0';
@@ -268,7 +284,7 @@ bool Customer::mainMenuHandler()
 			system("CLS");
 			welcome("TODAY STUFFS");
 			std::cout << "\n\n";
-			
+
 
 			gotoxy(5, 5);
 			menu.showMenu();
@@ -277,7 +293,7 @@ bool Customer::mainMenuHandler()
 		}
 		else if (opt == PLACE_ORDER) {
 			system("cls");
-			
+
 			Order order;
 			bool orderPlaced = order.placeOrder(*this);
 			if (!orderPlaced)
@@ -291,6 +307,17 @@ bool Customer::mainMenuHandler()
 				welcome("Checkout on \"MY ORDERS\" ");
 				//std::cout << "Order placed! Check out on \"MY ORDERS\"\n";
 				system("pause");
+			}
+		}
+		else if (opt == REQUEST_DISCOUNT)
+		{
+			system("cls");
+			std::cout << "Request 10% discount as a regular customer? (y/n): ";
+			char choice{ 'n' };
+			std::cin >> choice;
+			if (toupper(choice) == 'Y')
+			{
+				placeDiscountRequest();
 			}
 		}
 		else if (opt == MY_ORDERS)
@@ -339,52 +366,6 @@ bool Customer::mainMenuHandler()
 		{
 			std::cout << "Please enter the provided options!\n";
 		}
-		
-		/*std::cout << DISPLAY_CUS_MENU << " - DISPLAY MENU\n";
-		std::cout << PLACE_ORDER << " - PLACE ORDER\n";
-		std::cout << MY_ORDERS << " - MY ORDERS\n";
-		std::cout << MY_PROFILE << " - MY PROFILE\n";
-		std::cout << EXIT << " - EXIT\n";
-		
-		int input;
-		std::cout << "Input: ";
-		std::cin >> input;
-
-		if (input == EXIT)
-		{
-			exit = true;
-		}
-		else if (input == DISPLAY_CUS_MENU)
-		{
-			MenuItem menu;
-			menu.showMenu();
-			std::cout << std::endl;
-			system("pause");
-		}
-		else if (input == PLACE_ORDER)
-		{
-			Order order;
-			bool orderPlaced = order.placeOrder(*this);
-			if (!orderPlaced)
-			{
-				std::cout << "Failed to place Order!\n";
-			}
-			else
-			{
-				std::cout << "Order placed! Check out on \"MY ORDERS\"\n";
-				system("pause");
-			}
-		}
-		else if (input == MY_PROFILE)
-		{
-			displayProfile();
-			std::cout << std::endl;
-			system("pause");
-		}
-		else
-		{
-			std::cout << "Please enter the provided options!\n";
-		}*/
 	}
 	return exit;
 }

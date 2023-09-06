@@ -4,6 +4,8 @@
 #include <string>
 #include <string_view>
 #include <conio.h>
+#include <cstdio>
+#include <errno.h>
 
 #include "MenuItem.h"
 #include "Order.h"
@@ -154,6 +156,88 @@ bool Admin::displayOrdersOfCustomer(int id)
 	return exit;
 }
 
+void Admin::displayDiscountReqests()
+{
+	std::ifstream customerFile(CUSTOMER_FILE);
+
+	std::string line;
+	int count = 0;
+	while (std::getline(customerFile, line))
+	{
+		int commaIndex1 = line.find(',');
+		std::string cusUserName = line.substr(0, commaIndex1);
+		std::string requestFilePath{ "RestaurantData/DiscountRequests/" + cusUserName + ".txt" };
+
+		std::ifstream requestFile(requestFilePath);
+
+		if (requestFile)
+		{
+			std::cout << ++count << '\t' << cusUserName << '\n';
+		}
+
+		requestFile.close();
+	}
+
+	customerFile.close();
+}
+
+void Admin::displayRegularCustomers()
+{
+	std::ifstream customerFile(CUSTOMER_FILE);
+
+	std::string line;
+	int count = 0;
+	std::cout << "SN\t" << "Name\n";
+	while (std::getline(customerFile, line))
+	{
+		int commaIndex1 = line.find(',');
+		int commaIndex2 = line.find(',', commaIndex1 + 1);
+		int commaIndex3 = line.find(',', commaIndex2 + 1);
+		int commaIndex4 = line.find(',', commaIndex3 + 1);
+
+		std::string customerName = line.substr(0, commaIndex1);
+		bool isRegular = (line.substr(commaIndex4 + 1)) == "true" ? true : false;
+
+		if (isRegular)
+		{
+			std::cout << count << '\t' << customerName << '\n';
+		}
+	}
+
+	customerFile.close();
+}
+
+void Admin::approveRequest(int id)
+{
+	// create seperate file for seperate customer
+}
+
+void Admin::denyRequest(int id)
+{
+	std::string path;
+	std::ifstream customerFile(CUSTOMER_FILE);
+
+	std::string line;
+	int count = 0;
+	while (std::getline(customerFile, line))
+	{
+		int commaIndex1 = line.find(',');
+		std::string cusUserName = line.substr(0, commaIndex1);
+		std::string requestFilePath{ "RestaurantData/DiscountRequests/" + cusUserName + ".txt" };
+
+		std::ifstream requestFile(requestFilePath);
+
+		if (requestFile && ++count == id)
+		{
+			path = requestFilePath;
+			break;
+		}
+		requestFile.close();
+	}
+
+	std::remove(path.c_str());
+	customerFile.close();
+}
 
 bool Admin::mainMenuHandler()
 {
@@ -164,7 +248,7 @@ bool Admin::mainMenuHandler()
 		
 		char option = 0;
 		int opt = option - '0';
-		while (opt != DISPLAY_ORDERS && opt != DISPLAY_MENU && opt != EXIT_MENU) {
+		while (opt != DISPLAY_ORDERS && opt != DISPLAY_MENU && opt != EXIT_MENU && opt != DISPLAY_DISCOUNT_REQUESTS && opt != DISPLAY_REGULAR_CUSTOMERS) {
 			
 			system("cls");
 			welcome("MainMenu");
@@ -175,20 +259,15 @@ bool Admin::mainMenuHandler()
 			gotoxy(40, 10);
 			std::cout << DISPLAY_MENU <<  " - DISPLAY_MENU\n";
 			gotoxy(40, 11);
+			std::cout << DISPLAY_DISCOUNT_REQUESTS << " - DISPLAY_DISCOUNT_REQUESTS\n";
+			gotoxy(40, 12);
+			std::cout << DISPLAY_REGULAR_CUSTOMERS << " - DISPLAY_REGULAR_CUSTOMERS\n";
+			gotoxy(40, 13);
 			std::cout << EXIT_MENU << " - EXIT_MENU\n";
 			option = _getch();
 			opt = option - '0';
 		}
 
-
-		/*std::cout << DISPLAY_ORDERS << " - DISPLAY_ORDERS\n";
-		std::cout << DISPLAY_MENU << " - DISPLAY_MENU\n";
-		std::cout << "2 - Exit Menu\n";
-
-		int input{};
-		std::cout << "Input: ";
-		std::cin >> input;
-		*/
 		if (opt == DISPLAY_ORDERS)
 		{
 			system("cls");
@@ -207,6 +286,56 @@ bool Admin::mainMenuHandler()
 
 			system("pause");
 			// display orders
+		}
+		else if (opt == DISPLAY_DISCOUNT_REQUESTS)
+		{
+			system("cls");
+			welcome("Discount Requests");
+
+			displayDiscountReqests();
+
+			std::cout << "Approve (A) || Deny (D) || Exit (E): ";
+			char approveDeny{ };
+			std::cin >> approveDeny;
+			if (toupper(approveDeny) == 'A')
+			{
+				// do approve
+				std::cout << "ID: ";
+				int id;
+				std::cin >> id;
+				approveRequest(id);
+			}
+			else if (toupper(approveDeny) == 'D')
+			{
+				// do deny
+				std::cout << "ID: ";
+				int id;
+				std::cin >> id;
+				denyRequest(id);
+			}
+			else
+			{
+				continue;
+			}
+
+			system("pause");
+		}
+		else if (opt == DISPLAY_REGULAR_CUSTOMERS)
+		{
+			system("cls");
+			welcome("Regular Customers");
+
+			// display customers
+			displayRegularCustomers();
+
+			std::cout << "Add Regular Customer(y / n): ";
+			char addNew;
+			std::cin >> addNew;
+			if (toupper(addNew) == 'Y')
+			{
+				std::cout << "do it!\n";
+			}
+			system("pause");
 		}
 		else if (opt == DISPLAY_MENU)
 		{

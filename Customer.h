@@ -3,13 +3,14 @@
 #include <string>
 
 static const std::string CUSTOMER_FILE{ "UserData/CUSTOMER.txt" };
-static const std::string CUSTOMER_TEMP_FILE{ "UserData/CustomerTemp.txt" };
+static const std::string CUSTOMER_TEMP_FILE{ "./UserData/CustomerTemp.txt" };
 
 enum CustomerMainMenuOptions
 {
 	OPT_ZERO,
 	DISPLAY_CUS_MENU,
 	PLACE_ORDER,
+	REQUEST_DISCOUNT,
 	MY_ORDERS,
 	MY_PROFILE,
 	EXIT
@@ -40,4 +41,5 @@ public:
 	bool validateLogin();
 	void displayProfile();
 	bool mainMenuHandler();
+	void placeDiscountRequest();
 };
