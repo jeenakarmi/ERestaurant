@@ -157,8 +157,8 @@ void Customer::createAccount()
 		}
 	}
 	
-	// username, password, phone, email, isDiscoutEligible, isDiscountRequested
-	outf << username << ',' << password << ',' << "+977-98" << phone << ',' << email << ',' << "true" << ',' << "false" << '\n';
+	// username, password, phone, email, isDiscoutEligible
+	outf << username << ',' << password << ',' << "+977-98" << phone << ',' << email << ',' << "true" << '\n';
 
 	outf.close();
 }
@@ -202,11 +202,12 @@ bool Customer::validateLogin()
 			int commaIndex1 = line.find(",");
 			int commaIndex2 = line.find(",", commaIndex1 + 1);
 			int commaIndex3 = line.find(",", commaIndex2 + 1);
+			int commaIndex4 = line.find(",", commaIndex3 + 1);
 
 			tUsername = line.substr(0, commaIndex1);
 			tPassword = line.substr(commaIndex1 + 1, commaIndex2 - commaIndex1 - 1);
 			tPhone = line.substr(commaIndex2 + 1, commaIndex3 - commaIndex2 - 1);
-			tEmail = line.substr(commaIndex3 + 1);
+			tEmail = line.substr(commaIndex3 + 1, commaIndex4 - commaIndex3 - 1);
 
 			if (username == tUsername && password == tPassword)
 			{
@@ -261,6 +262,7 @@ bool Customer::mainMenuHandler()
 
 		std::cout << "\n\n";
 		box(" ");
+		// only able to choose these options
 		while (opt != DISPLAY_CUS_MENU && opt != PLACE_ORDER && opt != REQUEST_DISCOUNT && opt != MY_ORDERS && opt != MY_PROFILE && opt != EXIT) {
 			gotoxy(40, 8);
 			std::cout << DISPLAY_CUS_MENU << " - DISPLAY MENU\n";
@@ -276,7 +278,6 @@ bool Customer::mainMenuHandler()
 			std::cout << EXIT << " - EXIT\n";
 			option = _getch();
 			opt = option - '0';
-
 		}
 
 		if (opt == DISPLAY_CUS_MENU) {

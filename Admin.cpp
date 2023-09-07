@@ -5,6 +5,7 @@
 #include <string_view>
 #include <conio.h>
 #include <cstdio>
+
 #include <errno.h>
 
 #include "MenuItem.h"
@@ -42,7 +43,7 @@ void Admin::getAdminData()
 
 bool Admin::validateLogin()
 {
-	bool isValid{ false };
+	bool isValid{ false }; // flag
 
 	std::ifstream inf;
 	inf.open(ADMIN_FILE, std::ios::in);
@@ -50,7 +51,6 @@ bool Admin::validateLogin()
 	Admin currAdmin;
 	if (!inf)
 	{
-		
 		std::cout << "File Could Not Be Opened! filename: " << ADMIN_FILE << '\n';
 		return false;
 	}
@@ -69,6 +69,7 @@ bool Admin::validateLogin()
 		if (username == userNameData && password == passwordData)
 		{
 			isValid = true;
+			break;
 		}
 	}
 
@@ -80,7 +81,7 @@ std::string Admin::getUserName()
 	return username;
 }
 
-void Admin::displayCustomersWhoOrdered()
+bool Admin::displayCustomersWhoOrdered()
 {
 	std::ifstream customerFile(CUSTOMER_FILE);
 	
@@ -105,6 +106,7 @@ void Admin::displayCustomersWhoOrdered()
 	}
 
 	customerFile.close();
+	return count > 0 ? true : false;
 }
 
 bool Admin::displayOrdersOfCustomer(int id)
@@ -135,7 +137,6 @@ bool Admin::displayOrdersOfCustomer(int id)
 		}
 	}
 	customerFile.close();
-
 	std::cout << "Mark order complete/pending? (y/N): ";
 	char ch;
 	std::cin >> ch;
@@ -202,7 +203,7 @@ void Admin::displayRegularCustomers()
 
 		if (isRegular)
 		{
-			std::cout << count << '\t' << customerName << '\n';
+			std::cout << ++count << '\t' << customerName << '\n';
 		}
 	}
 
@@ -243,15 +244,13 @@ void Admin::denyRequest(int id)
 
 bool Admin::mainMenuHandler()
 {
-		
 	bool exit{ false };
+
 	while (!exit)
 	{
-		
 		char option = 0;
 		int opt = option - '0';
 		while (opt != DISPLAY_ORDERS && opt != DISPLAY_MENU && opt != EXIT_MENU && opt != DISPLAY_DISCOUNT_REQUESTS && opt != DISPLAY_REGULAR_CUSTOMERS) {
-			
 			system("cls");
 			welcome("MainMenu");
 			std::cout << "\n\n";
@@ -274,19 +273,23 @@ bool Admin::mainMenuHandler()
 		{
 			system("cls");
 			welcome("Orders Placed");
-			displayCustomersWhoOrdered();
-
-			gotoxy(40, 5);
-			std::cout << "ID: ";
-			int id;
-			std::cin >> id;
-			bool exit = false;
-			while (!exit)
+			if (displayCustomersWhoOrdered())
 			{
-				system("cls");
-				exit = displayOrdersOfCustomer(id);
+				gotoxy(40, 5);
+				std::cout << "ID: ";
+				int id;
+				std::cin >> id;
+				bool exit = false;
+				while (!exit)
+				{
+					system("cls");
+					exit = displayOrdersOfCustomer(id);
+				}
 			}
-
+			else
+			{
+				std::cout << "No order files available!\n";
+			}
 			system("pause");
 			// display orders
 		}
@@ -331,13 +334,6 @@ bool Admin::mainMenuHandler()
 			// display customers
 			displayRegularCustomers();
 
-			std::cout << "Add Regular Customer(y / n): ";
-			char addNew;
-			std::cin >> addNew;
-			if (toupper(addNew) == 'Y')
-			{
-				std::cout << "do it!\n";
-			}
 			system("pause");
 		}
 		else if (opt == DISPLAY_MENU)
@@ -355,11 +351,6 @@ bool Admin::mainMenuHandler()
 			std::cin >> updateInput;
 			if (std::toupper(updateInput) == 'Y')
 			{
-				//system("cls");
-				//welcome("Updating Menu");
-				//box(" ");
-				// update menu
-				//gotoxy(40, 5);                                              //yo line ma ni gotoxy x coordinates aagadi gayena hera hai kasle herni ho 
 				MenuItem newItem;
 				newItem.inputData();
 				menu.updateMenu(newItem);

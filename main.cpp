@@ -1,12 +1,7 @@
 #include <iostream>
 #include <string>
-#include <chrono>
-#include <thread>
-#include <iomanip>
 #include <Windows.h>
 #include <conio.h>
-#include <process.h>
-#include <Windows.h>
 
 #include "Admin.h"
 #include "Customer.h"
@@ -77,7 +72,6 @@ int getUserType()
 {
     //system("cls");
     
-
     int user; // kun chai user ho ta vanera rakheko ni...
     char option = 0;
     int opt = option - '0'; // converts char single digit number into int
@@ -138,14 +132,6 @@ void unauthorizedUserMessage()
     std::cout << "\n\n\n";
     welcome("Back to user type selection...");
     Sleep(900);
-    /*box(" ");
-    gotoxy(35, 8);
-    std::cout << "Sorry, you are not authorized!\n";
-    gotoxy(35, 9);
-    std::cout << "Back to user type selection...\n";
-    std::this_thread::sleep_for(std::chrono::seconds(2)); // this adds delay
-    system("CLS");
-    */
 }
 
 int main()
@@ -161,16 +147,13 @@ int main()
     _getch();
 
     system("cls");
-    welcome("ERestaurant");
-    
-    bool quit{ false };
 
+    bool quit{ false }; // application termination flag
     while (!quit)
     {
         int user{ getUserType() };
         if (user == USER_ADMIN)
         {
-             
             // admin login validation page
             
             // prompts out the message adim login
@@ -196,8 +179,6 @@ int main()
                 welcome_for_username("Welcome", admin.getUserName());
                 Sleep(900);
                 system("cls");
-                welcome_for_username("Welcome", admin.getUserName());
-                //std::cout << "Welcome " << admin.getUserName() << "!\n\n";
                 bool exit = admin.mainMenuHandler();
             }
         }

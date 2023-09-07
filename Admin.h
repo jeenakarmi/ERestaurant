@@ -27,10 +27,12 @@ class Admin
 public:
 	void getAdminData();
 	bool validateLogin(); // string_view makes string read only to save memory
+
 	std::string getUserName();
+
 	bool mainMenuHandler();
 
-	void displayCustomersWhoOrdered(); // displays all the customer who ordered
+	bool displayCustomersWhoOrdered(); // displays all the customer who ordered
 	bool displayOrdersOfCustomer(int id);
 
 	void displayDiscountReqests();

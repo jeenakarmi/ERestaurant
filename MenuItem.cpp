@@ -93,7 +93,6 @@ void MenuItem::inputData()
 
 void MenuItem::updateMenu(MenuItem newMenuItem)
 {
-
 	std::ifstream inf;
 	inf.open(MENU_FILE);
 
