@@ -5,7 +5,6 @@
 #include <string_view>
 #include <iomanip>
 #include "welcome.h"
-#include "box.h"
 
 MenuItem::MenuItem()
 {
@@ -30,7 +29,6 @@ float MenuItem::getPrice()
 }
 void MenuItem::showMenu()
 {
-	//gotoxy(40, 5);
 	std::ifstream inf;
 	inf.open(MENU_FILE, std::ios::in);
 
@@ -77,16 +75,12 @@ void MenuItem::showMenu()
 
 void MenuItem::inputData()
 {
-	gotoxy(40, 11);
 	std::cout << "\nUpdate Or Add Item\n";
 	std::cout << "\n";
-	gotoxy(40, 12);
 	std::cout << "Enter item id: ";
 	std::cin >> id;
-	gotoxy(40, 13);
 	std::cout << "Enter item name: ";
 	std::getline(std::cin >> std::ws, menuItemName);
-	gotoxy(40, 14);
 	std::cout << "Enter item price: ";
 	std::cin >> menuItemPrice;
 }

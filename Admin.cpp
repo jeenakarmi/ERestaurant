@@ -5,24 +5,15 @@
 #include <string_view>
 #include <conio.h>
 #include <cstdio>
-
 #include <errno.h>
-
 #include "MenuItem.h"
 #include "Order.h"
-#include "box.h"
-#include "welcome.h"
-//#include "welcome msg for oobject.h"
 
 void Admin::getAdminData()
 {
 	std::cout << "\n\n";
-	box(" ");
-	gotoxy(30, 8);
 	std::cout << "Enter username: ";
-	//gotoxy(45, 4);
 	std::cin >> username;
-	gotoxy(30, 9);
 	std::cout << "Enter password: ";
 	//admimn password
 	char ch;
@@ -98,7 +89,6 @@ bool Admin::displayCustomersWhoOrdered()
 		if (orderFile)
 		{
 			
-			gotoxy(40, 4);
 			std::cout << ++count << '\t' << cusUserName << '\n';
 		}
 
@@ -111,7 +101,6 @@ bool Admin::displayCustomersWhoOrdered()
 
 bool Admin::displayOrdersOfCustomer(int id)
 {
-	welcome("ORDERS");
 	std::ifstream customerFile(CUSTOMER_FILE);
 
 	std::string line;
@@ -252,18 +241,11 @@ bool Admin::mainMenuHandler()
 		int opt = option - '0';
 		while (opt != DISPLAY_ORDERS && opt != DISPLAY_MENU && opt != EXIT_MENU && opt != DISPLAY_DISCOUNT_REQUESTS && opt != DISPLAY_REGULAR_CUSTOMERS) {
 			system("cls");
-			welcome("MainMenu");
 			std::cout << "\n\n";
-			box(" ");
-			gotoxy(40, 9);
 			std::cout << DISPLAY_ORDERS << " - DISPLAY_ORDER \n";
-			gotoxy(40, 10);
 			std::cout << DISPLAY_MENU <<  " - DISPLAY_MENU\n";
-			gotoxy(40, 11);
 			std::cout << DISPLAY_DISCOUNT_REQUESTS << " - DISPLAY_DISCOUNT_REQUESTS\n";
-			gotoxy(40, 12);
 			std::cout << DISPLAY_REGULAR_CUSTOMERS << " - DISPLAY_REGULAR_CUSTOMERS\n";
-			gotoxy(40, 13);
 			std::cout << EXIT_MENU << " - EXIT_MENU\n";
 			option = _getch();
 			opt = option - '0';
@@ -272,10 +254,8 @@ bool Admin::mainMenuHandler()
 		if (opt == DISPLAY_ORDERS)
 		{
 			system("cls");
-			welcome("Orders Placed");
 			if (displayCustomersWhoOrdered())
 			{
-				gotoxy(40, 5);
 				std::cout << "ID: ";
 				int id;
 				std::cin >> id;
@@ -296,8 +276,6 @@ bool Admin::mainMenuHandler()
 		else if (opt == DISPLAY_DISCOUNT_REQUESTS)
 		{
 			system("cls");
-			welcome("Discount Requests");
-
 			displayDiscountReqests();
 
 			std::cout << "Approve (A) || Deny (D) || Exit (E): ";
@@ -329,8 +307,6 @@ bool Admin::mainMenuHandler()
 		else if (opt == DISPLAY_REGULAR_CUSTOMERS)
 		{
 			system("cls");
-			welcome("Regular Customers");
-
 			// display customers
 			displayRegularCustomers();
 
@@ -340,11 +316,8 @@ bool Admin::mainMenuHandler()
 		{
 			system("cls");
 
-			welcome("Available Menus");
-			//box(" ");
 			// DISPLAY MENU
 			MenuItem menu;
-			gotoxy(40, 3);                                                //yo milauna baaki xa hai 
 			menu.showMenu();
 			std::cout << "\nDo you want to update menu?(y/N): ";
 			char updateInput;
@@ -355,32 +328,19 @@ bool Admin::mainMenuHandler()
 				newItem.inputData();
 				menu.updateMenu(newItem);
 				std::cout << "\n\nItem has been added succesfully...\n";
-				Sleep(900);
 				system("cls");
-				welcome("Menu");
 			}
 			else
 			{
 				system("cls");
-				gotoxy(0, 5);
-				welcome("Heading towards MainMenu...");
-				Sleep(900);
 				system("cls");
-				welcome("MainMenu");
-				
 				continue;
 			}
 		}
 		else if (opt == EXIT_MENU)
 		{
 			system("cls");
-			gotoxy(0, 5);
-			welcome("Exiting...");
-			Sleep(500);
 			system("cls");
-			gotoxy(0, 5);
-			welcome("Heading towards LOGIN...");
-			Sleep(600);
 
 			
 			break;

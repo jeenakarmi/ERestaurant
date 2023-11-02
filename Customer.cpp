@@ -10,7 +10,6 @@
 #include "MenuItem.h"
 #include "Order.h"
 #include "welcome.h"
-#include "box.h"
 
 bool Emailcheck(std::string email);
 bool isValidPhoneNumber(std::string phone);
@@ -142,7 +141,6 @@ void Customer::createAccount()
 {
 
 	
-	welcome("CREATE ACCOUNT");
 	//std::cout << "\nCreate Account\n";
 	std::ofstream outf;
 	outf.open(CUSTOMER_FILE, std::ios::app); 
@@ -168,11 +166,8 @@ bool Customer::validateLogin()
 	bool isValid{ false };
 
 	std::cout << "\n\n";
-	box(" ");
-	gotoxy(40, 9);
 	std::cout << "Enter username: ";
 	std::cin >> username;
-	gotoxy(40, 10);
 	std::cout << "Enter password: ";
 	//Enter password for validation
 	char ch;
@@ -224,15 +219,9 @@ bool Customer::validateLogin()
 void Customer::displayProfile()
 {
 	system("cls");
-	welcome("YOUR PROFILE");
-	box(" ");
-	gotoxy(40, 7);
 	std::cout << "Username: " << username << '\n';
-	gotoxy(40, 8); 
 	std::cout << "Password: " << password << '\n';
-	gotoxy(40, 9); 
 	std::cout << "Phone: " << phone << '\n';
-	gotoxy(40, 10); 
 	std::cout << "Email: " << email << '\n';
 }
 
@@ -255,26 +244,17 @@ bool Customer::mainMenuHandler()
 	{
 		system("cls");
 
-		welcome("Mainmenu");
-
 		char option = '\0';
 		int opt = option - '0';
 
 		std::cout << "\n\n";
-		box(" ");
 		// only able to choose these options
 		while (opt != DISPLAY_CUS_MENU && opt != PLACE_ORDER && opt != REQUEST_DISCOUNT && opt != MY_ORDERS && opt != MY_PROFILE && opt != EXIT) {
-			gotoxy(40, 8);
 			std::cout << DISPLAY_CUS_MENU << " - DISPLAY MENU\n";
-			gotoxy(40, 9);
 			std::cout << PLACE_ORDER << " - PLACE ORDER\n";
-			gotoxy(40, 10);
 			std::cout << REQUEST_DISCOUNT << " - REQUEST DISCOUNT\n";
-			gotoxy(40, 11);
 			std::cout << MY_ORDERS << " - MY ORDER\n";
-			gotoxy(40, 12);
 			std::cout << MY_PROFILE << " - MY PROFILE\n";
-			gotoxy(40, 13);
 			std::cout << EXIT << " - EXIT\n";
 			option = _getch();
 			opt = option - '0';
@@ -283,11 +263,8 @@ bool Customer::mainMenuHandler()
 		if (opt == DISPLAY_CUS_MENU) {
 			MenuItem menu;
 			system("CLS");
-			welcome("TODAY STUFFS");
 			std::cout << "\n\n";
 
-
-			gotoxy(5, 5);
 			menu.showMenu();
 			std::cout << std::endl;
 			system("pause");
@@ -304,8 +281,6 @@ bool Customer::mainMenuHandler()
 			else
 			{
 				system("cls");
-				welcome("Your order has been placed.");
-				welcome("Checkout on \"MY ORDERS\" ");
 				//std::cout << "Order placed! Check out on \"MY ORDERS\"\n";
 				system("pause");
 			}

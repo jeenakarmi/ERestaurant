@@ -35,7 +35,6 @@ bool Order::idDoneOrdering()
 bool Order::placeOrder(Customer customer)
 {
 	bool success{ true };
-	welcome("Hello");
 	std::cout << "\n\nPLACE AN ORDER HERE...\n";
 	//std::cout << "Hello, " << customer.getUsername() << "! Place an order here.\n";
 	MenuItem menu;
@@ -90,7 +89,6 @@ void Order::createOrderFile(Order currOrderItem, std::string path)
 bool Order::displayCustomerOrder(Customer customer)
 {
 	system("cls");
-	welcome("My Order");
 	bool fileExists{ true };
 	std::string filePath = "./RestaurantData/Orders/" + customer.getUsername() + ".txt";
 
