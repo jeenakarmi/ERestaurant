@@ -44,7 +44,7 @@
     <ClInclude Include="Order.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="welcome.h">
+    <ClInclude Include="UIElems.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

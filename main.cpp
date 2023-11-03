@@ -6,6 +6,8 @@
 #include "Admin.h"
 #include "Customer.h"
 
+#include "UIElems.h"
+
 enum CUSTOMER_LOG_CHOICE
 {
     LOG_ZERO,
@@ -25,6 +27,15 @@ enum UserType
 int getUserType(); // function that gets who is the user (admin or customer)
 void unauthorizedUserMessage();
 
+
+void Border()
+{
+        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+        PCONSOLE_SCREEN_BUFFER_INFO lpScreenInfo = new CONSOLE_SCREEN_BUFFER_INFO();
+        GetConsoleScreenBufferInfo(hConsole, lpScreenInfo);
+        COORD NewSBSize = lpScreenInfo->dwSize;
+        std::cout << NewSBSize.X << '\n';
+}
 
 int getUserType()
 {
@@ -83,7 +94,9 @@ void unauthorizedUserMessage()
 
 int main()
 {
-    std::cout << "PRESS ANY KEY TO CONTINUE...\n";
+        SetWindowSizeAndCentre();
+        //Border();
+        Title("Erestaurant - A Restaurant Management System", centerY - 2);
     _getch();
 
     system("cls");
