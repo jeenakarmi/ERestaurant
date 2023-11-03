@@ -82,9 +82,8 @@ void unauthorizedUserMessage()
 }
 
 int main()
-{   
-    std::cout << "\n\n";
-    std::cout << "\n\n\nPRESS ANY KEY TO CONTINE...\n";
+{
+    std::cout << "PRESS ANY KEY TO CONTINUE...\n";
     _getch();
 
     system("cls");
