@@ -1,5 +1,9 @@
 #include <iostream>
+#include <vector>
+#include <string>
+#include <string_view>
 #include <Windows.h>
+
 
 #ifndef UIELEMS_H
 #define UIELEMS_H
@@ -53,4 +57,27 @@ void Title(const std::string& text, int paddingY)
         std::cout << text << std::endl;
 }
 
+void MenuItem(std::vector<std::string_view> options)
+{
+        int longestStrLen = 0;
+        for (std::string_view option : options)
+        {
+                if (option.length() > longestStrLen) longestStrLen = option.length();
+        }
+
+        COORD consoleSize = GetWindowSize();
+        int consoleWidth = consoleSize.X;
+        int consoleHeight = consoleSize.Y;
+
+        int paddingX = (consoleWidth - longestStrLen) / 2;
+        int startX = paddingX;
+
+        int startY = centerY - options.size() / 2;
+
+        for (std::string_view option : options)
+        {
+                gotoxy(startX, startY++);
+                std::cout << option << '\n';
+        }
+}
 #endif // !UIELEMS_H

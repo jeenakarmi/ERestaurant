@@ -46,7 +46,8 @@ int getUserType()
     int opt = option - '0'; // converts char single digit number into int
     while (opt != USER_ADMIN && opt != USER_CUSTOMER) {
         system("cls");
-        std::cout << "\n\n\n";
+        Title("ERestaurant", centerY - 15);
+
         std::cout << USER_ADMIN << ": ADMIN_LOGIN" << std::endl;
         std::cout << USER_CUSTOMER << ": CUSTOMER_LOGIN" << std::endl;
         std::cout << "ALT + F4: EXIT_PROGRAM" << std::endl;
@@ -95,8 +96,8 @@ void unauthorizedUserMessage()
 int main()
 {
         SetWindowSizeAndCentre();
-        //Border();
-        Title("Erestaurant - A Restaurant Management System", centerY - 2);
+        Title("Erestaurant - A Restaurant Management System", centerY - 10);
+        MenuItem({ "Jina", "Nimesh", "JinMesh"});
     _getch();
 
     system("cls");
