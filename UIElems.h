@@ -8,11 +8,11 @@
 #ifndef UIELEMS_H
 #define UIELEMS_H
 
-int centerX = 0;
-int centerY = 0;
+inline int centerX = 0;
+inline int centerY = 0;
 
 
-void gotoxy(int x, int y)
+inline void gotoxy(int x, int y)
 {
         COORD coord;
         coord.X = x;
@@ -20,7 +20,7 @@ void gotoxy(int x, int y)
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-COORD GetWindowSize()
+inline COORD GetWindowSize()
 {
         HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
         PCONSOLE_SCREEN_BUFFER_INFO lpScreenInfo = new CONSOLE_SCREEN_BUFFER_INFO();
@@ -30,7 +30,7 @@ COORD GetWindowSize()
         return windowSize;
 }
 
-void SetWindowSizeAndCentre() {
+inline void SetWindowSizeAndCentre() {
 
         HWND console = GetConsoleWindow();
         RECT r;
@@ -38,13 +38,12 @@ void SetWindowSizeAndCentre() {
         COORD consoleSize = GetWindowSize();
         int consoleWidth = consoleSize.X;
         int consoleHeight = consoleSize.Y;
-        //std::cout << consoleWidth << "\t" << consoleHeight; _getch();
         centerX = consoleWidth / 2;
         centerY = consoleHeight / 2;
 }
 
 
-void Title(const std::string& text, int paddingY)
+inline void Title(const std::string& text, int paddingY)
 {
         COORD consoleSize = GetWindowSize();
         int consoleWidth = consoleSize.X;
@@ -57,7 +56,7 @@ void Title(const std::string& text, int paddingY)
         std::cout << text << std::endl;
 }
 
-void MenuItems(std::vector<std::string_view> options)
+inline void MenuItems(std::vector<std::string_view> options)
 {
         int longestStrLen = 0;
         for (std::string_view option : options)
