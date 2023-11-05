@@ -5,15 +5,18 @@
 
 #include "Admin.h"
 #include "Customer.h"
+#include "MenuItem.h"
+#include "Order.h"
 
 #include "UIElems.h"
 
-enum CUSTOMER_LOG_CHOICE
+enum class CUSTOMER_CHOICES
 {
-    LOG_ZERO,
-    LOG_IN,
-    CREATE_ACCOUNT,
-    USER_SELECTION
+        OPTION_ZERO,
+        DISPLAY_MENU,
+        PLACE_ORDER,
+        VIEW_ORDER,
+        GO_BACK
 };
 
 enum UserType
@@ -39,27 +42,17 @@ void Border()
 
 int getUserType()
 {
-    //system("cls");
-    
     int user; // kun chai user ho ta vanera rakheko ni...
     char option = 0;
     int opt = option - '0'; // converts char single digit number into int
-    while (opt != USER_ADMIN && opt != USER_CUSTOMER) {
+    while (opt != USER_ADMIN && opt != USER_CUSTOMER && opt != EXIT_PROGRAM) {
         system("cls");
-        Title("ERestaurant", centerY - 15);
+        Title("ERestaurant - A Restaurant Management System", centerY - 15);
 
-        std::cout << USER_ADMIN << ": ADMIN_LOGIN" << std::endl;
-        std::cout << USER_CUSTOMER << ": CUSTOMER_LOGIN" << std::endl;
-        std::cout << "ALT + F4: EXIT_PROGRAM" << std::endl;
-
-        std::cout << "\n\n";
+        MenuItems({"1: ADMIN", "2: CUSTOMER", "3: EXIT"});
         option = _getch();
         opt = option - '0';
     }
-
-    std::cout << "\n\n\n";
-    std::cout << "WAIT_FOR_A_WHILE...\n";
-    //Sleep(900);
     system("CLS");
     
     while (true)
@@ -79,6 +72,11 @@ int getUserType()
             user = USER_CUSTOMER;
             break;
         }
+        else if (opt == EXIT_PROGRAM)
+        {
+                user = EXIT_PROGRAM;
+                break;
+        }
         
     }
     return user;
@@ -96,8 +94,7 @@ void unauthorizedUserMessage()
 int main()
 {
         SetWindowSizeAndCentre();
-        Title("Erestaurant - A Restaurant Management System", centerY - 10);
-        MenuItem({ "Jina", "Nimesh", "JinMesh"});
+        Title("Erestaurant - A Restaurant Management System", centerY - 1);
     _getch();
 
     system("cls");
@@ -124,74 +121,48 @@ int main()
             else
             {
                 system("cls");
-                
-                // it prints the message welcome, SauravDhoju
-          
-                Sleep(900);
-                system("cls");
-                Sleep(900);
-                system("cls");
                 bool exit = admin.mainMenuHandler();
             }
         }
-        else
+        else if (user == USER_CUSTOMER)
         {
             while (true)
             {
                 char option = 0;
                 int opt = option - '0';
-                std::cout << "\n\n";
-                while (opt != LOG_IN && opt != CREATE_ACCOUNT && opt != USER_SELECTION) {
+                while (opt != static_cast<int>(CUSTOMER_CHOICES::DISPLAY_MENU) && opt != static_cast<int>(CUSTOMER_CHOICES::PLACE_ORDER) && opt != static_cast<int>(CUSTOMER_CHOICES::GO_BACK)) {
                     // prompts out message login or create account
                     system("cls");
-                    std::cout << LOG_IN << " - LOG IN\n";
-                    std::cout << CREATE_ACCOUNT << " - CREATE ACCOUNT\n";
-                    std::cout << USER_SELECTION << " - USER SLECTION\n";
+                    Title("Welcome To Our Restaurant", centerY - 15);
+                    Title("Feel free to look at today's menu!", centerY - 14);
+                    MenuItems({ "1: TODAY'S MENU", "2: PLACE ORDER", "3: MY ORDER", "4: GO BACK"});
 
                     option = _getch();
                     opt = option - '0';
                 }
-                
-                if (opt == LOG_IN)
+                Customer currCustomer;
+                // can't use switch here due to MenuItem initialization (initialization can't be done inside switch)
+                if (opt == static_cast<int>(CUSTOMER_CHOICES::DISPLAY_MENU))
                 {
-                    system("CLS");;
-                    
-                    //prompts the message login
-                    Customer customer;
-                    bool isCustomerUser{ customer.validateLogin() };
-                    if (!isCustomerUser)
-                    {
-                        system("cls");
-                        std::cout << "\n\n";
-                        Sleep(900);
-                        continue;
-                    }
-                    else
-                    {
-                        system("cls");
-                        std::cout << "Welcome " << customer.getUsername() << "!\n\n";
-                        bool exit = customer.mainMenuHandler();
-                    }
-                    break;
+                        system("CLS");
+                        MenuItem menu;
+                        menu.showMenu();
+                        system("pause");
                 }
-                else if (opt == CREATE_ACCOUNT)
+                else if (opt == static_cast<int>(CUSTOMER_CHOICES::PLACE_ORDER))
                 {
-                    // create account
-                    Customer newCustomer;
-                    system("CLS");
-                    newCustomer.createAccount();
-                    
-                    break;
+                        Order currOrder;
+                        currOrder.placeOrder(currCustomer);
                 }
-                else if (opt == USER_SELECTION)
+                else if (opt == static_cast<int>(CUSTOMER_CHOICES::GO_BACK))
                 {
-                    break;
-                }
-                else
-                {
-                    std::cout << "Please enter valid input!\n";
+                        break;
                 }
             }
+        }
+        else
+        {
+                quit = true;
         }
 
     }

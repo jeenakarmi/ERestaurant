@@ -65,19 +65,6 @@ void Customer::getUserInput()
 		}
 		break;
 	}
-	
-	while (true)
-	{
-
-		std::cout << "Enter email: ";
-		std::cin >> email;
-		if (!Emailcheck(email))
-		{
-			std::cout << "\nEnter valid email \n";
-			continue;
-		}
-		break;
-	}
 }
 
 bool isValidPhoneNumber(std::string phone) {
@@ -93,6 +80,7 @@ bool Emailcheck(std::string email)
 	const std::regex pattern3("(\\w+)(\\.|)?(\\w*)@khec(\\.np)+");
 	return regex_match(email, pattern1) || regex_match(email, pattern2) || regex_match(email, pattern3);
 }
+
 bool Customer::isNewUser()
 {
 	std::ifstream inf;
@@ -108,13 +96,11 @@ bool Customer::isNewUser()
 			std::string tUsername, tPhone, tEmail;
 			int commaIndex1 = line.find(",");
 			int commaIndex2 = line.find(",", commaIndex1 + 1);
-			int commaIndex3 = line.find(",", commaIndex2 + 1);
 
 			tUsername = line.substr(0, commaIndex1);
-			tPhone = line.substr(commaIndex2 + 1, commaIndex3 - commaIndex2 - 1);
-			tEmail = line.substr(commaIndex3 + 1);
+			tPhone = line.substr(commaIndex2 + 1);
 
-			if (username == tUsername || email == tEmail || phone == tPhone)
+			if (username == tUsername || phone == tPhone)
 			{
 				if (username == tUsername)
 				{

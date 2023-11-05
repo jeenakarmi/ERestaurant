@@ -57,7 +57,7 @@ void Title(const std::string& text, int paddingY)
         std::cout << text << std::endl;
 }
 
-void MenuItem(std::vector<std::string_view> options)
+void MenuItems(std::vector<std::string_view> options)
 {
         int longestStrLen = 0;
         for (std::string_view option : options)

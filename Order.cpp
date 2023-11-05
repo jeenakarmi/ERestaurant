@@ -1,6 +1,7 @@
 #include "Order.h"
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <fstream>
 #include <vector>
 #include <iomanip>
@@ -16,9 +17,10 @@ Order::Order()
 bool Order::idDoneOrdering()
 {
 	bool isDone;
-	std::cout << "Done with order? (y/N): ";
+	std::cout << "Done with order? (Y/N): ";
 	char doneInput;
 	std::cin >> doneInput;
+	// refactor this to ternary operator
 	if (std::toupper(doneInput) == 'Y')
 	{
 		isDone = true;
@@ -67,11 +69,28 @@ bool Order::placeOrder(Customer customer)
 
 		std::cout << currOrderItem.itemName << '\t' << currOrderItem.quantity << '\t' << currOrderItem.itemPrice << '\n';
 
-		// make a data file with record of order items for this customer
-		std::string orderfile = "./RestaurantData/Orders/" + customer.getUsername() + ".txt";
-		createOrderFile(currOrderItem, orderfile);
+		if (customer.getUsername() == "")
+		{
+			// make a data file with record of order items for this customer
+			std::string orderfile = "temp.txt";
+			createOrderFile(currOrderItem, orderfile);
+		}
+		else
+		{
+			std::string customerOrderFile = "RestaurantData/Orders/" + customer.getUsername() + ".txt";
+			std::ofstream outf(customerOrderFile, std::ios::app);
+			outf << currOrderItem.itemName << ',' << currOrderItem.quantity << ',' << currOrderItem.itemPrice << ',' << (currOrderItem.orderComplete ? "true" : "false") << '\n';
+			outf.close();
+		}
 
 		done = idDoneOrdering();
+	}
+
+	if (customer.getUsername() == "")
+	{
+		customer.createAccount();
+		std::string customerOrderFile = "RestaurantData/Orders/" + customer.getUsername() + ".txt";
+		std::rename("temp.txt", customerOrderFile.c_str());
 	}
 	return success;
 }
