@@ -47,7 +47,8 @@ int getUserType()
     int opt = option - '0'; // converts char single digit number into int
     while (opt != USER_ADMIN && opt != USER_CUSTOMER && opt != EXIT_PROGRAM) {
         system("cls");
-        Title("ERestaurant - A Restaurant Management System", centerY - 15);
+        Title("A Better Solution for All the Users", centerY - 8);
+        Title("Select the user type!", centerY - 6);
 
         MenuItems({"1: ADMIN", "2: CUSTOMER", "3: EXIT"});
         option = _getch();
@@ -131,11 +132,11 @@ int main()
             {
                 char option = 0;
                 int opt = option - '0';
-                while (opt != static_cast<int>(CUSTOMER_CHOICES::DISPLAY_MENU) && opt != static_cast<int>(CUSTOMER_CHOICES::PLACE_ORDER) && opt != static_cast<int>(CUSTOMER_CHOICES::GO_BACK)) {
+                while (opt != static_cast<int>(CUSTOMER_CHOICES::DISPLAY_MENU) && opt != static_cast<int>(CUSTOMER_CHOICES::PLACE_ORDER) && opt != static_cast<int>(CUSTOMER_CHOICES::VIEW_ORDER) && opt != static_cast<int>(CUSTOMER_CHOICES::GO_BACK)) {
                     // prompts out message login or create account
                     system("cls");
-                    Title("Welcome To Our Restaurant", centerY - 15);
-                    Title("Feel free to look at today's menu!", centerY - 14);
+                    Title("Welcome To Our Restaurant", centerY - 8);
+                    Title("Feel free to look at today's menu!", centerY - 6);
                     MenuItems({ "1: TODAY'S MENU", "2: PLACE ORDER", "3: MY ORDER", "4: GO BACK"});
 
                     option = _getch();
@@ -154,6 +155,83 @@ int main()
                         system("CLS");
                         Order currOrder;
                         currOrder.placeOrder(&currCustomer);
+                }
+                else if (opt == static_cast<int>(CUSTOMER_CHOICES::VIEW_ORDER))
+                {
+                        system("CLS");
+                        if (currCustomer.getUsername() == "")
+                        {
+                                Title("Log in to view the orders!", centerY - 15);
+                                Customer newCustomer;
+                                if (newCustomer.validateLogin())
+                                {
+                                        currCustomer = newCustomer;
+                                        Order myOrder;
+                                        bool fileExists = myOrder.displayCustomerOrder(currCustomer); // display order for this customer
+
+                                        // if not all order complete and the file exists then be able to cancel pending orders
+                                        if (fileExists)
+                                        {
+                                                if (!myOrder.isAllOrderComplete(currCustomer))
+                                                {
+                                                        std::cout << "Cancel Order? (y/N): ";
+                                                        char cancel;
+                                                        std::cin >> cancel;
+                                                        if (std::toupper(cancel) == 'Y')
+                                                        {
+                                                                myOrder.cancelOrder(currCustomer);
+                                                        }
+                                                }
+                                                else
+                                                {
+                                                        std::cout << "Checkout? (y/N): ";
+                                                        char checkout;
+                                                        std::cin >> checkout;
+                                                        if (std::toupper(checkout) == 'Y')
+                                                        {
+                                                                myOrder.payOrderBill(currCustomer);
+                                                        }
+                                                }
+                                        }
+                                }
+                                else
+                                {
+                                        system("CLS");
+                                        Title("Account does not exist!", centerY - 15);
+                                        Title("You can view your orders here after you place them!", centerY - 14);
+                                }
+                        }
+                        else
+                        {
+                                Order myOrder;
+                                bool fileExists = myOrder.displayCustomerOrder(currCustomer); // display order for this customer
+
+                                // if not all order complete and the file exists then be able to cancel pending orders
+                                if (fileExists)
+                                {
+                                        if (!myOrder.isAllOrderComplete(currCustomer))
+                                        {
+                                                std::cout << "Cancel Order? (y/N): ";
+                                                char cancel;
+                                                std::cin >> cancel;
+                                                if (std::toupper(cancel) == 'Y')
+                                                {
+                                                        myOrder.cancelOrder(currCustomer);
+                                                }
+                                        }
+                                        else
+                                        {
+                                                std::cout << "Checkout? (y/N): ";
+                                                char checkout;
+                                                std::cin >> checkout;
+                                                if (std::toupper(checkout) == 'Y')
+                                                {
+                                                        myOrder.payOrderBill(currCustomer);
+                                                }
+                                        }
+                                }
+                        }
+                        system("pause");
                 }
                 else if (opt == static_cast<int>(CUSTOMER_CHOICES::GO_BACK))
                 {

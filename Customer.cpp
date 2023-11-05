@@ -181,18 +181,15 @@ bool Customer::validateLogin()
 			int commaIndex1 = line.find(",");
 			int commaIndex2 = line.find(",", commaIndex1 + 1);
 			int commaIndex3 = line.find(",", commaIndex2 + 1);
-			int commaIndex4 = line.find(",", commaIndex3 + 1);
 
 			tUsername = line.substr(0, commaIndex1);
 			tPassword = line.substr(commaIndex1 + 1, commaIndex2 - commaIndex1 - 1);
 			tPhone = line.substr(commaIndex2 + 1, commaIndex3 - commaIndex2 - 1);
-			tEmail = line.substr(commaIndex3 + 1, commaIndex4 - commaIndex3 - 1);
 
 			if (username == tUsername && password == tPassword)
 			{
 				isValid = true;
 				phone = tPhone;
-				email = tEmail;
 			}
 		}
 	}

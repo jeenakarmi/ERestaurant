@@ -333,8 +333,10 @@ void Order::cancelOrder(Customer customer)
 	std::remove(orderFilePath.c_str());
 	std::rename("temp.txt", orderFilePath.c_str());
 
-	if (count < 1)
+	if (count <= 1)
 	{
+		system("CLS");
+		std::cout << "You have not placed an order yet!\n";
 		std::remove(orderFilePath.c_str());
 	}
 }
