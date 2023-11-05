@@ -96,19 +96,16 @@ bool Customer::isNewUser()
 			std::string tUsername, tPhone, tEmail;
 			int commaIndex1 = line.find(",");
 			int commaIndex2 = line.find(",", commaIndex1 + 1);
+			int commaIndex3 = line.find(",", commaIndex2 + 1);
 
 			tUsername = line.substr(0, commaIndex1);
-			tPhone = line.substr(commaIndex2 + 1);
+			tPhone = line.substr(commaIndex2 + 1, commaIndex3);
 
 			if (username == tUsername || phone == tPhone)
 			{
 				if (username == tUsername)
 				{
 					std::cout << "Username already taken!\n";
-				}
-				else if (email == tEmail)
-				{
-					std::cout << "Email already taken!\n";
 				}
 				else if (phone == tPhone)
 				{
@@ -141,7 +138,7 @@ void Customer::createAccount()
 	}
 	
 	// username, password, phone, email, isDiscoutEligible
-	outf << username << ',' << password << ',' << "+977-98" << phone << ',' << email << ',' << "true" << '\n';
+	outf << username << ',' << password << ',' << "+977-98" << phone << ','  << "true" << '\n';
 
 	outf.close();
 }
@@ -221,7 +218,7 @@ void Customer::placeDiscountRequest()
 
 	outf.close();
 }
-
+/*
 bool Customer::mainMenuHandler()
 {
 	bool exit{ false };
@@ -330,3 +327,4 @@ bool Customer::mainMenuHandler()
 	}
 	return exit;
 }
+*/

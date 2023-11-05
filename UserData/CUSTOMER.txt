@@ -1,1 +1,2 @@
-nimeshakya,123,+977-9869862900,nimeshakyabtw@gmail.com,true
+nimeshakya,123,+977-9869862900,true
+jnakarmi,321,+977-9841003682,true

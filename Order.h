@@ -20,7 +20,7 @@ class Order
 public:
 	Order();
 	bool idDoneOrdering();
-	bool placeOrder(Customer customer);
+	bool placeOrder(Customer* customer);
 	void createOrderFile(Order currOrderItem, std::string path);
 	bool displayCustomerOrder(Customer customer); // returns true if file exists
 	void displayOrderFromFile(std::string path);

@@ -33,7 +33,7 @@ bool Order::idDoneOrdering()
 }
 
 
-bool Order::placeOrder(Customer customer)
+bool Order::placeOrder(Customer* customer)
 {
 	bool success{ true };
 	std::cout << "\n\nPLACE AN ORDER HERE...\n";
@@ -69,7 +69,7 @@ bool Order::placeOrder(Customer customer)
 
 		std::cout << currOrderItem.itemName << '\t' << currOrderItem.quantity << '\t' << currOrderItem.itemPrice << '\n';
 
-		if (customer.getUsername() == "")
+		if (customer->getUsername() == "")
 		{
 			// make a data file with record of order items for this customer
 			std::string orderfile = "temp.txt";
@@ -77,7 +77,7 @@ bool Order::placeOrder(Customer customer)
 		}
 		else
 		{
-			std::string customerOrderFile = "RestaurantData/Orders/" + customer.getUsername() + ".txt";
+			std::string customerOrderFile = "RestaurantData/Orders/" + customer->getUsername() + ".txt";
 			std::ofstream outf(customerOrderFile, std::ios::app);
 			outf << currOrderItem.itemName << ',' << currOrderItem.quantity << ',' << currOrderItem.itemPrice << ',' << (currOrderItem.orderComplete ? "true" : "false") << '\n';
 			outf.close();
@@ -86,10 +86,10 @@ bool Order::placeOrder(Customer customer)
 		done = idDoneOrdering();
 	}
 
-	if (customer.getUsername() == "")
+	if (customer->getUsername() == "")
 	{
-		customer.createAccount();
-		std::string customerOrderFile = "RestaurantData/Orders/" + customer.getUsername() + ".txt";
+		customer->createAccount();
+		std::string customerOrderFile = "RestaurantData/Orders/" + customer->getUsername() + ".txt";
 		std::rename("temp.txt", customerOrderFile.c_str());
 	}
 	return success;

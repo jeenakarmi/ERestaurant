@@ -126,6 +126,7 @@ int main()
         }
         else if (user == USER_CUSTOMER)
         {
+                Customer currCustomer;
             while (true)
             {
                 char option = 0;
@@ -140,7 +141,6 @@ int main()
                     option = _getch();
                     opt = option - '0';
                 }
-                Customer currCustomer;
                 // can't use switch here due to MenuItem initialization (initialization can't be done inside switch)
                 if (opt == static_cast<int>(CUSTOMER_CHOICES::DISPLAY_MENU))
                 {
@@ -151,8 +151,9 @@ int main()
                 }
                 else if (opt == static_cast<int>(CUSTOMER_CHOICES::PLACE_ORDER))
                 {
+                        system("CLS");
                         Order currOrder;
-                        currOrder.placeOrder(currCustomer);
+                        currOrder.placeOrder(&currCustomer);
                 }
                 else if (opt == static_cast<int>(CUSTOMER_CHOICES::GO_BACK))
                 {
