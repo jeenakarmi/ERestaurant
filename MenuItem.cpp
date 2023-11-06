@@ -1,4 +1,5 @@
 #include "MenuItem.h"
+#include "UIElems.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -26,7 +27,7 @@ float MenuItem::getPrice()
 {
 	return (menuItemPrice);
 }
-void MenuItem::showMenu()
+/*void MenuItem::showMenu()
 {
 	std::ifstream inf;
 	inf.open(MENU_FILE, std::ios::in);
@@ -67,11 +68,72 @@ void MenuItem::showMenu()
 				<< std::setw(10) << std::left << menuItemPrice << std::endl;
 		}
 	}
+}*/
+void MenuItem::showMenu()
+{
+	SetWindowSizeAndCentre(); // Center the console window
+
+	std::ifstream inf;
+	inf.open(MENU_FILE, std::ios::in);
+
+	if (!inf)
+	{
+		std::cout << "File could not be open! FILE_NAME: " << MENU_FILE << '\n';
+	}
+	else
+	{
+		Title("Today's Menu", centerY - 15); // Center the "Menu" title
+		std::cout<< std::endl;
+
+		std::string line;
+		std::vector<std::string> menuLines;
+
+		// Read menu lines into a vector
+		while (std::getline(inf, line))
+		{
+			menuLines.push_back(line);
+		}
+
+		// Calculate padding for centering menu items
+		int consoleWidth = GetWindowSize().X;
+		int padding = (consoleWidth - 35) / 2;
+		int separatorPadding = (consoleWidth - 40) / 2;
+
+		std::cout << std::setw(padding) << "" << "SN"
+			<< std::setw(20) << "Item"
+			<< std::setw(10) << "Price" << std::endl;
+
+		std::cout << std::setfill(' ') << std::setw(separatorPadding) << ' '
+			<< std::setw(5) << std::setfill('-') << std::left << '-'
+			<< std::setw(20) << std::left << '-'
+			<< std::setw(10) << std::left << '-' << std::setfill(' ') << std::setw(separatorPadding) << ' '
+			<< std::endl;
+
+
+		for (const std::string& menuItem : menuLines)
+		{
+			int id;
+			std::string menuItemName;
+			float menuItemPrice;
+			int commaIndex1 = menuItem.find(",");
+			int commaIndex2 = menuItem.find(",", commaIndex1 + 1);
+			id = std::stoi(menuItem.substr(0, commaIndex1));
+			menuItemName = menuItem.substr(commaIndex1 + 1, commaIndex2 - commaIndex1 - 1);
+			menuItemPrice = std::stof(menuItem.substr(commaIndex2 + 1));
+
+			// Center-align the menu items
+			std::cout << std::setw(padding) << ' ';
+			std::cout << std::setw(5) << std::left << id
+				<< std::setw(20) << std::left << menuItemName
+				<< std::setw(10) << std::left << menuItemPrice << std::endl;
+		}
+
+
+		// Return to the original console position
+		//COORD originalPosition = { 0, 0 };
+		//SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), originalPosition);
+	}
 }
-
-
-
-
 void MenuItem::inputData()
 {
 	std::cout << "\nUpdate Or Add Item\n";
