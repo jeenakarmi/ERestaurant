@@ -99,9 +99,10 @@ void MenuItem::showMenu()
 		int padding = (consoleWidth - 35) / 2;
 		int separatorPadding = (consoleWidth - 40) / 2;
 
-		std::cout << std::setw(padding) << "" << "SN"
-			<< std::setw(20) << "Item"
-			<< std::setw(10) << "Price" << std::endl;
+		std::cout << std::setw(padding) << ' ';
+		std::cout << std::setw(5) << std::left << "SN"
+			<< std::setw(20) << std::left << "Item"
+			<< std::setw(10) << std::left << "Price" << std::endl;
 
 		std::cout << std::setfill(' ') << std::setw(separatorPadding) << ' '
 			<< std::setw(5) << std::setfill('-') << std::left << '-'
