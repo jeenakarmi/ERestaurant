@@ -148,7 +148,7 @@ int main()
                         system("CLS");
                         MenuItem menu;
                         menu.showMenu();
-                        _getch();
+                        system("pause");
                 }
                 else if (opt == static_cast<int>(CUSTOMER_CHOICES::PLACE_ORDER))
                 {
