@@ -78,13 +78,18 @@ std::string Admin::getUserName()
 
 bool Admin::displayCustomersWhoOrdered()
 {
+	Title("Customers Who Ordered", centerY - 15);
+	std::cout << "\n\n";
 	int count = 0;
 	std::string path = "RestaurantData/Orders";
 	for (const auto& entry : std::filesystem::directory_iterator(path))
 	{
 		std::string orderPath = entry.path().string();
 		int slashIndex = orderPath.find('\\');
-		std::string orderFileName = orderPath.substr(slashIndex + 1);
+		int dotIndex = orderPath.find('.');
+		std::string orderFileName = orderPath.substr(slashIndex + 1, dotIndex - slashIndex - 1);
+
+		/* === YETA CHANGE GARNE === */
 		std::cout << ++count << "\t" << orderFileName << '\n';
 	}
 	return count > 0;

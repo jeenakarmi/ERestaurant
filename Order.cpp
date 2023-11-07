@@ -33,7 +33,6 @@ bool Order::idDoneOrdering()
 	return isDone;
 }
 
-
 bool Order::placeOrder(Customer* customer)
 {
 	bool success{ true };
@@ -68,6 +67,7 @@ bool Order::placeOrder(Customer* customer)
 		currOrderItem.quantity += currItemQuantity;
 		currOrderItem.itemPrice *= currOrderItem.quantity;
 
+		std::cout << "\nOrder Placed Successfully!\n";
 		std::cout << currOrderItem.itemName << '\t' << currOrderItem.quantity << '\t' << currOrderItem.itemPrice << '\n';
 
 		if (customer->getUsername() == "")
@@ -119,6 +119,8 @@ bool Order::displayCustomerOrder(Customer customer)
 	}
 	else
 	{
+		/* === YESLAI BICH MA LANE === */
+
 		std::cout << std::setw(5) << std::left << std::setfill(' ') << "" << std::setw(20) << std::left << "" << std::setw(10) << std::left << "" << std::setw(11) << "" << std::setw(12) << "" << std::setfill(' ') << std::endl;
 		std::cout << std::setw(5) << "SN" << std::setw(20) << "Item" << std::setw(10) << "Quantity" << std::setw(11) << "Price" << std::setw(12) << "Status\n";
 		std::cout << std::setw(5) << std::left << std::setfill('-') << "" << std::setw(5) << std::left << "" << std::setw(20) << std::left << "" << std::setw(10) << "" << std::setw(10) << "" << std::setfill(' ') << std::endl;
@@ -160,7 +162,8 @@ bool Order::displayCustomerOrder(Customer customer)
 	{
 		std::cout << "\n" << std::setw(5) << "" << std::setw(20) << "Total" << std::setw(10) << itemTotal << std::setw(11) << priceTotal << std::setw(5) << (isAllOrderComplete(customer) ? "Complete" : "Not Complete") << "\n";
 
-		/*std::cout << "Total\n";
+		/*
+		std::cout << "Total\n";
 		std::cout << "Item: " << itemTotal << '\n';
 		std::cout << "Price: " << priceTotal << '\n';
 		*/
@@ -183,6 +186,7 @@ void Order::displayOrderFromFile(std::string path)
 	else
 	{
 		
+		/* === YINIHARU CHANGE GARNE === */
 		std::cout << std::setfill(' ') << std::setw(5) << ' '
 			<< std::setw(20) << ' '
 			<< std::setw(10) << ' ' << std::setfill(' ') << std::endl;
