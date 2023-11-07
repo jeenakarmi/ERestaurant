@@ -34,11 +34,18 @@ public:
 		allOrderComplete = false;
 	}
 	std::string getUsername();
+	std::string getPassword();
 	std::string getUserPhone();
 	void getUserInput();
 	bool isNewUser();
+	bool isNewOrderer();
+
+	void createOrderAccount();
 	void createAccount();
+
 	bool validateLogin();
+	bool validateOrdererLogin();
+
 	void displayProfile();
 	bool mainMenuHandler();
 	void placeDiscountRequest();

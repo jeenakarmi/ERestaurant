@@ -155,6 +155,7 @@ int main()
                         system("CLS");
                         Order currOrder;
                         currOrder.placeOrder(&currCustomer);
+                        std::remove("temp.txt");
                 }
                 else if (opt == static_cast<int>(CUSTOMER_CHOICES::VIEW_ORDER))
                 {
@@ -163,7 +164,7 @@ int main()
                         {
                                 Title("Log in to view the orders!", centerY - 15);
                                 Customer newCustomer;
-                                if (newCustomer.validateLogin())
+                                if (newCustomer.validateOrdererLogin())
                                 {
                                         currCustomer = newCustomer;
                                         Order myOrder;

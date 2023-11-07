@@ -1,6 +1,7 @@
 #include "Admin.h"
 #include <iostream>
 #include <fstream>
+#include <filesystem>
 #include <string>
 #include <string_view>
 #include <conio.h>
@@ -8,6 +9,9 @@
 #include <errno.h>
 #include "MenuItem.h"
 #include "Order.h"
+
+
+#include "UIElems.h"
 
 void Admin::getAdminData()
 {
@@ -74,58 +78,35 @@ std::string Admin::getUserName()
 
 bool Admin::displayCustomersWhoOrdered()
 {
-	std::ifstream customerFile(CUSTOMER_FILE);
-	
-	std::string line;
 	int count = 0;
-	while (std::getline(customerFile, line))
+	std::string path = "RestaurantData/Orders";
+	for (const auto& entry : std::filesystem::directory_iterator(path))
 	{
-		int commaIndex1 = line.find(',');
-		std::string cusUserName = line.substr(0, commaIndex1);
-		std::string orderFilePath{ "RestaurantData/Orders/" + cusUserName + ".txt" };
-
-		std::ifstream orderFile(orderFilePath);
-
-		if (orderFile)
-		{
-			
-			std::cout << ++count << '\t' << cusUserName << '\n';
-		}
-
-		orderFile.close();
+		std::string orderPath = entry.path().string();
+		int slashIndex = orderPath.find('\\');
+		std::string orderFileName = orderPath.substr(slashIndex + 1);
+		std::cout << ++count << "\t" << orderFileName << '\n';
 	}
-
-	customerFile.close();
-	return count > 0 ? true : false;
+	return count > 0;
 }
 
 bool Admin::displayOrdersOfCustomer(int id)
 {
-	std::ifstream customerFile(CUSTOMER_FILE);
-
-	std::string line;
-	int count = 0;
+	int currIndex = 1;
 	std::string orderFilePath;
-
-	Order cusOrder;
-	while (std::getline(customerFile, line))
+	std::string path = "RestaurantData/Orders";
+	for (const auto& entry : std::filesystem::directory_iterator(path))
 	{
-		int commaIndex1 = line.find(',');
-		std::string cusUserName = line.substr(0, commaIndex1);
-		orderFilePath = "RestaurantData/Orders/" + cusUserName + ".txt";
-
-		std::ifstream orderFile(orderFilePath);
-
-		if (orderFile)
+		if (currIndex == id)
 		{
-			if (id == ++count)
-			{
-				cusOrder.displayOrderFromFile(orderFilePath);
-				break;
-			}
+			orderFilePath = entry.path().string();
+			break;
 		}
+		++currIndex;
 	}
-	customerFile.close();
+	Order cusOrder;
+	cusOrder.displayOrderFromFile(orderFilePath);
+
 	std::cout << "Mark order complete/pending? (y/N): ";
 	char ch;
 	std::cin >> ch;
@@ -239,14 +220,11 @@ bool Admin::mainMenuHandler()
 	{
 		char option = 0;
 		int opt = option - '0';
-		while (opt != DISPLAY_ORDERS && opt != DISPLAY_MENU && opt != EXIT_MENU && opt != DISPLAY_DISCOUNT_REQUESTS && opt != DISPLAY_REGULAR_CUSTOMERS) {
+		while (opt != DISPLAY_ORDERS && opt != DISPLAY_MENU && opt != EXIT_MENU) {
 			system("cls");
+			Title("ADMIN PAGE", centerY - 6);
 			std::cout << "\n\n";
-			std::cout << DISPLAY_ORDERS << " - DISPLAY_ORDER \n";
-			std::cout << DISPLAY_MENU <<  " - DISPLAY_MENU\n";
-			std::cout << DISPLAY_DISCOUNT_REQUESTS << " - DISPLAY_DISCOUNT_REQUESTS\n";
-			std::cout << DISPLAY_REGULAR_CUSTOMERS << " - DISPLAY_REGULAR_CUSTOMERS\n";
-			std::cout << EXIT_MENU << " - EXIT_MENU\n";
+			MenuItems({ "1: DISPLAY ORDER", "2: DISPLAY MENU", "3: EXIT" });
 			option = _getch();
 			opt = option - '0';
 		}
@@ -272,45 +250,6 @@ bool Admin::mainMenuHandler()
 			}
 			system("pause");
 			// display orders
-		}
-		else if (opt == DISPLAY_DISCOUNT_REQUESTS)
-		{
-			system("cls");
-			displayDiscountReqests();
-
-			std::cout << "Approve (A) || Deny (D) || Exit (E): ";
-			char approveDeny{ };
-			std::cin >> approveDeny;
-			if (toupper(approveDeny) == 'A')
-			{
-				// do approve
-				std::cout << "ID: ";
-				int id;
-				std::cin >> id;
-				approveRequest(id);
-			}
-			else if (toupper(approveDeny) == 'D')
-			{
-				// do deny
-				std::cout << "ID: ";
-				int id;
-				std::cin >> id;
-				denyRequest(id);
-			}
-			else
-			{
-				continue;
-			}
-
-			system("pause");
-		}
-		else if (opt == DISPLAY_REGULAR_CUSTOMERS)
-		{
-			system("cls");
-			// display customers
-			displayRegularCustomers();
-
-			system("pause");
 		}
 		else if (opt == DISPLAY_MENU)
 		{

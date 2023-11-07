@@ -27,6 +27,11 @@ std::string Customer::getUsername()
 	return username;
 }
 
+std::string Customer::getPassword()
+{
+	return password;
+}
+
 std::string Customer::getUserPhone()
 {
 	return phone;
@@ -121,6 +126,45 @@ bool Customer::isNewUser()
 	return isNew;
 }
 
+bool Customer::isNewOrderer()
+{
+	bool isNew{ true };
+	std::ifstream inf;
+	std::string orderFile = "RestaurantData/Orders/" + username + ".txt";
+	inf.open(orderFile);
+
+	if (inf.good())
+	{
+		isNew = false;
+	}
+
+	inf.close();
+
+	return isNew;
+}
+
+void Customer::createOrderAccount()
+{
+	bool allGood{ false };
+	while (!allGood)
+	{
+		getUserInput();
+		if (isNewOrderer())
+		{
+			allGood = true;
+		}
+	}
+
+	std::ofstream outf;
+	std::string orderFile = "RestaurantData/Orders/" + username + ".txt";
+	outf.open(orderFile, std::ios::app);
+	outf << username << ',' << password << ',' << "+977-98" << phone << '\n';
+	outf.close();
+	outf.open(CUSTOMER_FILE, std::ios::app);
+	outf << username << ',' << password << ',' << "+977-98" << phone << '\n';
+	outf.close();
+}
+
 void Customer::createAccount()
 {
 
@@ -143,6 +187,50 @@ void Customer::createAccount()
 	outf << username << ',' << password << ',' << "+977-98" << phone << ','  << "true" << '\n';
 
 	outf.close();
+}
+
+bool Customer::validateOrdererLogin()
+{
+	bool isValid{ false };
+
+	std::cout << "\n\n";
+	std::cout << "Enter username: ";
+	std::cin >> username;
+	std::cout << "Enter password: ";
+	//Enter password for validation
+	char ch;
+	while ((ch = _getch()) != '\r') {
+		if (ch == '\b') { // Backspace character
+			if (!password.empty()) {
+				password.pop_back();
+				std::cout << "\b \b"; // Move cursor back and erase the character
+			}
+		}
+		else {
+			password.push_back(ch);
+			std::cout << '*';
+		}
+	}
+
+	if (!isNewOrderer())
+	{
+		isValid = true;
+		std::ifstream inf;
+		std::string orderFile = "RestaurantData/Orders/" + username + ".txt";
+		inf.open(orderFile);
+		if (inf.good())
+		{
+			std::string line;
+			std::getline(inf, line);
+
+			int commaIndex1 = line.find(",");
+			int commaIndex2 = line.find(",", commaIndex1 + 1);
+
+			phone = line.substr(commaIndex2 + 1);
+		}
+		inf.close();
+	}
+	return isValid;
 }
 
 bool Customer::validateLogin()

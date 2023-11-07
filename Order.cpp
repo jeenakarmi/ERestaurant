@@ -5,6 +5,7 @@
 #include <fstream>
 #include <vector>
 #include <iomanip>
+#include <conio.h>
 
 Order::Order()
 {
@@ -71,9 +72,12 @@ bool Order::placeOrder(Customer* customer)
 
 		if (customer->getUsername() == "")
 		{
+			customer->createOrderAccount();
 			// make a data file with record of order items for this customer
-			std::string orderfile = "temp.txt";
-			createOrderFile(currOrderItem, orderfile);
+			std::string orderFile = "RestaurantData/Orders/" + customer->getUsername() + ".txt";
+			std::ofstream outf(orderFile, std::ios::app);
+			outf << currOrderItem.itemName << ',' << currOrderItem.quantity << ',' << currOrderItem.itemPrice << ',' << (currOrderItem.orderComplete ? "true" : "false") << '\n';
+			outf.close();
 		}
 		else
 		{
@@ -84,13 +88,6 @@ bool Order::placeOrder(Customer* customer)
 		}
 
 		done = idDoneOrdering();
-	}
-
-	if (customer->getUsername() == "")
-	{
-		customer->createAccount();
-		std::string customerOrderFile = "RestaurantData/Orders/" + customer->getUsername() + ".txt";
-		std::rename("temp.txt", customerOrderFile.c_str());
 	}
 	return success;
 }
@@ -130,8 +127,14 @@ bool Order::displayCustomerOrder(Customer customer)
 		std::string line;
 		int sn = 0;
 		bool complete = false;
+		int lineCount = 0;
 		while (std::getline(inf, line))
 		{
+			if (lineCount == 0)
+			{
+				++lineCount;
+				continue;
+			}
 			std::string name;
 			float quantity;
 			float price;
@@ -189,8 +192,14 @@ void Order::displayOrderFromFile(std::string path)
 		std::string line;
 		int sn = 0;
 		bool complete = false;
+		int lineCount = 0;
 		while (std::getline(inf, line))
 		{
+			if (lineCount == 0)
+			{
+				++lineCount;
+				continue;
+			}
 			std::string name;
 			float quantity;
 			float price;
@@ -225,8 +234,15 @@ void Order::markItemOrderComplete(std::string path, int id)
 		std::string line;
 		int sn = 0;
 		bool complete = false;
+		int lineCount = 0;
 		while (std::getline(inf, line))
 		{
+			if (lineCount == 0)
+			{
+				++lineCount;
+				outf << line << '\n';
+				continue;
+			}
 			std::string name;
 			float quantity;
 			float price;
@@ -264,11 +280,17 @@ bool Order::isAllOrderComplete(Customer customer)
 	std::ifstream inf(orderFilePath);
 	int orderCount = 0;
 	
+	int lineCount = 0;
 	while (!inf.eof())
 	{
 		std::string line;
 		if (std::getline(inf, line))
 		{
+			if (lineCount == 0)
+			{
+				++lineCount;
+				continue;
+			}
 			int commaIndex1 = line.find(',');
 			int commaIndex2 = line.find(',', commaIndex1 + 1);
 			int commaIndex3 = line.find(',', commaIndex2 + 1);
@@ -348,37 +370,28 @@ void Order::payOrderBill(Customer customer)
 
 	std::cout << "Your password: ";
 	std::string password;
-	std::cin >> password;
-	
-	std::ifstream inf(CUSTOMER_LIST_FILE);
-	while (!inf.eof())
-	{
-		std::string line;
-		if (std::getline(inf, line))
-		{
-			int commaIndex1 = line.find(',');
-			int commaIndex2 = line.find(',', commaIndex1 + 1);
-
-			std::string username;
-			std::string passFile;
-
-			username = line.substr(0, commaIndex1);
-			passFile = line.substr(commaIndex1 + 1, commaIndex2 - commaIndex1 - 1);
-
-			if (customer.getUsername().compare(username) == 0)
-			{
- 				if (passFile.compare(password) == 0) 
-				{
-					std::cout << "Payment Successful!\n";
-					std::remove(orderFilePath.c_str());
-				}
-				else
-				{
-					std::cout << "Only authorized individual and carry out payment!\n";
-				}
-				break;
+	//Enter password for new customer
+	char ch;
+	while ((ch = _getch()) != '\r') {
+		if (ch == '\b') { // Backspace character
+			if (!password.empty()) {
+				password.pop_back();
+				std::cout << "\b \b"; // Move cursor back and erase the character
 			}
 		}
+		else {
+			password.push_back(ch);
+			std::cout << '*';
+		}
 	}
-	inf.close();
+
+	if (customer.getPassword() == password)
+	{
+		std::cout << "\nPayment Successful!\n";
+		std::remove(orderFilePath.c_str());
+	}
+	else
+	{
+		std::cout << "\nOnly authorized individual and carry out payment!\n";
+	}
 }
