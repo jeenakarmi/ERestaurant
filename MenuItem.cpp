@@ -27,48 +27,7 @@ float MenuItem::getPrice()
 {
 	return (menuItemPrice);
 }
-/*void MenuItem::showMenu()
-{
-	std::ifstream inf;
-	inf.open(MENU_FILE, std::ios::in);
 
-	if (!inf)
-	{
-		std::cout << "File could not be open! FILE_NAME: " << MENU_FILE << '\n';
-	}
-	else
-	{
-		std::cout << std::setfill(' ') << std::setw(5) << ' '
-			<< std::setw(20) << ' '
-			<< std::setw(10) << ' ' << std::setfill(' ') << std::endl;
-
-		std::cout << std::setw(5) << std::left << "SN"
-			<< std::setw(20) << std::left << "Item"
-			<< std::setw(10) << std::left << "Price" << std::endl;
-
-		std::cout << std::setfill('-') << std::setw(5) << '-'
-			<< std::setw(20) << '-'
-			<< std::setw(10) << '-' << std::setfill(' ') << std::endl;
-
-		std::string line;
-		while (std::getline(inf, line))
-		{
-			std::string menuItemName;
-			float menuItemPrice;
-			int id;
-
-			int commaIndex1 = line.find(",");
-			int commaIndex2 = line.find(",", commaIndex1 + 1);
-			id = std::stoi(line.substr(0, commaIndex1));
-			menuItemName = line.substr(commaIndex1 + 1, commaIndex2 - commaIndex1 - 1);
-			menuItemPrice = std::stof(line.substr(commaIndex2 + 1));
-
-			std::cout << std::setw(5) << std::left << id
-				<< std::setw(20) << std::left << menuItemName
-				<< std::setw(10) << std::left << menuItemPrice << std::endl;
-		}
-	}
-}*/
 void MenuItem::showMenu()
 {
 	SetWindowSizeAndCentre(); // Center the console window
@@ -129,10 +88,6 @@ void MenuItem::showMenu()
 				<< std::setw(10) << std::left << menuItemPrice << std::endl;
 		}
 
-
-		// Return to the original console position
-		//COORD originalPosition = { 0, 0 };
-		//SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), originalPosition);
 	}
 }
 void MenuItem::inputData()

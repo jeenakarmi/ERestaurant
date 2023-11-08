@@ -103,79 +103,6 @@ void Order::createOrderFile(Order currOrderItem, std::string path)
 	outf.close();
 }
 
-/*bool Order::displayCustomerOrder(Customer customer)
-{
-	system("cls");
-	bool fileExists{ true };
-	std::string filePath = "./RestaurantData/Orders/" + customer.getUsername() + ".txt";
-
-	std::ifstream inf(filePath);
-
-	int itemTotal = 0;
-	float priceTotal = 0.0f;
-
-	if (!inf)
-	{
-		std::cout << "No order file for this customer: " << customer.getUsername() << "!\n";
-		fileExists = false;
-	}
-	else
-	{
-		// === YESLAI BICH MA LANE === 
-
-		std::cout << std::setw(5) << std::left << std::setfill(' ') << "" << std::setw(20) << std::left << "" << std::setw(10) << std::left << "" << std::setw(11) << "" << std::setw(12) << "" << std::setfill(' ') << std::endl;
-		std::cout << std::setw(5) << "SN" << std::setw(20) << "Item" << std::setw(10) << "Quantity" << std::setw(11) << "Price" << std::setw(12) << "Status\n";
-		std::cout << std::setw(5) << std::left << std::setfill('-') << "" << std::setw(5) << std::left << "" << std::setw(20) << std::left << "" << std::setw(10) << "" << std::setw(10) << "" << std::setfill(' ') << std::endl;
-
-		//std::cout << "SN\tItem\tQuantity\tPrice\tStatus\n";
-		std::string line;
-		int sn = 0;
-		bool complete = false;
-		int lineCount = 0;
-		while (std::getline(inf, line))
-		{
-			if (lineCount == 0)
-			{
-				++lineCount;
-				continue;
-			}
-			std::string name;
-			float quantity;
-			float price;
-
-			int commaIndex1 = line.find(',');
-			int commaIndex2 = line.find(',', commaIndex1 + 1);
-			int commaIndex3 = line.find(',', commaIndex2 + 1);
-
-			name = line.substr(0, commaIndex1);
-			quantity = std::stof(line.substr(commaIndex1 + 1, commaIndex2));
-			price = std::stof(line.substr(commaIndex2 + 1, commaIndex3));
-			complete = line.substr(commaIndex3 + 1).compare("true") == 0 ? true : false;
-
-
-			std::cout << std::setw(5) << ++sn << std::setw(20) << name << std::setw(10) << quantity << std::setw(11) << price << std::setw(11) << (complete ? "Complete" : "Pending") << '\n';
-
-			//std::cout << ++sn << '\t' << name << '\t' << quantity << '\t' << price << '\t' << (complete ? "Complete" : "Pending") << '\n';
-			itemTotal += quantity;
-			priceTotal += price;
-		}
-	}
-	if (itemTotal != 0)
-	{
-		std::cout << "\n" << std::setw(5) << "" << std::setw(20) << "Total" << std::setw(10) << itemTotal << std::setw(11) << priceTotal << std::setw(5) << (isAllOrderComplete(customer) ? "Complete" : "Not Complete") << "\n";
-
-		
-		//std::cout << "Total\n";
-		//std::cout << "Item: " << itemTotal << '\n';
-		//std::cout << "Price: " << priceTotal << '\n';
-		
-		std::cout << "\nOrder Completed Status: " << (isAllOrderComplete(customer) ? "Complete" : "Not Complete") << '\n';
-
-	}
-	inf.close();
-	return fileExists;
-}*/
-
 bool Order::displayCustomerOrder(Customer customer) {
 
 	SetWindowSizeAndCentre(); // Center the console window
@@ -261,28 +188,6 @@ bool Order::displayCustomerOrder(Customer customer) {
 			itemNames.push_back(name); // Store item names
 		}
 
-
-		//for (const std::string& itemName : itemNames) {
-		//	if (itemName.length() > maxItemNameLength) {
-		//		maxItemNameLength = itemName.length();
-		//	}
-		//}
-		////  table
-		//for (const std::string& name : itemNames) {
-		//	std::string currentName = name;
-		//	if (name.length() < maxItemNameLength) {
-		//		currentName += std::string(maxItemNameLength - name.length(), ' ');
-		//	}
-		//}
-
-		/*std::cout << '\n';
-		std::cout << std::setfill(' ') << std::setw(separatorPadding) << ' '
-			<< std::setw(10) << std::setfill('-') << std::left << '-'
-			<< std::setw(20) << std::left << '-' << std::setw(20) << std::left << '-'
-			<< std::setw(16) << std::left << '-' << std::setfill(' ') << std::setw(separatorPadding) << ' '
-			<< std::endl;*/
-		//std::cout << std::setfill(' ') << std::setw(separatorPadding) << ' ' << seperator;
-
 		std::cout << std::setfill(' ') << std::setw(padding - 2) << ' ' << seperator;
 		std::cout << std::setfill(' ');
 
@@ -299,7 +204,6 @@ bool Order::displayCustomerOrder(Customer customer) {
 	inf.close();
 	return fileExists;
 }
-
 
 void Order::displayOrderFromFile(std::string path)
 {
@@ -347,7 +251,6 @@ void Order::displayOrderFromFile(std::string path)
 		std::cout << "--------------------------------------------------------------\n";
 	}
 }
-
 
 void Order::markItemOrderComplete(std::string path, int id)
 {
@@ -399,7 +302,6 @@ void Order::markItemOrderComplete(std::string path, int id)
 	std::remove(path.c_str());
 	std::rename("temp.txt", path.c_str());
 }
-
 
 bool Order::isAllOrderComplete(Customer customer)
 {
