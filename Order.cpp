@@ -204,6 +204,31 @@ bool Order::displayCustomerOrder(Customer customer) {
 		bool complete = false;
 		int lineCount = 0;
 
+		// Find the maximum item name length to set the column width
+		size_t maxItemNameLength = 0;
+		int consoleWidth = GetWindowSize().X;
+
+		std::stringstream tableHeadingStream;
+		tableHeadingStream << std::setw(10) << std::left << "SN"
+			<< std::setw(20) << std::left << "Item"
+			<< std::setw(10) << std::left << "Quantity"
+			<< std::setw(11) << std::left << "Price"
+			<< std::setw(10) << std::left << "Status"
+			<< '\n';
+		std::string tableHeading = tableHeadingStream.str();
+		int padding = (consoleWidth - tableHeading.length()) / 2;
+		std::cout << std::setw(padding) << ' ';
+		std::cout << tableHeading;
+		// for line
+		std::stringstream seperatorStream;
+		seperatorStream << '-' << std::setfill('-') << std::setw(tableHeading.length() + 4) << '-' << std::endl;
+		std::string seperator = seperatorStream.str();
+		int separatorPadding = (consoleWidth - seperator.length()) / 2;
+
+		std::cout << std::setfill(' ') << std::setw(padding - 2) << ' ' << seperator;
+		std::cout << std::setfill(' ');
+
+
 		while (std::getline(inf, line)) {
 			if (lineCount == 0) {
 				++lineCount;
@@ -218,63 +243,48 @@ bool Order::displayCustomerOrder(Customer customer) {
 			int commaIndex3 = line.find(',', commaIndex2 + 1);
 
 			name = line.substr(0, commaIndex1);
-			quantity = std::stof(line.substr(commaIndex1 + 1, commaIndex2));
-			price = std::stof(line.substr(commaIndex2 + 1, commaIndex3));
+			quantity = std::stof(line.substr(commaIndex1 + 1, commaIndex2 - commaIndex1 - 1));
+			price = std::stof(line.substr(commaIndex2 + 1, commaIndex3 - commaIndex2 - 1));
 			complete = line.substr(commaIndex3 + 1).compare("true") == 0 ? true : false;
 
+			// Printing the items
+			std::cout << std::setw(padding) << ' ';
+			std::cout << std::setw(10) << std::left << ++sn
+				<< std::setw(20) << std::left << name
+				<< std::setw(10) << std::left << quantity
+				<< std::setw(11) << std::left << price
+				<< std::setw(10) << std::left << (complete ? "Complete" : "Pending")
+				<< '\n';
 			
 			itemTotal += quantity;
 			priceTotal +=  price;
 			itemNames.push_back(name); // Store item names
 		}
 
-		// Find the maximum item name length to set the column width
-		size_t maxItemNameLength = 0;
-		int consoleWidth = GetWindowSize().X;
-		int padding = (consoleWidth - 45) / 2;
-		int separatorPadding = (consoleWidth - 50) / 2;   
 
-		for (const std::string& itemName : itemNames) {
-			if (itemName.length() > maxItemNameLength) {
-				maxItemNameLength = itemName.length();
-			}
-		}
-		std::cout << std::setw(padding) << ' ';
-		std::cout  << std::setw(10) << std::left << "SN"
-			 << std::setw(20) << std::left << "Item"
-			<< std::setw(10) <<  std::left <<"Quantity"
-			 << std::setw(11) <<  std::left <<"Price"
-			 << std::setw(12) << std::left << "Status"
-			<< '\n';
-		
-		// for line
+		//for (const std::string& itemName : itemNames) {
+		//	if (itemName.length() > maxItemNameLength) {
+		//		maxItemNameLength = itemName.length();
+		//	}
+		//}
+		////  table
+		//for (const std::string& name : itemNames) {
+		//	std::string currentName = name;
+		//	if (name.length() < maxItemNameLength) {
+		//		currentName += std::string(maxItemNameLength - name.length(), ' ');
+		//	}
+		//}
+
+		/*std::cout << '\n';
 		std::cout << std::setfill(' ') << std::setw(separatorPadding) << ' '
 			<< std::setw(10) << std::setfill('-') << std::left << '-'
 			<< std::setw(20) << std::left << '-' << std::setw(20) << std::left << '-'
 			<< std::setw(16) << std::left << '-' << std::setfill(' ') << std::setw(separatorPadding) << ' '
-			<< std::endl;
-		
-		//  table
-		for (const std::string& name : itemNames) {
-			std::string currentName = name;
-			if (name.length() < maxItemNameLength) {
-				currentName += std::string(maxItemNameLength - name.length(), ' ');
-			}
-			std::cout << std::setw(padding) << ' ';
-			std::cout << std::setw(10) << std::left << ++sn
-				 << std::setw(20) << std::left << currentName
-				 << std::setw(10) << std::left << quantity
-				 << std::setw(11) << std::left << price
-				 << std::setw(12) << std::left << (complete ? "Complete" : "Pending")
-				<< '\n';
-		}
+			<< std::endl;*/
+		//std::cout << std::setfill(' ') << std::setw(separatorPadding) << ' ' << seperator;
 
-		std::cout << '\n';
-		std::cout << std::setfill(' ') << std::setw(separatorPadding) << ' '
-			<< std::setw(10) << std::setfill('-') << std::left << '-'
-			<< std::setw(20) << std::left << '-' << std::setw(20) << std::left << '-'
-			<< std::setw(16) << std::left << '-' << std::setfill(' ') << std::setw(separatorPadding) << ' '
-			<< std::endl;
+		std::cout << std::setfill(' ') << std::setw(padding - 2) << ' ' << seperator;
+		std::cout << std::setfill(' ');
 
 		// table total information
 		std::cout << std::setw(padding) << ' ';
