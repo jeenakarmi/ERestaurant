@@ -1,4 +1,6 @@
 #include "Order.h"
+#include "UIElems.h"
+
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -101,7 +103,7 @@ void Order::createOrderFile(Order currOrderItem, std::string path)
 	outf.close();
 }
 
-bool Order::displayCustomerOrder(Customer customer)
+/*bool Order::displayCustomerOrder(Customer customer)
 {
 	system("cls");
 	bool fileExists{ true };
@@ -119,7 +121,7 @@ bool Order::displayCustomerOrder(Customer customer)
 	}
 	else
 	{
-		/* === YESLAI BICH MA LANE === */
+		// === YESLAI BICH MA LANE === 
 
 		std::cout << std::setw(5) << std::left << std::setfill(' ') << "" << std::setw(20) << std::left << "" << std::setw(10) << std::left << "" << std::setw(11) << "" << std::setw(12) << "" << std::setfill(' ') << std::endl;
 		std::cout << std::setw(5) << "SN" << std::setw(20) << "Item" << std::setw(10) << "Quantity" << std::setw(11) << "Price" << std::setw(12) << "Status\n";
@@ -162,18 +164,131 @@ bool Order::displayCustomerOrder(Customer customer)
 	{
 		std::cout << "\n" << std::setw(5) << "" << std::setw(20) << "Total" << std::setw(10) << itemTotal << std::setw(11) << priceTotal << std::setw(5) << (isAllOrderComplete(customer) ? "Complete" : "Not Complete") << "\n";
 
-		/*
-		std::cout << "Total\n";
-		std::cout << "Item: " << itemTotal << '\n';
-		std::cout << "Price: " << priceTotal << '\n';
-		*/
+		
+		//std::cout << "Total\n";
+		//std::cout << "Item: " << itemTotal << '\n';
+		//std::cout << "Price: " << priceTotal << '\n';
+		
 		std::cout << "\nOrder Completed Status: " << (isAllOrderComplete(customer) ? "Complete" : "Not Complete") << '\n';
 
 	}
 	inf.close();
 	return fileExists;
-}
+}*/
 
+bool Order::displayCustomerOrder(Customer customer) {
+
+	SetWindowSizeAndCentre(); // Center the console window
+	system("cls");
+
+	bool fileExists{ true };
+	std::string filePath = "./RestaurantData/Orders/" + customer.getUsername() + ".txt";
+
+	std::ifstream inf(filePath);
+	int itemTotal = 0;
+	float priceTotal = 0.0f;
+	float price;
+
+	if (!inf) {
+		Title("No order file for this customer: " + customer.getUsername(), centerY - 15); // Center the title
+		std::cout << "File could not be open! FILE_NAME: " << filePath << '\n';
+		fileExists = false;
+	}
+	else {
+		Title("Customer Order for " + customer.getUsername(), centerY - 15); // Center the title
+		std::cout << "\n\n";
+
+		std::vector<std::string> itemNames; // Store item names to find the longest
+		std::string line;
+		int sn = 0;
+		bool complete = false;
+		int lineCount = 0;
+
+		while (std::getline(inf, line)) {
+			if (lineCount == 0) {
+				++lineCount;
+				continue;
+			}
+			std::string name;
+			float quantity;
+			//float price;
+
+			int commaIndex1 = line.find(',');
+			int commaIndex2 = line.find(',', commaIndex1 + 1);
+			int commaIndex3 = line.find(',', commaIndex2 + 1);
+
+			name = line.substr(0, commaIndex1);
+			quantity = std::stof(line.substr(commaIndex1 + 1, commaIndex2));
+			price = std::stof(line.substr(commaIndex2 + 1, commaIndex3));
+			complete = line.substr(commaIndex3 + 1).compare("true") == 0 ? true : false;
+
+			
+			itemTotal += quantity;
+			priceTotal +=  price;
+			itemNames.push_back(name); // Store item names
+		}
+
+		// Find the maximum item name length to set the column width
+		size_t maxItemNameLength = 0;
+		int consoleWidth = GetWindowSize().X;
+		int padding = (consoleWidth - 45) / 2;
+		int separatorPadding = (consoleWidth - 50) / 2;   
+
+		for (const std::string& itemName : itemNames) {
+			if (itemName.length() > maxItemNameLength) {
+				maxItemNameLength = itemName.length();
+			}
+		}
+		std::cout << std::setw(padding) << ' ';
+		std::cout  << std::setw(10) << std::left << "SN"
+			 << std::setw(20) << std::left << "Item"
+			<< std::setw(10) <<  std::left <<"Quantity"
+			 << std::setw(11) <<  std::left <<"Price"
+			 << std::setw(12) << std::left << "Status"
+			<< '\n';
+		
+		// for line
+		std::cout << std::setfill(' ') << std::setw(separatorPadding) << ' '
+			<< std::setw(10) << std::setfill('-') << std::left << '-'
+			<< std::setw(20) << std::left << '-' << std::setw(20) << std::left << '-'
+			<< std::setw(16) << std::left << '-' << std::setfill(' ') << std::setw(separatorPadding) << ' '
+			<< std::endl;
+		
+		//  table
+		for (const std::string& name : itemNames) {
+			std::string currentName = name;
+			if (name.length() < maxItemNameLength) {
+				currentName += std::string(maxItemNameLength - name.length(), ' ');
+			}
+			std::cout << std::setw(padding) << ' ';
+			std::cout << std::setw(10) << std::left << ++sn
+				 << std::setw(20) << std::left << currentName
+				 << std::setw(10) << std::left << quantity
+				 << std::setw(11) << std::left << price
+				 << std::setw(12) << std::left << (complete ? "Complete" : "Pending")
+				<< '\n';
+		}
+
+		std::cout << '\n';
+		std::cout << std::setfill(' ') << std::setw(separatorPadding) << ' '
+			<< std::setw(10) << std::setfill('-') << std::left << '-'
+			<< std::setw(20) << std::left << '-' << std::setw(20) << std::left << '-'
+			<< std::setw(16) << std::left << '-' << std::setfill(' ') << std::setw(separatorPadding) << ' '
+			<< std::endl;
+
+		// table total information
+		std::cout << std::setw(padding) << ' ';
+		std::cout << std::setw(30) << std::left << "Total"
+			 << std::setw(10) << std::left << itemTotal
+			 << std::setw(11) << std::left << priceTotal
+			<< ""
+			<< std::setw(11) <<(isAllOrderComplete(customer) ? "Complete" : "Not Complete")
+			<< '\n';
+	}
+
+	inf.close();
+	return fileExists;
+}
 
 
 void Order::displayOrderFromFile(std::string path)
