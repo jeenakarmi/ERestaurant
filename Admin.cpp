@@ -76,7 +76,7 @@ std::string Admin::getUserName()
 	return username;
 }
 
-bool Admin::displayCustomersWhoOrdered()
+/*bool Admin::displayCustomersWhoOrdered()
 {
 	Title("Customers Who Ordered", centerY - 15);
 	std::cout << "\n\n";
@@ -89,12 +89,66 @@ bool Admin::displayCustomersWhoOrdered()
 		int dotIndex = orderPath.find('.');
 		std::string orderFileName = orderPath.substr(slashIndex + 1, dotIndex - slashIndex - 1);
 
-		/* === YETA CHANGE GARNE === */
+		// === YETA CHANGE GARNE 
 		std::cout << ++count << "\t" << orderFileName << '\n';
 	}
 	return count > 0;
-}
+}*/
 
+bool Admin::displayCustomersWhoOrdered()
+{
+	std::string path = "RestaurantData/Orders";
+	int count = 0;
+
+	COORD consoleSize = GetWindowSize();
+	int consoleHeight = consoleSize.Y;
+	int titleWidth = 20;
+
+	// Calculating the starting Y position for the list
+	int listY = consoleHeight / 2 - 7;
+
+	
+	Title("Customers Who Ordered", centerY -15);      // Displaying the title at the centered position
+
+	// Calculating padding for centering the table
+	int padding = (consoleSize.X - titleWidth) / 2;
+
+	std::cout << "\n";
+	std::cout << std::setw(padding) << ' ';
+	std::cout << std::setw(5) << std::left << "SN"
+		<< std::setw(titleWidth) << std::left << "Name" << std::endl;
+
+	std::cout << std::setfill(' ') << std::setw(padding - 2) << ' '
+		<< std::setw(7) << std::setfill('-')
+		<< std::setw(titleWidth) << std::left << '-'
+		<< std::endl;
+
+	for (const auto& entry : std::filesystem::directory_iterator(path))
+	{
+		std::string orderPath = entry.path().string();
+		int slashIndex = orderPath.find('\\');
+		int dotIndex = orderPath.find('.');
+		std::string orderFileName = orderPath.substr(slashIndex + 1, dotIndex - slashIndex - 1);
+
+		// Calculating the Y position for the order filename
+		int itemY = listY + count - 4;
+
+		// Calculating the X position for the count and order filename
+		int countX = padding;
+		int filenameX = padding + 5; // Adjusting the horizontal padding for filenames
+
+		// Setting the cursor position and displaying the count and order filename
+		gotoxy(countX, itemY);
+		std::cout << count + 1;
+		gotoxy(filenameX, itemY);
+		std::cout << orderFileName;
+		std::cout << "\n";
+
+		++count;
+	}
+
+	return count > 0;
+}
 bool Admin::displayOrdersOfCustomer(int id)
 {
 	int currIndex = 1;
@@ -116,9 +170,10 @@ bool Admin::displayOrdersOfCustomer(int id)
 	char ch;
 	std::cin >> ch;
 	bool exit = false;
+
 	if (std::toupper(ch) == 'Y')
 	{
-		std::cout << "ID: ";
+		std::cout  << "ID: ";
 		int orderItemId;
 		std::cin >> orderItemId;
 		cusOrder.markItemOrderComplete(orderFilePath, orderItemId);
@@ -239,7 +294,8 @@ bool Admin::mainMenuHandler()
 			system("cls");
 			if (displayCustomersWhoOrdered())
 			{
-				std::cout << "ID: ";
+				
+				std::cout << "\n\t\t\t\t\t" << "ID: ";
 				int id;
 				std::cin >> id;
 				bool exit = false;
