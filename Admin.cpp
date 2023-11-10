@@ -37,23 +37,20 @@
 }*/
 void Admin::getAdminData()
 {
-    // Clear screen for a clean display
-    system("cls");
-
     // Get console window size
     COORD consoleSize = GetWindowSize();
     int consoleWidth = consoleSize.X;
     int consoleHeight = consoleSize.Y;
 
     // Calculate padding for centering
-    int paddingX = (consoleWidth - 10) / 2; // Adjust based on your input field length
+    int paddingX = (consoleWidth - 10) / 2; 
 
 	Title("Admin Login ", centerY - 15); // Center the title
     std::cout << "\n\n";
-    std::cout << std::setw(paddingX + 5) << "Enter username: ";
+    std::cout << "Enter username: ";
     std::cin >> username;
 
-    std::cout << std::setw(paddingX + 5) << "Enter password: ";
+    std::cout  << "Enter password: ";
     
     // Admin password input with asterisks for security
     char ch;
