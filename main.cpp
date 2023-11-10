@@ -85,10 +85,8 @@ int getUserType()
 
 void unauthorizedUserMessage()
 {
-    system("cls");
-    std::cout << "\n\n";
-    system("cls");
-    std::cout << "\n\n\n";
+        system("CLS");
+        Title("Only authorized people can login!", centerY - 1);
     Sleep(900);
 }
 
