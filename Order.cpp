@@ -1,5 +1,6 @@
 #include "Order.h"
 #include "UIElems.h"
+#include "customer.h"
 
 #include <iostream>
 #include <string>
@@ -205,7 +206,7 @@ bool Order::displayCustomerOrder(Customer customer) {
 	return fileExists;
 }
 
-void Order::displayOrderFromFile(std::string path)
+/*void Order::displayOrderFromFile(std::string path)
 {
 	std::ifstream inf(path);
 	if (!inf)
@@ -215,7 +216,7 @@ void Order::displayOrderFromFile(std::string path)
 	else
 	{
 		
-		/* === YINIHARU CHANGE GARNE === */
+		// === YINIHARU CHANGE GARNE === 
 		std::cout << std::setfill(' ') << std::setw(5) << ' '
 			<< std::setw(20) << ' '
 			<< std::setw(10) << ' ' << std::setfill(' ') << std::endl;
@@ -249,6 +250,73 @@ void Order::displayOrderFromFile(std::string path)
 			std::cout << std::setw(3) << ++sn << std::setw(20) << name << std::setw(15) << quantity << std::setw(15) << (complete ? "Complete" : "Pending") << '\n';
 		}
 		std::cout << "--------------------------------------------------------------\n";
+	}
+}*/
+
+void Order::displayOrderFromFile(std::string path)
+{
+	std::ifstream inf(path);
+	if (!inf)
+	{
+		//std::cout << "No order file for this path: " << path << "!\n";
+		Title("No order file for this path ", centerY - 15); // Center the title
+	}
+	else
+	{
+		std::string line;
+		int sn = 0;
+		bool complete = false;
+		int lineCount = 0;
+
+		// Getting console window size
+		COORD consoleSize = GetWindowSize();
+		int consoleWidth = consoleSize.X;
+		int consoleHeight = consoleSize.Y;
+
+		Title("Details and Status of Orders", centerY - 15); // Center the title
+
+		// Calculating padding for centering
+		int tableWidth = 50;
+		int paddingX = (consoleWidth - tableWidth) / 2;
+
+		// Printing empty lines for vertical centering
+		for (int i = 0; i < (consoleHeight - 27) / 2; ++i)
+		{
+			std::cout << std::endl;
+		}
+
+		std::cout << std::setw(paddingX) << std::setfill(' ') << ' '
+			<< std::setw(5) << ' '
+			<< std::setw(20) << ' '
+			<< std::setw(10) << ' ' << std::setfill(' ') << std::endl;
+
+		std::cout << std::setw(paddingX) << ' ' << std::setw(5) << "SN" << std::setw(20) << "Item" << std::setw(15) << "Quantity" << std::setw(15) << "Status" << '\n';
+		std::cout << std::setw(paddingX - 2) << ' ' << "----------------------------------------------------\n";
+
+		while (std::getline(inf, line))
+		{
+			if (lineCount == 0)
+			{
+				++lineCount;
+				continue;
+			}
+			std::string name;
+			float quantity;
+			float price;
+
+			int commaIndex1 = line.find(',');
+			int commaIndex2 = line.find(',', commaIndex1 + 1);
+			int commaIndex3 = line.find(',', commaIndex2 + 1);
+
+			name = line.substr(0, commaIndex1);
+			quantity = std::stof(line.substr(commaIndex1 + 1, commaIndex2));
+			price = std::stof(line.substr(commaIndex2 + 1, commaIndex3));
+			complete = line.substr(commaIndex3 + 1).compare("true") == 0 ? true : false;
+
+			std::cout << std::setw(paddingX) << ' ' << std::setw(5) << ++sn << std::setw(20) << name << std::setw(15) << quantity << std::setw(15) << (complete ? "Complete" : "Pending") << '\n';
+		}
+		std::cout << std::setw(paddingX - 2) << ' ' << "----------------------------------------------------\n";
+		std::cout << "\n";
 	}
 }
 
