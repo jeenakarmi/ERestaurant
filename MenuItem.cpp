@@ -59,7 +59,7 @@ void MenuItem::showMenu()
 		int separatorPadding = (consoleWidth - 40) / 2;
 
 		std::cout << std::setw(padding) << ' ';
-		std::cout << std::setw(5) << std::left << "SN"
+		std::cout << std::setw(5) << std::left << "ID"
 			<< std::setw(20) << std::left << "Item"
 			<< std::setw(10) << std::left << "Price" << std::endl;
 

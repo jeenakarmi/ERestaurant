@@ -319,7 +319,7 @@ bool Admin::mainMenuHandler()
 		int opt = option - '0';
 		while (opt != DISPLAY_ORDERS && opt != DISPLAY_MENU && opt != EXIT_MENU) {
 			system("cls");
-			Title("ADMIN PAGE", centerY - 6);
+			Title("ADMIN PAGE", centerY - 4);
 			std::cout << "\n\n";
 			MenuItems({ "1: DISPLAY ORDER", "2: DISPLAY MENU", "3: EXIT" });
 			option = _getch();
