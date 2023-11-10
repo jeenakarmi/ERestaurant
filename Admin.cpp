@@ -13,7 +13,7 @@
 
 #include "UIElems.h"
 
-void Admin::getAdminData()
+/*void Admin::getAdminData()
 {
 	std::cout << "\n\n";
 	std::cout << "Enter username: ";
@@ -34,6 +34,43 @@ void Admin::getAdminData()
 		}
 	}
 	std::cout << "\n";
+}*/
+void Admin::getAdminData()
+{
+    // Clear screen for a clean display
+    system("cls");
+
+    // Get console window size
+    COORD consoleSize = GetWindowSize();
+    int consoleWidth = consoleSize.X;
+    int consoleHeight = consoleSize.Y;
+
+    // Calculate padding for centering
+    int paddingX = (consoleWidth - 10) / 2; // Adjust based on your input field length
+
+	Title("Admin Login ", centerY - 15); // Center the title
+    std::cout << "\n\n";
+    std::cout << std::setw(paddingX + 5) << "Enter username: ";
+    std::cin >> username;
+
+    std::cout << std::setw(paddingX + 5) << "Enter password: ";
+    
+    // Admin password input with asterisks for security
+    char ch;
+    while ((ch = _getch()) != '\r') {
+        if (ch == '\b') { // Backspace character
+            if (!password.empty()) {
+                password.pop_back();
+                std::cout << "\b \b"; // Move cursor back and erase the character
+            }
+        }
+        else {
+            password.push_back(ch);
+            std::cout << '*';
+        }
+    }
+
+    std::cout << "\n";
 }
 
 bool Admin::validateLogin()
