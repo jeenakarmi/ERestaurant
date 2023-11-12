@@ -108,7 +108,7 @@ void MenuItem::updateMenu(MenuItem newMenuItem)
 	inf.open(MENU_FILE);
 
 	std::ofstream outf;
-	outf.open("RestaurantData/temp.txt", std::ios::app);
+	outf.open("RestaurantData/temp1.txt", std::ios::app);
 
 	bool entryFound{ false }; // if the provided menu item is found and is there to be updated
 
@@ -147,7 +147,7 @@ void MenuItem::updateMenu(MenuItem newMenuItem)
 		outf.close();
 
 		std::remove("RestaurantData/Menu.txt");
-		std::rename("RestaurantData/temp.txt", "RestaurantData/Menu.txt");
+		std::rename("RestaurantData/temp1.txt", "RestaurantData/Menu.txt");
 	}
 }
 

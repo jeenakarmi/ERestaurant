@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="Admin.cpp" />
     <ClCompile Include="Customer.cpp" />
+    <ClCompile Include="InventoryItem.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuItem.cpp" />
     <ClCompile Include="Order.cpp" />
@@ -140,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="Admin.h" />
     <ClInclude Include="Customer.h" />
+    <ClInclude Include="InventoryItem.h" />
     <ClInclude Include="MenuItem.h" />
     <ClInclude Include="Order.h" />
     <ClInclude Include="UIElems.h" />
