@@ -4,4 +4,4 @@
 4,Burger,100
 5,Pizza,150
 6,Buff Shafale,40
-7,Chicken Shafale,60
+7,Mutton Shafale,200
