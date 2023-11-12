@@ -1,6 +1,7 @@
 #include "Order.h"
 #include "UIElems.h"
 #include "customer.h"
+#include "InventoryItem.h"
 
 #include <iostream>
 #include <string>
@@ -49,12 +50,14 @@ bool Order::placeOrder(Customer* customer)
 	while (!done)
 	{
 		MenuItem currItem;
+		InventoryItem inItem;
+
 		std::cout << "Item ID: ";
 		int id;
 		std::cin >> id;
 
 		currItem = currItem.getItem(id);
-
+		inItem = inItem.getItem(id);
 		Order currOrderItem;
 
 		currOrderItem.itemName = currItem.getName();
@@ -67,29 +70,38 @@ bool Order::placeOrder(Customer* customer)
 		float currItemQuantity;
 		std::cin >> currItemQuantity;
 
-		currOrderItem.quantity += currItemQuantity;
-		currOrderItem.itemPrice *= currOrderItem.quantity;
-
-		std::cout << "\nOrder Placed Successfully!\n";
-		std::cout << currOrderItem.itemName << '\t' << currOrderItem.quantity << '\t' << currOrderItem.itemPrice << '\n';
-
-		if (customer->getUsername() == "")
+		if (inItem.getStock() == 0 || inItem.getStock() < currItemQuantity)
 		{
-			customer->createOrderAccount();
-			// make a data file with record of order items for this customer
-			std::string orderFile = "RestaurantData/Orders/" + customer->getUsername() + ".txt";
-			std::ofstream outf(orderFile, std::ios::app);
-			outf << currOrderItem.itemName << ',' << currOrderItem.quantity << ',' << currOrderItem.itemPrice << ',' << (currOrderItem.orderComplete ? "true" : "false") << '\n';
-			outf.close();
+			system("cls");
+			menu.showMenu();
+			std::cout << "Inventory Underflow!!";
 		}
 		else
 		{
-			std::string customerOrderFile = "RestaurantData/Orders/" + customer->getUsername() + ".txt";
-			std::ofstream outf(customerOrderFile, std::ios::app);
-			outf << currOrderItem.itemName << ',' << currOrderItem.quantity << ',' << currOrderItem.itemPrice << ',' << (currOrderItem.orderComplete ? "true" : "false") << '\n';
-			outf.close();
-		}
+			currOrderItem.quantity += currItemQuantity;
+			currOrderItem.itemPrice *= currOrderItem.quantity;
 
+			std::cout << "\nOrder Placed Successfully!\n";
+			std::cout << currOrderItem.itemName << '\t' << currOrderItem.quantity << '\t' << currOrderItem.itemPrice << '\n';
+
+			if (customer->getUsername() == "")
+			{
+				customer->createOrderAccount();
+				// make a data file with record of order items for this customer
+				std::string orderFile = "RestaurantData/Orders/" + customer->getUsername() + ".txt";
+				std::ofstream outf(orderFile, std::ios::app);
+				outf << currOrderItem.itemName << ',' << currOrderItem.quantity << ',' << currOrderItem.itemPrice << ',' << (currOrderItem.orderComplete ? "true" : "false") << '\n';
+				outf.close();
+			}
+			else
+			{
+				std::string customerOrderFile = "RestaurantData/Orders/" + customer->getUsername() + ".txt";
+				std::ofstream outf(customerOrderFile, std::ios::app);
+				outf << currOrderItem.itemName << ',' << currOrderItem.quantity << ',' << currOrderItem.itemPrice << ',' << (currOrderItem.orderComplete ? "true" : "false") << '\n';
+				outf.close();
+			}
+			inItem.updateStock(inItem, currItemQuantity);
+		}
 		done = idDoneOrdering();
 	}
 	return success;

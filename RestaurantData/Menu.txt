@@ -7,8 +7,5 @@
 7,Chicken Shafale,60
 8,Chopseuy,450
 9,panipuri,50
-10,oreo shake,200
-11,old durbar,1500
-12,tuborg,450
-13,dew,80
-14,hans choila,300
+10,Oreo shake,200
+11,Old durbar,1500

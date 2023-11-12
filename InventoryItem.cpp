@@ -1,4 +1,5 @@
 #include "InventoryItem.h"
+#include "MenuItem.h"
 #include "UIElems.h"
 #include <iostream>
 #include <fstream>
@@ -74,18 +75,18 @@ void InventoryItem::showInventory()
 		{
 			int id;
 			std::string inventoryItemName;
-			float inventoryItemPrice;
+			int stock;
 			int commaIndex1 = inventoryItem.find(",");
 			int commaIndex2 = inventoryItem.find(",", commaIndex1 + 1);
 			id = std::stoi(inventoryItem.substr(0, commaIndex1));
 			inventoryItemName = inventoryItem.substr(commaIndex1 + 1, commaIndex2 - commaIndex1 - 1);
-			inventoryItemPrice = std::stof(inventoryItem.substr(commaIndex2 + 1));
+			stock = std::stoi(inventoryItem.substr(commaIndex2 + 1));
 
 			// Center-align the menu items
 			std::cout << std::setw(padding) << ' ';
 			std::cout << std::setw(5) << std::left << id
 				<< std::setw(20) << std::left << inventoryItemName
-				<< std::setw(10) << std::left << inventoryItemPrice << std::endl;
+				<< std::setw(10) << std::left << stock << std::endl;
 		}
 
 	}
@@ -102,11 +103,52 @@ void InventoryItem::inputData()
 	std::cin >> stock;
 }
 
-void InventoryItem::updateStock(int quantity)
+void InventoryItem::updateStock(InventoryItem item, int quantity)
 {
-	stock -= quantity;
-	if (stock < 0) {
-		stock = 0;  // Ensure stock does not go below zero
+	std::ifstream inf;
+	inf.open(INVENTORY_FILE);
+
+	std::ofstream outf;
+	outf.open("RestaurantData/temp2.txt", std::ios::app);
+
+	bool entryFound{ false }; // if the provided menu item is found and is there to be updated
+
+	if (inf.is_open())
+	{
+		std::string line;
+		while (std::getline(inf, line))
+		{
+			
+			int Stock;
+			int ID;
+			std::string Name;
+			int commaIndex1 = line.find(","); // "find" returns unsigned int while we're storing in signed int so possible loss of data
+			int commaIndex2 = line.find(",", commaIndex1 + 1);
+
+			ID = std::stoi(line.substr(0, commaIndex1));
+			Name = line.substr(commaIndex1 + 1, commaIndex2 - commaIndex1 - 1);
+			Stock = std::stoi(line.substr(commaIndex2 + 1));
+			if (item.getId() == ID) {
+				Stock -= quantity;
+				if (Stock < 0) {
+					Stock = 0;  // Ensure Stock does not go below zero
+					outf << ID << ',' << Name << ',' << Stock << '\n';
+				}
+				else
+				{
+					outf << ID << ',' << Name << ',' << Stock << '\n';
+				}
+			}
+			else
+			{
+				outf << ID << ',' << Name << ',' << Stock << '\n';
+			}
+		}
+		inf.close();
+		outf.close();
+
+		std::remove("RestaurantData/Inventory.txt");
+		std::rename("RestaurantData/temp2.txt", "RestaurantData/Inventory.txt");
 	}
 }
 
@@ -133,7 +175,7 @@ void InventoryItem::updateInventory(InventoryItem newInventoryItem)
 
 			tID = std::stoi(line.substr(0, commaIndex1));
 			tName = line.substr(commaIndex1 + 1, commaIndex2 - commaIndex1 - 1);
-			tPrice = std::stof(line.substr(commaIndex2 + 1));
+			tPrice = std::stoi(line.substr(commaIndex2 + 1));
 
 			if (tID == newInventoryItem.getId())
 			{
@@ -157,4 +199,38 @@ void InventoryItem::updateInventory(InventoryItem newInventoryItem)
 		std::remove("RestaurantData/Inventory.txt");
 		std::rename("RestaurantData/temp.txt", "RestaurantData/Inventory.txt");
 	}
+}
+
+InventoryItem InventoryItem::getItem(int itid)
+{
+	InventoryItem theItem;
+	std::ifstream inf;
+	inf.open(INVENTORY_FILE);
+
+	if (inf.is_open())
+	{
+		std::string line;
+		while (std::getline(inf, line))
+		{
+			int itemid;
+			std::string name;
+			int stocks;
+
+			int commaIndex1 = line.find(",");
+			int commaIndex2 = line.find(",", commaIndex1 + 1);
+
+			itemid = std::stoi(line.substr(0, commaIndex1));
+			name = line.substr(commaIndex1 + 1, commaIndex2 - commaIndex1 - 1);
+			stocks = std::stoi(line.substr(commaIndex2 + 1));
+
+			if (itid == itemid)
+			{
+				theItem.id = itemid;
+				theItem.inventoryItemName = name;
+				theItem.stock = stocks;
+			}
+		}
+	}
+	inf.close();
+	return theItem;
 }
