@@ -30,6 +30,9 @@
     <ClCompile Include="Order.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="InventoryItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Admin.h">
@@ -45,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UIElems.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InventoryItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

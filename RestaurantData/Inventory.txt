@@ -1,0 +1,13 @@
+1,Buff Momo,12
+2,Chicken Momo,13
+3,Buff Chowmein,12
+4,Burger,10
+5,Pizza,15
+6,Buff Shafale,15
+7,Chicken Shafale,15
+8,Chopseuy,10
+9,panipuri,12
+10,oreo shake,20
+11,old durbar,15
+0,,0
+12,hans choila,5

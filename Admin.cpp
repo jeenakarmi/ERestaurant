@@ -8,6 +8,7 @@
 #include <cstdio>
 #include <errno.h>
 #include "MenuItem.h"
+#include "InventoryItem.h"
 #include "Order.h"
 
 
@@ -314,11 +315,11 @@ bool Admin::mainMenuHandler()
 	{
 		char option = 0;
 		int opt = option - '0';
-		while (opt != DISPLAY_ORDERS && opt != DISPLAY_MENU && opt != EXIT_MENU) {
+		while (opt != DISPLAY_ORDERS && opt != DISPLAY_MENU && opt != INVENTORY && opt != EXIT_MENU) {
 			system("cls");
 			Title("ADMIN PAGE", centerY - 4);
 			std::cout << "\n\n";
-			MenuItems({ "1: DISPLAY ORDER", "2: DISPLAY MENU", "3: EXIT" });
+			MenuItems({ "1: DISPLAY ORDER", "2: DISPLAY MENU", "3. Inventory", "4: EXIT"});
 			option = _getch();
 			opt = option - '0';
 		}
@@ -361,6 +362,31 @@ bool Admin::mainMenuHandler()
 				MenuItem newItem;
 				newItem.inputData();
 				menu.updateMenu(newItem);
+				std::cout << "\n\nItem has been added succesfully...\n";
+				system("cls");
+			}
+			else
+			{
+				system("cls");
+				system("cls");
+				continue;
+			}
+		}
+		else if (opt == INVENTORY)
+		{
+			system("cls");
+
+			//Inventory 
+			InventoryItem inventory;
+			inventory.showInventory();
+			std::cout << "\nDo you want to update inventory?(y/N): ";
+			char updateInput;
+			std::cin >> updateInput;
+			if (std::toupper(updateInput) == 'Y')
+			{
+				InventoryItem newItem;
+				newItem.inputData();
+				inventory.updateInventory(newItem);
 				std::cout << "\n\nItem has been added succesfully...\n";
 				system("cls");
 			}

@@ -15,6 +15,7 @@ enum AdminMainMenuOptions {
 	THE_ZERO,
 	DISPLAY_ORDERS,
 	DISPLAY_MENU,
+	INVENTORY,	
 	EXIT_MENU
 };
 
