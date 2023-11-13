@@ -1,11 +1,10 @@
-1,Buff Momo,5
-2,Chicken Momo,5
-3,Buff Chowmein,5
-4,Burger,20
-5,Pizza,10
-6,Buff Shafale,20
-7,Chicken Shafale,20
-8,Chopseuy,10
-9,panipuri,15
-10,Oreo shake,20
-11,Old durbar,30
+1,Buff Momo,120,15
+2,Chicken Momo,130,15
+3,Buff Chowmein,120,15
+4,Burger,100,15
+5,Pizza,150,15
+6,Buff Shafale,40,15
+7,Chopseuy,450,15
+8,milk shake,200,15
+9,cold coffee,250,15
+10,tuborg,350,20

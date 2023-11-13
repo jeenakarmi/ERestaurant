@@ -319,7 +319,7 @@ bool Admin::mainMenuHandler()
 			system("cls");
 			Title("ADMIN PAGE", centerY - 4);
 			std::cout << "\n\n";
-			MenuItems({ "1: DISPLAY ORDER", "2: DISPLAY MENU", "3. Inventory", "4: EXIT"});
+			MenuItems({ "1: DISPLAY ORDER", "2: DISPLAY MENU", "3: Inventory", "4: EXIT"});
 			option = _getch();
 			opt = option - '0';
 		}
@@ -354,23 +354,7 @@ bool Admin::mainMenuHandler()
 			// DISPLAY MENU
 			MenuItem menu;
 			menu.showMenu();
-			std::cout << "\nDo you want to update menu?(y/N): ";
-			char updateInput;
-			std::cin >> updateInput;
-			if (std::toupper(updateInput) == 'Y')
-			{
-				MenuItem newItem;
-				newItem.inputData();
-				menu.updateMenu(newItem);
-				std::cout << "\n\nItem has been added succesfully...\n";
-				system("cls");
-			}
-			else
-			{
-				system("cls");
-				system("cls");
-				continue;
-			}
+			system("pause");
 		}
 		else if (opt == INVENTORY)
 		{
@@ -378,8 +362,9 @@ bool Admin::mainMenuHandler()
 
 			//Inventory 
 			InventoryItem inventory;
-			inventory.showInventory();
-			std::cout << "\nDo you want to update inventory?(y/N): ";
+			//inventory.showInventory();
+			inventory.menuHandler();
+			/*std::cout << "\nDo you want to update inventory?(y/N): ";
 			char updateInput;
 			std::cin >> updateInput;
 			if (std::toupper(updateInput) == 'Y')
@@ -395,7 +380,7 @@ bool Admin::mainMenuHandler()
 				system("cls");
 				system("cls");
 				continue;
-			}
+			}*/
 		}
 		else if (opt == EXIT_MENU)
 		{

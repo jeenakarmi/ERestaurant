@@ -1,5 +1,6 @@
 #include "MenuItem.h"
 #include "UIElems.h"
+#include "InventoryItem.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -33,11 +34,11 @@ void MenuItem::showMenu()
 	SetWindowSizeAndCentre(); // Center the console window
 
 	std::ifstream inf;
-	inf.open(MENU_FILE, std::ios::in);
+	inf.open(INVENTORY_FILE, std::ios::in);
 
 	if (!inf)
 	{
-		std::cout << "File could not be open! FILE_NAME: " << MENU_FILE << '\n';
+		std::cout << "File could not be open! FILE_NAME: " << INVENTORY_FILE << '\n';
 	}
 	else
 	{
@@ -72,22 +73,22 @@ void MenuItem::showMenu()
 
 		for (const std::string& menuItem : menuLines)
 		{
-			int id;
+			int id, stock;
 			std::string menuItemName;
 			float menuItemPrice;
 			int commaIndex1 = menuItem.find(",");
 			int commaIndex2 = menuItem.find(",", commaIndex1 + 1);
+			
 			id = std::stoi(menuItem.substr(0, commaIndex1));
 			menuItemName = menuItem.substr(commaIndex1 + 1, commaIndex2 - commaIndex1 - 1);
 			menuItemPrice = std::stof(menuItem.substr(commaIndex2 + 1));
-
+			
 			// Center-align the menu items
 			std::cout << std::setw(padding) << ' ';
 			std::cout << std::setw(5) << std::left << id
 				<< std::setw(20) << std::left << menuItemName
 				<< std::setw(10) << std::left << menuItemPrice << std::endl;
 		}
-
 	}
 }
 void MenuItem::inputData()
@@ -102,10 +103,10 @@ void MenuItem::inputData()
 	std::cin >> menuItemPrice;
 }
 
-void MenuItem::updateMenu(MenuItem newMenuItem)
+/*void MenuItem::updateMenu(MenuItem newMenuItem)
 {
 	std::ifstream inf;
-	inf.open(MENU_FILE);
+	inf.open(INVENTORY_FILE);
 
 	std::ofstream outf;
 	outf.open("RestaurantData/temp1.txt", std::ios::app);
@@ -147,15 +148,15 @@ void MenuItem::updateMenu(MenuItem newMenuItem)
 		outf.close();
 
 		std::remove("RestaurantData/Menu.txt");
-		std::rename("RestaurantData/temp1.txt", "RestaurantData/Menu.txt");
+		std::rename("RestaurantData/temp.txt", "RestaurantData/Menu.txt");
 	}
-}
+}*/
 
 MenuItem MenuItem::getItem(int itid)
 {
 	MenuItem theItem;
 	std::ifstream inf;
-	inf.open(MENU_FILE);
+	inf.open(INVENTORY_FILE);
 
 	if (inf.is_open())
 	{

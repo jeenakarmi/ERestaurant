@@ -3,7 +3,7 @@
 
 #include "Customer.h"
 
-static const std::string MENU_FILE{ "RestaurantData/Menu.txt" };
+//static const std::string INVENTORY_FILE{ "RestaurantData/Menu.txt" };
 
 class MenuItem
 {
