@@ -1,5 +1,3 @@
 nimeshakya,123
 sujal,321
-SauravDhoju,4321
-cindrella,567
 jina,456
