@@ -10,3 +10,13 @@ Make two folders
 * UserData
 Inside Restaurant Data, create a folder for Orders. `RestaurantData\Orders`
 Inside UserData, create two files `ADMIN.txt` and `CUSTOMER.txt`.
+
+Final required folders for the data looks like below:-
+```
+RestaurantData
+|__Orders
+|  Inventory.txt
+UserData
+|  ADMIN.txt
+|  CUSTOMER.txt
+```
