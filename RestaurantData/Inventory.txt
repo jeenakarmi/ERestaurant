@@ -1,10 +1,9 @@
-1,Buff Momo,120,15
-2,Chicken Momo,130,15
-3,Buff Chowmein,120,15
-4,Burger,100,15
-5,Pizza,150,15
-6,Buff Shafale,40,15
-7,Chopseuy,450,15
-8,milk shake,200,15
-9,cold coffee,250,15
-10,tuborg,350,20
+1,Buff Chowmein,120,15
+2,Burger,100,15
+3,Italian pizza,450,13
+4,Buff Shafale,40,15
+5,Chopseuy,450,15
+6,cold coffee,250,15
+7,Real juice,30,200
+8,Current noodles,259,15
+9,Juju Dhau,350,15

@@ -133,6 +133,29 @@ void InventoryItem::inputData()
 	std::cout << "Enter item stock: ";
 	std::cin >> stock;
 }
+void InventoryItem::inputId()
+{
+	std::cout << "Enter item id: ";
+	std::cin >> id;
+}
+void InventoryItem::inputRestData()
+{
+	std::cout << "Enter item name: ";
+	std::getline(std::cin >> std::ws, inventoryItemName);
+	std::cout << "Enter item price: ";
+	std::cin >> inventoryItemPrice;
+	std::cout << "Enter item stock: ";
+	std::cin >> stock;
+}
+void InventoryItem::inputNewData()
+{
+	std::cout << "Enter new item name: ";
+	std::getline(std::cin >> std::ws, inventoryItemName);
+	std::cout << "Enter item price: ";
+	std::cin >> inventoryItemPrice;
+	std::cout << "Enter item stock: ";
+	std::cin >> stock;
+}
 
 void InventoryItem::updateStock(InventoryItem item, int quantity)
 {
@@ -288,19 +311,22 @@ InventoryItem InventoryItem::getItem(int itid)
 		{
 			int itemid;
 			std::string name;
+			float price;
 			int stocks;
 
 			int commaIndex1 = line.find(",");
 			int commaIndex2 = line.find(",", commaIndex1 + 1);
-
+			int commaIndex3 = line.find(",", commaIndex2 + 1);
 			itemid = std::stoi(line.substr(0, commaIndex1));
 			name = line.substr(commaIndex1 + 1, commaIndex2 - commaIndex1 - 1);
-			stocks = std::stoi(line.substr(commaIndex2 + 1));
+			price = std::stof(line.substr(commaIndex2 + 1, commaIndex3 - commaIndex2 - 1));
+			stocks = std::stoi(line.substr(commaIndex3 + 1));
 
 			if (itid == itemid)
 			{
 				theItem.id = itemid;
 				theItem.inventoryItemName = name;
+				theItem.inventoryItemPrice = price;
 				theItem.stock = stocks;
 			}
 		}
@@ -335,34 +361,27 @@ bool InventoryItem::menuHandler()
 		else if (opt == ADD_ITEM)
 		{
 			InventoryItem inventory, newItem;
-			bool exit = false;
-			while (!exit)
+			system("cls");
+			inventory.showInventory();
+			std::cout << "\nAdd Item\n";
+			std::cout << "\n";
+			//std::cout << "Max id in inventory: " << inventory.getMaxId();
+			newItem.inputId();
+			if (newItem.getId() <= getMaxId())
 			{
-				system("cls");
-				inventory.showInventory();
-				std::cout << "\nAdd Item\n";
-				std::cout << "\n";
-				//std::cout << "Max id in inventory: " << inventory.getMaxId();
-				newItem.inputData();
-				if (newItem.getId() <= getMaxId())
-				{
-					exit = false;
-					std::cout << "\n\nItems can only be added...\nGo to UPDATW INVENTORY\n";
-					system("pause");
-				}
-				else if ((getMaxId() + 1) != newItem.getId())
-				{
-					exit = false;
-					std::cout << "\n\nEnter valid ID...\nID must be chronological...\n";
-					system("pause");
-				}
-				else
-				{
-					inventory.updateInventory(newItem);
-					exit = true;
-				}
+				std::cout << "\n\nInvalid ID...\nEnter ID not present above...\n";
 			}
-			std::cout << "\n\nItem has been added succesfully...\n";
+			else if ((getMaxId() + 1) != newItem.getId())
+			{
+				std::cout << "\n\nEnter valid ID...\nID must be in chronology...\n";
+			}
+			else
+			{
+				newItem.inputRestData();
+				inventory.updateInventory(newItem);
+				std::cout << "\n\nItem has been added succesfully...\n";
+			}
+			
 			system("pause");
 		}
 		else if (opt == REMOVE_ITEM)
@@ -373,29 +392,44 @@ bool InventoryItem::menuHandler()
 			inventory.showInventory();
 			std::cout << "\nRemove Item\n";
 			std::cout << "\n";
-			std::cout << "Enter ID of the item to remove: ";
-			std::cin >> itemId;
-			currItem.removeInventory(itemId);
-			std::cout << "\n\nItem has been removed succesfully...\n";
+			currItem.inputId();
+			if (currItem.getId() > getMaxId() || currItem.getId() == 0)
+			{
+				std::cout << "\n\nEnter valid ID...\n";
+			}
+			else
+			{
+				currItem = currItem.getItem(currItem.getId());
+				std::cout << " Current Item: " << currItem.inventoryItemName << "\n";
+				std::cout << " Current Price: " << currItem.inventoryItemPrice << "\n";
+				std::cout << " Current Stock: " << currItem.stock << "\n\n";
+				currItem.removeInventory(currItem.getId());
+				std::cout << "\n\nItem has been removed succesfully...\n";
+			}
 			system("pause");
 		}
 		else if (opt == UPDATE_INVENTORY)
 		{
 			
-			InventoryItem inventory, newItem;
+			InventoryItem inventory, currItem;
 			system("cls");
 			inventory.showInventory();
 			std::cout << "\nUpdate Item\n";
 			std::cout << "\n";
 			//std::cout << "Max id in inventory: " << inventory.getMaxId();
-			newItem.inputData();
-			if (newItem.getId() > getMaxId()) 
+			currItem.inputId();
+			if (currItem.getId() > getMaxId() || currItem.getId() == 0)
 			{
-				std::cout << "\n\nItems can only be updated...\nGo to ADD ITEM\n";
+				std::cout << "\n\nInvalid ID...\nEnter ID from above...\n";
 			}
 			else
 			{
-				inventory.updateInventory(newItem);
+				currItem = currItem.getItem(currItem.getId());
+				std::cout << " Current Item: " << currItem.inventoryItemName << "\n";
+				std::cout << " Current Price: " << currItem.inventoryItemPrice << "\n";
+				std::cout << " Current Stock: " << currItem.stock << "\n\n";
+				currItem.inputNewData();
+				inventory.updateInventory(currItem);
 				std::cout << "\n\nItem has been added succesfully...\n";
 			}
 			system("pause");
