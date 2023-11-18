@@ -94,7 +94,7 @@ int main()
 {
         SetWindowSizeAndCentre();
         Title("Erestaurant - A Restaurant Management System", centerY - 1);
-    _getch();
+        Sleep(1200);
 
     system("cls");
 
@@ -152,8 +152,12 @@ int main()
                 {
                         system("CLS");
                         Order currOrder;
-                        currOrder.placeOrder(&currCustomer);
+                        if (currOrder.placeOrder(&currCustomer))
+                        {
+                                std::cout << "Orders Placed Successfully!\n";
+                        }
                         std::remove("temp.txt");
+                        system("pause");
                 }
                 else if (opt == static_cast<int>(CUSTOMER_CHOICES::VIEW_ORDER))
                 {

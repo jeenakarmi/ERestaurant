@@ -40,8 +40,10 @@ public:
 	bool isNewUser();
 	bool isNewOrderer();
 
-	void createOrderAccount();
+	bool createOrderAccount();
 	void createAccount();
+
+	void resetAccount();
 
 	bool validateLogin();
 	bool validateOrdererLogin();

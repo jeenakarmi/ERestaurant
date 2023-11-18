@@ -81,12 +81,18 @@ bool Order::placeOrder(Customer* customer)
 			currOrderItem.quantity += currItemQuantity;
 			currOrderItem.itemPrice *= currOrderItem.quantity;
 
-			std::cout << "\nOrder Placed Successfully!\n";
+			std::cout << "\Order placed!\n";
 			std::cout << currOrderItem.itemName << '\t' << currOrderItem.quantity << '\t' << currOrderItem.itemPrice << '\n';
 
 			if (customer->getUsername() == "")
 			{
-				customer->createOrderAccount();
+				if (!customer->createOrderAccount())
+				{
+					done = true;
+					success = false;
+					customer->resetAccount();
+					break;
+				}
 				// make a data file with record of order items for this customer
 				std::string orderFile = "RestaurantData/Orders/" + customer->getUsername() + ".txt";
 				std::ofstream outf(orderFile, std::ios::app);

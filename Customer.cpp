@@ -46,6 +46,7 @@ void Customer::getUserInput()
 
 	//Enter password for new customer
 	char ch;
+
 	while ((ch = _getch()) != '\r') {
 		if (ch == '\b') { // Backspace character
 			if (!password.empty()) {
@@ -63,7 +64,7 @@ void Customer::getUserInput()
 	while (true)
 	{
 
-		std::cout << "Enter phonenumber: +977-98";
+		std::cout << "Enter phonenumber: ";
 		std::cin >> phone;
 		if (!isValidPhoneNumber(phone))
 		{
@@ -75,7 +76,7 @@ void Customer::getUserInput()
 }
 
 bool isValidPhoneNumber(std::string phone) {
-	const std::regex pattern4("\\d{8}"); // regular expression pattern for 10-digit integer phone number
+	const std::regex pattern4("\\d{10}"); // regular expression pattern for 10-digit integer phone number
 	return regex_match(phone, pattern4); // returns true if the phone number matches the pattern
 }
 
@@ -135,6 +136,7 @@ bool Customer::isNewOrderer()
 
 	if (inf.good())
 	{
+		std::cout << "User already exists!\n";
 		isNew = false;
 	}
 
@@ -143,26 +145,23 @@ bool Customer::isNewOrderer()
 	return isNew;
 }
 
-void Customer::createOrderAccount()
+bool Customer::createOrderAccount()
 {
-	bool allGood{ false };
-	while (!allGood)
+	getUserInput();
+	if (!isNewOrderer())
 	{
-		getUserInput();
-		if (isNewOrderer())
-		{
-			allGood = true;
-		}
+		return false;
 	}
 
 	std::ofstream outf;
 	std::string orderFile = "RestaurantData/Orders/" + username + ".txt";
 	outf.open(orderFile, std::ios::app);
-	outf << username << ',' << password << ',' << "+977-98" << phone << '\n';
+	outf << username << ',' << password << ',' << phone << '\n';
 	outf.close();
 	outf.open(CUSTOMER_FILE, std::ios::app);
-	outf << username << ',' << password << ',' << "+977-98" << phone << '\n';
+	outf << username << ',' << password << ',' << phone << '\n';
 	outf.close();
+	return true;
 }
 
 void Customer::createAccount()
@@ -187,6 +186,15 @@ void Customer::createAccount()
 	outf << username << ',' << password << ',' << "+977-98" << phone << ','  << "true" << '\n';
 
 	outf.close();
+}
+
+void Customer::resetAccount()
+{
+	username = "";
+	password = "";
+	phone = "";
+	email = "";
+	allOrderComplete = false;
 }
 
 bool Customer::validateOrdererLogin()
