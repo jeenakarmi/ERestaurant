@@ -60,16 +60,10 @@ int getUserType()
     {
 
         if (opt == USER_ADMIN) {
-            system("cls");
-            Sleep(900);
-            system("cls");
             user = USER_ADMIN;
             break;
         }
         else if (opt == USER_CUSTOMER) {
-            system("cls");
-            Sleep(900);
-            system("cls");
             user = USER_CUSTOMER;
             break;
         }
@@ -93,8 +87,23 @@ void unauthorizedUserMessage()
 int main()
 {
         SetWindowSizeAndCentre();
-        Title("Erestaurant - A Restaurant Management System", centerY - 1);
-        Sleep(1200);
+        std::string titleStr{ "Erestaurant - A Restaurant Management System" };
+
+        COORD consoleSize = GetWindowSize();
+        int consoleWidth = consoleSize.X;
+        int consoleHeight = consoleSize.Y;
+
+        int textWidth = titleStr.length();
+        int paddingX = (consoleWidth - textWidth) / 2;
+        gotoxy(paddingX, centerY - 1);
+
+        for (const auto c : titleStr)
+        {
+                std::cout << c;
+                Sleep(50);
+        }
+        std::cout << '\n';
+        Sleep(1000);
 
     system("cls");
 

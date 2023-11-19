@@ -441,6 +441,12 @@ void Order::cancelOrder(Customer customer)
 		std::string line;
 		if (std::getline(inf, line))
 		{
+			if (orderCount == 0)
+			{
+				outf << line << '\n';
+				++orderCount;
+				continue;
+			}
 			int commaIndex1 = line.find(',');
 			int commaIndex2 = line.find(',', commaIndex1 + 1);
 			int commaIndex3 = line.find(',', commaIndex2 + 1);
