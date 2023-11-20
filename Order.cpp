@@ -436,6 +436,7 @@ void Order::cancelOrder(Customer customer)
 	std::ifstream inf(orderFilePath);
 	std::ofstream outf("temp.txt", std::ios::app);
 	int orderCount = 0;
+	InventoryItem inventory;
 	while (!inf.eof())
 	{
 		std::string line;
@@ -462,6 +463,10 @@ void Order::cancelOrder(Customer customer)
 			else if (!orderComplete && id == count)
 			{
 				std::cout << "Order Canceled!\n";
+				std::string itemName = line.substr(0, commaIndex1);
+				int quantity = std::stoi(line.substr(commaIndex1 + 1, commaIndex2 - commaIndex1 - 1));
+
+				inventory.cancelledOrderUpdate(itemName, quantity);
 				continue;
 			}
 			else

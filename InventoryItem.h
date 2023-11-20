@@ -42,6 +42,7 @@ public:
 	//void addInventory(InventoryItem newInventoryItem);
 	void removeInventory(int itemId);
 	void updateStock(InventoryItem item, int quantity);
+	void cancelledOrderUpdate(std::string itemName, int quantity);
 
 	InventoryItem getItem(int itid);
 };

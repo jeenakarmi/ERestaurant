@@ -448,3 +448,56 @@ bool InventoryItem::menuHandler()
 	}
 	return exit;
 }
+ 
+void InventoryItem::cancelledOrderUpdate(std::string itemName, int quantity)
+{
+	std::ifstream inf;
+	inf.open(INVENTORY_FILE);
+
+	std::ofstream outf;
+	outf.open("RestaurantData/temp.txt", std::ios::app);
+
+	bool entryFound{ false }; // if the provided menu item is found and is there to be updated
+
+	if (inf.is_open())
+	{
+		std::string line;
+		while (std::getline(inf, line))
+		{
+
+			int Stock;
+			int ID;
+			std::string Name;
+			float Price;
+			int commaIndex1 = line.find(","); // "find" returns unsigned int while we're storing in signed int so possible loss of data
+			int commaIndex2 = line.find(",", commaIndex1 + 1);
+			int commaIndex3 = line.find(",", commaIndex2 + 1);
+
+			ID = std::stoi(line.substr(0, commaIndex1));
+			Name = line.substr(commaIndex1 + 1, commaIndex2 - commaIndex1 - 1);
+			Price = std::stof(line.substr(commaIndex2 + 1, commaIndex3 - commaIndex2 - 1));
+			Stock = std::stoi(line.substr(commaIndex3 + 1));
+			if (itemName == Name) {
+				Stock += quantity;
+				if (Stock < 0) {
+					Stock = 0;  // Ensure Stock does not go below zero
+					outf << ID << ',' << Name << ',' << Price << ',' << Stock << '\n';
+				}
+				else
+				{
+					outf << ID << ',' << Name << ',' << Price << ',' << Stock << '\n';
+				}
+			}
+			else
+			{
+				outf << ID << ',' << Name << ',' << Price << ',' << Stock << '\n';
+			}
+		}
+		inf.close();
+		outf.close();
+
+		std::remove("RestaurantData/Inventory.txt");
+		std::rename("RestaurantData/temp.txt", "RestaurantData/Inventory.txt");
+	}
+	
+}
