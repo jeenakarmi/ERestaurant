@@ -76,8 +76,23 @@ void Customer::getUserInput()
 }
 
 bool isValidPhoneNumber(std::string phone) {
-	const std::regex pattern4("\\d{10}"); // regular expression pattern for 10-digit integer phone number
-	return regex_match(phone, pattern4); // returns true if the phone number matches the pattern
+	// regular expression pattern for 10-digit integer phone number
+	const std::regex pattern1("^984\\d{7}");
+	const std::regex pattern2("^985\\d{7}");
+	const std::regex pattern3("^986\\d{7}");
+	const std::regex pattern4("^974\\d{7}");
+	const std::regex pattern5("^975\\d{7}");
+	const std::regex pattern6("^972\\d{7}");
+	const std::regex pattern7("^963\\d{7}");
+	const std::regex pattern8("^980\\d{7}");
+	const std::regex pattern9("^981\\d{7}");
+	const std::regex pattern10("^982\\d{7}");
+	const std::regex pattern11("^988\\d{7}");
+	const std::regex pattern12("^961\\d{7}");
+
+	return regex_match(phone, pattern1) || regex_match(phone, pattern2) || regex_match(phone, pattern3) || regex_match(phone, pattern4) 
+		|| regex_match(phone, pattern5) || regex_match(phone, pattern6) || regex_match(phone, pattern7) || regex_match(phone, pattern8) 
+		|| regex_match(phone, pattern9) || regex_match(phone, pattern10) || regex_match(phone, pattern11) || regex_match(phone, pattern12); // returns true if the phone number matches the pattern
 }
 
 
