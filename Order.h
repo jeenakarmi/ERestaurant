@@ -29,5 +29,7 @@ public:
 	bool isAllOrderComplete(Customer customer);
 
 	void cancelOrder(Customer customer);
-	void payOrderBill(Customer customer);
+	void payOrderBill(Customer customer, std::string finance_report_filename);
+
+	void addOrdersToReport(Customer customer, std::string finance_report_filename);
 };

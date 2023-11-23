@@ -36,6 +36,7 @@
 	}
 	std::cout << "\n";
 }*/
+
 void Admin::getAdminData()
 {
     // Get console window size
@@ -305,6 +306,11 @@ void Admin::denyRequest(int id)
 
 	std::remove(path.c_str());
 	customerFile.close();
+}
+
+void Admin::viewFinanceReport()
+{
+	// finance report functions here
 }
 
 bool Admin::mainMenuHandler()

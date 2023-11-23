@@ -1,7 +1,11 @@
 #include <iostream>
 #include <string>
+#include <algorithm>
 #include <Windows.h>
 #include <conio.h>
+#include <chrono>
+#include <ctime>
+#include <filesystem>
 
 #include "Admin.h"
 #include "Customer.h"
@@ -84,6 +88,56 @@ void unauthorizedUserMessage()
     Sleep(900);
 }
 
+bool fileExists(const std::string& name)
+{
+        if (FILE* file = fopen(name.c_str(), "r"))
+        {
+                fclose(file);
+                return true;
+        }
+        else return false;
+}
+
+std::string initFinancialReport()
+{
+        // create file for financial report
+        auto time = std::chrono::system_clock::now();
+        std::time_t curr_time = std::chrono::system_clock::to_time_t(time);
+        std::string str_time = std::ctime(&curr_time);
+        int spaceIndex1 = str_time.find(' ');
+        int spaceIndex2 = str_time.find(' ', spaceIndex1 + 1);
+        int spaceIndex3 = str_time.find(' ', spaceIndex2 + 1);
+        int spaceIndex4 = str_time.find(' ', spaceIndex3 + 1);
+
+        // extracting individual date and time info from the whole string ( str_time )
+        std::string dayStr = str_time.substr(0, spaceIndex1);
+        std::string month = str_time.substr(spaceIndex1 + 1, spaceIndex2 - spaceIndex1 - 1);
+        std::string dayNum = str_time.substr(spaceIndex2 + 1, spaceIndex3 - spaceIndex2 - 1);
+        std::string timeStr = str_time.substr(spaceIndex3 + 1, spaceIndex4 - spaceIndex3 - 1);
+        std::string year = str_time.substr(spaceIndex4 + 1, str_time.length() - spaceIndex4 - 2);
+
+        // file path for financial report using the individual part
+        std::filesystem::create_directories("./RestaurantData/FinanceReport/" + year + '/' + month);
+        std::string report_file_name = "./RestaurantData/FinanceReport/" + year + '/' + month + '/' + dayStr + '_' + dayNum + ".csv";
+
+        if (!fileExists(report_file_name))
+        {
+                std::ofstream outf;
+                outf.open(report_file_name, std::ios::app);
+                outf << "SN,Item Name,Item Price,Quantity,Total Price\n";
+                outf.close();
+        }
+        else
+        {
+                std::cout << "File already exists\n";
+        }
+
+        std::cout << report_file_name << '\n';
+        system("pause");
+
+        return report_file_name;
+}
+
 int main()
 {
         SetWindowSizeAndCentre();
@@ -107,17 +161,14 @@ int main()
 
     system("cls");
 
+    std::string report_file_name{ initFinancialReport() };
+
     bool quit{ false }; // application termination flag
     while (!quit)
     {
         int user{ getUserType() };
         if (user == USER_ADMIN)
         {
-            // admin login validation page
-            
-            // prompts out the message adim login
-            
-
             Admin admin;
             admin.getAdminData();
             bool isAdminAuthorized{ admin.validateLogin() };
@@ -164,9 +215,11 @@ int main()
                         if (currOrder.placeOrder(&currCustomer))
                         {
                                 std::cout << "Orders Placed Successfully!\n";
+
+                                std::remove("temp.txt");
+                                system("pause");
+                                break;
                         }
-                        std::remove("temp.txt");
-                        system("pause");
                 }
                 else if (opt == static_cast<int>(CUSTOMER_CHOICES::VIEW_ORDER))
                 {
@@ -205,7 +258,7 @@ int main()
                                                         std::cin >> checkout;
                                                         if (std::toupper(checkout) == 'Y')
                                                         {
-                                                                myOrder.payOrderBill(currCustomer);
+                                                                myOrder.payOrderBill(currCustomer, report_file_name);
                                                         }
                                                 }
                                         }
@@ -242,7 +295,7 @@ int main()
                                                 std::cin >> checkout;
                                                 if (std::toupper(checkout) == 'Y')
                                                 {
-                                                        myOrder.payOrderBill(currCustomer);
+                                                        myOrder.payOrderBill(currCustomer, report_file_name);
                                                 }
                                         }
                                 }

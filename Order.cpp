@@ -491,7 +491,149 @@ void Order::cancelOrder(Customer customer)
 	}
 }
 
-void Order::payOrderBill(Customer customer)
+void Order::addOrdersToReport(Customer customer, std::string finance_report_filename)
+{
+	std::string orderFilePath{ "RestaurantData/Orders/" + customer.getUsername() + ".txt" };
+
+	// yeha nira tyo finance report ma add garne
+	// paila check if tyo report ma aile ko order xa ki nai
+	std::ifstream report_inf;
+	std::ifstream order_inf;
+	order_inf.open(orderFilePath);
+
+	int orderLineNum = 0;
+	while (!order_inf.eof())
+	{
+		std::string orderLine;
+		if (std::getline(order_inf, orderLine))
+		{
+			if (orderLineNum == 0)
+			{
+				++orderLineNum;
+				continue;
+			}
+			int orderCommaIndex1 = orderLine.find(',');
+			int orderCommaIndex2 = orderLine.find(',', orderCommaIndex1 + 1);
+			int orderCommaIndex3 = orderLine.find(',', orderCommaIndex2 + 1);
+			// reading items from the order file first
+			std::string orderItemName = orderLine.substr(0, orderCommaIndex1);
+			int orderQantity = std::stoi(orderLine.substr(orderCommaIndex1 + 1, orderCommaIndex2 - orderCommaIndex1 - 1));
+			int orderTotalPrice = std::stoi(orderLine.substr(orderCommaIndex2 + 1, orderCommaIndex3 - orderCommaIndex2 - 1));
+
+			int reportLineNum = 0;
+			// check if order item exists in report file
+			bool itemExistsInReport{ false };
+			report_inf.open(finance_report_filename);
+			while (!report_inf.eof())
+			{
+				std::string reportLine;
+				if (std::getline(report_inf, reportLine))
+				{
+					if (reportLineNum == 0)
+					{
+						++reportLineNum;
+						continue;
+					}
+					int reportCommaIndex1 = reportLine.find(',');
+					int reportCommaIndex2 = reportLine.find(',', reportCommaIndex1 + 1);
+					std::string reportItemName = reportLine.substr(reportCommaIndex1 + 1, reportCommaIndex2 - reportCommaIndex1 - 1);
+
+					// item exists if names match
+					if (reportItemName == orderItemName)
+					{
+						itemExistsInReport = true;
+						break;
+					}
+				}
+			}
+			// file ko end ma pugesi yesto garnuparne rahexa
+			report_inf.close();
+			report_inf.open(finance_report_filename);
+
+			// temp file to copy report
+			std::ofstream temp_outf;
+			temp_outf.open("temp.txt", std::ios::app);
+			if (itemExistsInReport)
+			{
+				reportLineNum = 0;
+				// jun name milxa tesko quantity ra total badhaune
+				while (!report_inf.eof())
+				{
+					std::string reportLine;
+					if (std::getline(report_inf, reportLine))
+					{
+						if (reportLineNum == 0)
+						{
+							++reportLineNum;
+							temp_outf << reportLine << '\n';
+							continue;
+						}
+						int reportCommaIndex1 = reportLine.find(',');
+						int reportCommaIndex2 = reportLine.find(',', reportCommaIndex1 + 1);
+						int reportCommaIndex3 = reportLine.find(',', reportCommaIndex2 + 1);
+						int reportCommaIndex4 = reportLine.find(',', reportCommaIndex3 + 1);
+
+						int reportSN = std::stoi(reportLine.substr(0, reportCommaIndex1));
+						std::string reportItemName = reportLine.substr(reportCommaIndex1 + 1, reportCommaIndex2 - reportCommaIndex1 - 1);
+						float reportItemPrice = std::stof(reportLine.substr(reportCommaIndex2 + 1, reportCommaIndex3 - reportCommaIndex2 - 1));
+						int reportItemQuantity = std::stoi(reportLine.substr(reportCommaIndex3 + 1, reportCommaIndex4 - reportCommaIndex3 - 1));
+						float reportItemTotalPrice = std::stof(reportLine.substr(reportCommaIndex4 + 1, reportLine.length() - reportCommaIndex4 - 2));
+
+						if (reportItemName == orderItemName)
+						{
+							reportItemQuantity += orderQantity;
+							reportItemTotalPrice += orderTotalPrice;
+						}
+						temp_outf << reportSN << ',' << reportItemName << ',' << reportItemPrice << ',' << reportItemQuantity << ',' << reportItemTotalPrice << '\n';
+
+					}
+				}
+			}
+			else
+			{
+				// sidai append matra garne
+				reportLineNum = 0;
+				// jun name milxa tesko quantity ra total badhaune
+				while (!report_inf.eof())
+				{
+					std::string reportLine;
+					if (std::getline(report_inf, reportLine))
+					{
+						++reportLineNum;
+						temp_outf << reportLine << '\n';
+					}
+				}
+
+				float orderItemPrice = static_cast<float>(orderTotalPrice / orderQantity);
+				temp_outf << reportLineNum << ',' << orderItemName << ',' << orderItemPrice << ',' << orderQantity << ',' << orderTotalPrice << '\n';
+			}
+			// close to perform operation on actual file
+			report_inf.close();
+			temp_outf.close(); 
+			if (remove(finance_report_filename.c_str()) == 0) {
+				// success, print something
+			}
+			else {
+				// failure, much more interesting
+				std::cout << "Can't remove " << finance_report_filename << ": "
+					<< strerror(errno) << std::endl;
+			}
+			if (std::rename("temp.txt", finance_report_filename.c_str()) == 0)
+			{
+				// success
+			}
+			else
+			{
+				std::cout << "Can't rename " << "temp.txt to " << finance_report_filename << ": " << strerror(errno) << std::endl;
+			}
+		}
+	}
+	// close all files
+	order_inf.close();
+}
+
+
+void Order::payOrderBill(Customer customer, std::string finance_report_filename)
 {
 	std::string orderFilePath{ "RestaurantData/Orders/" + customer.getUsername() + ".txt" };
 	// payment process goes here
@@ -516,6 +658,7 @@ void Order::payOrderBill(Customer customer)
 	if (customer.getPassword() == password)
 	{
 		std::cout << "\nPayment Successful!\n";
+		addOrdersToReport(customer, finance_report_filename);
 		std::remove(orderFilePath.c_str());
 	}
 	else

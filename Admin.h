@@ -38,6 +38,9 @@ public:
 	// display regular customers
 	void displayRegularCustomers();
 
+	// reads from report file
+	void viewFinanceReport();
+
 	void approveRequest(int id);
 	void denyRequest(int id);
 };
