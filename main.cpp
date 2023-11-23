@@ -127,14 +127,6 @@ std::string initFinancialReport()
                 outf << "SN,Item Name,Item Price,Quantity,Total Price\n";
                 outf.close();
         }
-        else
-        {
-                std::cout << "File already exists\n";
-        }
-
-        std::cout << report_file_name << '\n';
-        system("pause");
-
         return report_file_name;
 }
 

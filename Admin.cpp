@@ -3,10 +3,14 @@
 #include <fstream>
 #include <filesystem>
 #include <string>
+#include <sstream>
 #include <string_view>
 #include <conio.h>
 #include <cstdio>
 #include <errno.h>
+#include <ctime>
+#include <chrono>
+
 #include "MenuItem.h"
 #include "InventoryItem.h"
 #include "Order.h"
@@ -311,6 +315,101 @@ void Admin::denyRequest(int id)
 void Admin::viewFinanceReport()
 {
 	// finance report functions here
+	system("CLS");
+	int consoleWidth = GetWindowSize().X;
+
+	// create file for financial report
+	auto time = std::chrono::system_clock::now();
+	std::time_t curr_time = std::chrono::system_clock::to_time_t(time);
+	std::string str_time = std::ctime(&curr_time);
+	int spaceIndex1 = str_time.find(' ');
+	int spaceIndex2 = str_time.find(' ', spaceIndex1 + 1);
+	int spaceIndex3 = str_time.find(' ', spaceIndex2 + 1);
+	int spaceIndex4 = str_time.find(' ', spaceIndex3 + 1);
+
+	// extracting individual date and time info from the whole string ( str_time )
+	std::string dayStr = str_time.substr(0, spaceIndex1);
+	std::string month = str_time.substr(spaceIndex1 + 1, spaceIndex2 - spaceIndex1 - 1);
+	std::string dayNum = str_time.substr(spaceIndex2 + 1, spaceIndex3 - spaceIndex2 - 1);
+	std::string timeStr = str_time.substr(spaceIndex3 + 1, spaceIndex4 - spaceIndex3 - 1);
+	std::string year = str_time.substr(spaceIndex4 + 1, str_time.length() - spaceIndex4 - 2);
+
+	std::string report_file_name = "./RestaurantData/FinanceReport/" + year + '/' + month + '/' + dayStr + '_' + dayNum + ".csv";
+
+	std::ifstream inf;
+	inf.open(report_file_name);
+	if (!inf.is_open())
+	{
+		std::string errorMsg = "The report doesn't exist!!\n";
+		int paddingError = (consoleWidth - errorMsg.length()) / 2;
+		std::cout << std::setw(paddingError) << errorMsg;
+	}
+	else
+	{
+		// centers the table
+		std::stringstream tableHeadingStream;
+		tableHeadingStream << std::setw(10) << std::left << "SN"
+			<< std::setw(20) << std::left << "Item Name"
+			<< std::setw(10) << std::left << "Price"
+			<< std::setw(10) << std::left << "Quantity"
+			<< std::setw(15) << std::left << "Total Price"
+			<< '\n';
+		std::string tableHeading = tableHeadingStream.str();
+		int padding = (consoleWidth - tableHeading.length()) / 2;
+		std::cout << std::setw(padding) << ' ';
+		std::cout << tableHeading;
+
+		// for line
+		std::stringstream seperatorStream;
+		seperatorStream << '-' << std::setfill('-') << std::setw(tableHeading.length()) << '-' << std::endl;
+		std::string seperator = seperatorStream.str();
+		std::cout << std::setfill(' ') << std::setw(padding - 2) << ' ' << seperator;
+		std::cout << std::setfill(' ');
+
+		float totalSale = 0.0f;
+		int reportLineNum = 0;
+		while (!inf.eof())
+		{
+			std::string line;
+			if (std::getline(inf, line))
+			{
+				// skip first line containing headings
+				if (reportLineNum == 0)
+				{
+					++reportLineNum;
+					continue;
+				}
+				// indices of commas
+				int reportCommaIndex1 = line.find(',');
+				int reportCommaIndex2 = line.find(',', reportCommaIndex1 + 1);
+				int reportCommaIndex3 = line.find(',', reportCommaIndex2 + 1);
+				int reportCommaIndex4 = line.find(',', reportCommaIndex3 + 1);
+
+				// individual data from report line
+				int reportSN = std::stoi(line.substr(0, reportCommaIndex1));
+				std::string reportItemName = line.substr(reportCommaIndex1 + 1, reportCommaIndex2 - reportCommaIndex1 - 1);
+				float reportItemPrice = std::stof(line.substr(reportCommaIndex2 + 1, reportCommaIndex3 - reportCommaIndex2 - 1));
+				int reportItemQuantity = std::stoi(line.substr(reportCommaIndex3 + 1, reportCommaIndex4 - reportCommaIndex3 - 1));
+				float reportItemTotalPrice = std::stof(line.substr(reportCommaIndex4 + 1, line.length() - reportCommaIndex4 - 1));
+
+				totalSale += reportItemTotalPrice;
+
+				std::cout << std::setw(padding) << ' '
+					<< std::setw(10) << std::left << reportLineNum++
+					<< std::setw(20) << std::left << reportItemName
+					<< std::setw(10) << std::left << reportItemPrice
+					<< std::setw(10) << std::left << reportItemQuantity
+					<< std::setw(15) << std::left << reportItemTotalPrice
+					<< '\n';
+			}
+		}
+		std::cout << std::setfill(' ') << std::setw(padding - 2) << ' ' << seperator;
+		std::cout << std::setfill(' ');
+		std::stringstream totalStringStream;
+		totalStringStream << "Total Sales: Rs." << totalSale;
+		std::string totalSaleStr = totalStringStream.str();
+		std::cout << std::setw((consoleWidth - totalSaleStr.length()) / 2) << ' ' << totalSaleStr << "\n\n";
+	}
 }
 
 bool Admin::mainMenuHandler()
@@ -321,11 +420,11 @@ bool Admin::mainMenuHandler()
 	{
 		char option = 0;
 		int opt = option - '0';
-		while (opt != DISPLAY_ORDERS && opt != DISPLAY_MENU && opt != INVENTORY && opt != EXIT_MENU) {
+		while (opt != DISPLAY_ORDERS && opt != DISPLAY_MENU && opt != INVENTORY && opt != REPORT_TODAY && opt != EXIT_MENU ) {
 			system("cls");
 			Title("ADMIN PAGE", centerY - 4);
 			std::cout << "\n\n";
-			MenuItems({ "1: DISPLAY ORDER", "2: DISPLAY MENU", "3: Inventory", "4: EXIT"});
+			MenuItems({ "1: DISPLAY ORDER", "2: DISPLAY MENU", "3: INVENTORY","4: TODAY'S REPORT", "5: EXIT"});
 			option = _getch();
 			opt = option - '0';
 		}
@@ -387,6 +486,11 @@ bool Admin::mainMenuHandler()
 				system("cls");
 				continue;
 			}*/
+		}
+		else if (opt == REPORT_TODAY)
+		{
+			viewFinanceReport();
+			system("pause");
 		}
 		else if (opt == EXIT_MENU)
 		{

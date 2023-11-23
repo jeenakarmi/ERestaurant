@@ -74,7 +74,7 @@ bool Order::placeOrder(Customer* customer)
 		{
 			system("cls");
 			menu.showMenu();
-			std::cout << "Inventory Underflow!!";
+			std::cout << "\nItem out of stock for today!!\n";
 		}
 		else
 		{

@@ -16,6 +16,7 @@ enum AdminMainMenuOptions {
 	DISPLAY_ORDERS,
 	DISPLAY_MENU,
 	INVENTORY,	
+	REPORT_TODAY,
 	EXIT_MENU
 };
 
